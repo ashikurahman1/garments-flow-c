@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -117,4 +117,13 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+nav ul a {
+  transition: all 0.3s ease-in;
+}
+nav ul a:hover,
+nav ul a:active {
+  color: hsl(22, 78%, 26%);
+  font-weight: 700;
+  border-bottom: 2px solid hsl(22, 78%, 26%);
 }

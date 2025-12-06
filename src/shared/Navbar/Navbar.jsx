@@ -1,12 +1,117 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Logo from '../../components/Logo/Logo';
+import { Button } from '@/components/ui/button';
+import {
+  IconLayoutDashboard,
+  IconLogin2,
+  IconMenu2,
+  IconUserEdit,
+  IconX,
+} from '@tabler/icons-react';
+import { NavLink } from 'react-router';
 
 const Navbar = () => {
+  const [isMobileMenu, setIsMobileMenu] = useState(false);
+
+  const user = true;
+  const menuLinks = [
+    {
+      path: '/',
+      name: 'Home',
+    },
+    {
+      path: '/all-product',
+      name: 'All-Product',
+    },
+    {
+      path: '/about-us',
+      name: 'About Us',
+    },
+    {
+      path: '/contact',
+      name: 'Contact',
+    },
+  ];
   return (
-    <div>
-      <div>
-        <img src="" alt="Garments Flow Logo" />
-      </div>
-    </div>
+    <header className="shadow p-3">
+      <nav className="container mx-auto">
+        <div className="flex justify-between items-center">
+          <Logo />
+          <div className="flex items-center gap-3 lg:gap-15">
+            <ul className="hidden lg:flex items-center gap-8 font-semibold">
+              {menuLinks.map((link, i) => (
+                <NavLink key={i}>{link.name} </NavLink>
+              ))}
+            </ul>
+            {user ? (
+              <div>
+                <Button
+                  size="sm"
+                  variant="primary"
+                  className="bg-amber-900 text-white hover:opacity-90"
+                >
+                  <IconLayoutDashboard stroke={2} />
+                  Dashboard
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                <Button
+                  size="sm"
+                  variant="primary"
+                  className="bg-amber-900 text-white hover:opacity-90"
+                >
+                  <IconLogin2 stroke={2} /> Login
+                </Button>
+                <Button size="sm" className="hidden lg:flex hover:opacity-90">
+                  <IconUserEdit stroke={2} />
+                  Register
+                </Button>
+              </div>
+            )}
+            <div
+              onClick={() => setIsMobileMenu(!isMobileMenu)}
+              className="lg:hidden"
+            >
+              {isMobileMenu ? (
+                <IconX stroke={2} size={30} />
+              ) : (
+                <IconMenu2 stroke={2} size={30} />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenu && (
+          <div
+            className={`bg-amber-900/10 py-15 absolute  w-full h-screen flex flex-col items-center ${
+              isMobileMenu ? 'top-15 left-0' : '-top-100 -left-100'
+            } transition-all delay-3000 duration-3000`}
+          >
+            <ul className="lg:hidden flex flex-col items-center gap-8 font-semibold mb-10">
+              {menuLinks.map((link, i) => (
+                <NavLink key={i}>{link.name} </NavLink>
+              ))}
+            </ul>
+            {user ? (
+              <Button
+                size="sm"
+                variant="primary"
+                className="bg-amber-900 text-white hover:opacity-90"
+              >
+                <IconLogin2 stroke={2} /> Logout
+              </Button>
+            ) : (
+              <Button size="sm" className="lg:hidden hover:opacity-90">
+                <IconUserEdit stroke={2} />
+                Register
+              </Button>
+            )}
+          </div>
+        )}
+      </nav>
+    </header>
   );
 };
 
