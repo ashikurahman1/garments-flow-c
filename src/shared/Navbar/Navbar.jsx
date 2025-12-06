@@ -91,7 +91,13 @@ const Navbar = () => {
           >
             <ul className="lg:hidden flex flex-col items-center gap-8 font-semibold mb-10">
               {menuLinks.map((link, i) => (
-                <NavLink key={i}>{link.name} </NavLink>
+                <NavLink
+                  to={link.path}
+                  key={i}
+                  onClick={() => setIsMobileMenu(false)}
+                >
+                  {link.name}{' '}
+                </NavLink>
               ))}
             </ul>
             {user ? (
