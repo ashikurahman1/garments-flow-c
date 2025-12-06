@@ -1,6 +1,7 @@
 import React from 'react';
+import { Outlet } from 'react-router';
 
-const RootLayouts = () => {
+const RootLayout = () => {
   return (
     <>
       <p>I am Root </p>
@@ -11,4 +12,4 @@ const RootLayouts = () => {
   );
 };
 
-export default RootLayouts;
+export default RootLayout;
