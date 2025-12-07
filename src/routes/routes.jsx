@@ -6,6 +6,8 @@ import RegisterPage from '../pages/RegisterPage/RegisterPage';
 import AboutUs from '../pages/AboutUs/AboutUs';
 import Contact from '../pages/Contact/Contact';
 import AllProducts from '../pages/Products/Products';
+import ProductDetails from '../pages/ProductDetails/ProductDetails';
+import DashboardLayout from '../layouts/DashboardLayout/DashboardLayout';
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +26,11 @@ export const router = createBrowserRouter([
         path: 'all-products',
         Component: AllProducts,
       },
+      // Private Route
+      {
+        path: 'products/:id',
+        Component: ProductDetails,
+      },
       {
         path: 'contact',
         Component: Contact,
@@ -37,5 +44,9 @@ export const router = createBrowserRouter([
         Component: RegisterPage,
       },
     ],
+  },
+  {
+    path: '/dashboard',
+    element: <DashboardLayout></DashboardLayout>,
   },
 ]);
