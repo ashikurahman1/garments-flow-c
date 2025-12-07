@@ -127,3 +127,11 @@ nav ul a:active {
   font-weight: 700;
   border-bottom: 2px solid hsl(22, 78%, 26%);
 }
+
+.bg-amber-gradient {
+  background: radial-gradient(
+    ellipse 80% 80% at 50% -20%,
+    rgba(251, 191, 36, 0.3),
+    rgba(255, 255, 255, 0)
+  );
+}

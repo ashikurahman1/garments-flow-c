@@ -67,8 +67,8 @@ const cardVariant = {
 
 const HowItWorks = ({ steps = defaultSteps }) => {
   return (
-    <section className="container mx-auto px-4 py-16">
-      <div className="mb-8">
+    <section className="container mx-auto px-4 py-20 lg:py-30">
+      <div className="mb-8 lg:mb-15">
         <SectionTitle
           title="How It Works"
           subtitle={

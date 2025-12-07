@@ -27,7 +27,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-amber-900 text-white mt-20 pt-14 pb-6">
+    <footer className="bg-amber-900 text-white pt-14 pb-6">
       <div className="container mx-auto px-4">
         {/* Grid: 1 column on small, 4 on md+ */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10">

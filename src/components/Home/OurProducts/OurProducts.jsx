@@ -13,9 +13,9 @@ import SectionTitle from '../../SectionTitle/SectionTitle';
 import { Button } from '@/components/ui/button';
 const OurProducts = () => {
   return (
-    <div className="bg-amber-50 ">
+    <div className="bg-amber-gradient shadow">
       <section className="container mx-auto py-20 lg:py-30">
-        <div className="mb-8">
+        <div className="mb-8 lg:mb-15">
           <SectionTitle title="Our Products" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 mb-8">
