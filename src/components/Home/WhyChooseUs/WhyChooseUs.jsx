@@ -28,8 +28,8 @@ const features = [
 export default function WhyChooseUs() {
   return (
     <div className="bg-amber-gradient shadow">
-      <section className="py-20 lg:py-30 ">
-        <div className="container mx-auto px-4">
+      <section className="py-20 lg:py-30 container mx-auto px-4">
+        <div className="">
           <div className="mb-8 lg:mb-15">
             <SectionTitle title="Why Choose Us" />
           </div>

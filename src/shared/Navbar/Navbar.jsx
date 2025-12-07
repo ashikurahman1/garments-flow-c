@@ -8,12 +8,12 @@ import {
   IconUserEdit,
   IconX,
 } from '@tabler/icons-react';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
 
 const Navbar = () => {
   const [isMobileMenu, setIsMobileMenu] = useState(false);
 
-  const user = true;
+  const user = false;
   const menuLinks = [
     {
       path: '/',
@@ -56,17 +56,25 @@ const Navbar = () => {
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <Button
-                  size="sm"
-                  variant="primary"
-                  className="bg-amber-900 text-white hover:opacity-90"
-                >
-                  <IconLogin2 stroke={2} /> Login
-                </Button>
-                <Button size="sm" className="hidden lg:flex hover:opacity-90">
-                  <IconUserEdit stroke={2} />
-                  Register
-                </Button>
+                <Link to="/login">
+                  <Button
+                    size="sm"
+                    variant="primary"
+                    className="bg-amber-900 text-white hover:opacity-90 cursor-pointer"
+                  >
+                    <IconLogin2 stroke={2} /> Login
+                  </Button>
+                </Link>
+
+                <Link to="/register">
+                  <Button
+                    size="sm"
+                    className="hidden lg:flex hover:opacity-90 cursor-pointer"
+                  >
+                    <IconUserEdit stroke={2} />
+                    Register
+                  </Button>
+                </Link>
               </div>
             )}
             <div
@@ -85,9 +93,9 @@ const Navbar = () => {
         {/* Mobile Menu */}
         {isMobileMenu && (
           <div
-            className={`bg-amber-900/10 py-15 absolute  w-full h-screen flex flex-col items-center ${
-              isMobileMenu ? 'top-15 left-0' : '-top-100 -left-100'
-            } transition-all delay-3000 duration-3000`}
+            className={`bg-amber-900/90 py-15 absolute  w-full h-screen flex flex-col items-center ${
+              isMobileMenu ? 'top-15 left-0' : '-top-100 -left-100 '
+            } transition-all delay-3000 duration-3000 z-1000 text-white`}
           >
             <ul className="lg:hidden flex flex-col items-center gap-8 font-semibold mb-10">
               {menuLinks.map((link, i) => (
@@ -102,17 +110,22 @@ const Navbar = () => {
             </ul>
             {user ? (
               <Button
-                size="sm"
+                size="lg"
                 variant="primary"
-                className="bg-amber-900 text-white hover:opacity-90"
+                className="bg-amber-950 text-white hover:opacity-90"
               >
                 <IconLogin2 stroke={2} /> Logout
               </Button>
             ) : (
-              <Button size="sm" className="lg:hidden hover:opacity-90">
-                <IconUserEdit stroke={2} />
-                Register
-              </Button>
+              <Link to="/register">
+                <Button
+                  size="sm"
+                  className="lg:hidden hover:opacity-90 cursor-pointer"
+                >
+                  <IconUserEdit stroke={2} />
+                  Register
+                </Button>
+              </Link>
             )}
           </div>
         )}

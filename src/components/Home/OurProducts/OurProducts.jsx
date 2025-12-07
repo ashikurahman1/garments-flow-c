@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 const OurProducts = () => {
   return (
     <div className="bg-amber-gradient shadow">
-      <section className="container mx-auto py-20 lg:py-30">
+      <section className="container mx-auto px-4 py-20 lg:py-30">
         <div className="mb-8 lg:mb-15">
           <SectionTitle title="Our Products" />
         </div>
