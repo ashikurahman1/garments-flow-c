@@ -8,6 +8,10 @@ import Contact from '../pages/Contact/Contact';
 import AllProducts from '../pages/Products/Products';
 import ProductDetails from '../pages/ProductDetails/ProductDetails';
 import DashboardLayout from '../layouts/DashboardLayout/DashboardLayout';
+import MyDashboard from '../pages/Dashboard/MyDashboard/MyDashboard';
+import ManageUsers from '../pages/Dashboard/AdminRoutes/ManageUsers/ManageUsers';
+import AllOrders from '../pages/Dashboard/AdminRoutes/AllOrders/AllOrders';
+import AdminAllProducts from '../pages/Dashboard/AdminRoutes/AllProducts/AllProducts';
 
 export const router = createBrowserRouter([
   {
@@ -48,5 +52,24 @@ export const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: <DashboardLayout></DashboardLayout>,
+    children: [
+      {
+        index: true,
+        Component: MyDashboard,
+      },
+      // Addmin Routes Only
+      {
+        path: 'manage-users',
+        Component: ManageUsers,
+      },
+      {
+        path: 'all-products',
+        Component: AdminAllProducts,
+      },
+      {
+        path: 'all-orders',
+        Component: AllOrders,
+      },
+    ],
   },
 ]);

@@ -121,10 +121,14 @@ const DashboardLayout = () => {
 
         {/* Main Content */}
         <main className="flex-1 flex flex-col">
-          <div className="p-4 shadow-md">
-            <h2 className="text-2xl font-bold">Admin Dashboard</h2>
+          <div className="hidden md:flex p-4 shadow-md">
+            <h2 className="text-2xl font-bold text-amber-900">
+              Admin Dashboard
+            </h2>
           </div>
-          <Outlet />
+          <section className="p-4">
+            <Outlet />
+          </section>
           {/* Footer */}
           <footer className="mt-auto  not-only: text-amber-900 text-center py-4 shadow-inner">
             © {new Date().getFullYear()} Garments Flow. All rights reserved.
