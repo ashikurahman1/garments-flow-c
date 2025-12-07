@@ -4,8 +4,10 @@ import { Label } from '@/components/ui/label';
 import { useState } from 'react';
 import { IconBrandGoogle } from '@tabler/icons-react';
 import { useNavigate } from 'react-router';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const RegisterPage = () => {
+  usePageTitle('Register');
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',

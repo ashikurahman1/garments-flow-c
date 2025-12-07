@@ -6,8 +6,10 @@ import OurProducts from '../../components/Home/OurProducts/OurProducts';
 import HowItWorks from '../../components/Home/HowItWorks/HowItWorks';
 import CustomerFeedback from '../../components/Home/CustomerFeedback/CustomerFeedback';
 import TrustedBy from '../../components/Home/TrustedBy/TrustedBy';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const HomePage = () => {
+  usePageTitle('Home');
   return (
     <>
       <Hero />
