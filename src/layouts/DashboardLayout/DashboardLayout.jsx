@@ -5,6 +5,7 @@ import {
   DrawerContent,
   DrawerTrigger,
   DrawerOverlay,
+  DrawerTitle,
 } from '@/components/ui/drawer';
 import {
   IconUsers,
@@ -105,7 +106,9 @@ const DashboardLayout = () => {
           </DrawerTrigger>
           <DrawerOverlay />
           <DrawerContent className="bg-amber-800 text-white w-64 p-6">
-            <h2 className="text-2xl font-bold mb-6">Admin Dashboard</h2>
+            <DrawerTitle className="text-2xl font-bold mb-6">
+              Admin Dashboard
+            </DrawerTitle>
 
             <nav className="flex flex-col gap-3">
               {navItems.map(item => (

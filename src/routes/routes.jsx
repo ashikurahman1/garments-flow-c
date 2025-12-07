@@ -19,11 +19,15 @@ import PendingOrders from '../pages/Dashboard/ManagerRoutes/PendingOrders/Pendin
 import ManageProducts from '../pages/Dashboard/ManagerRoutes/ManageProducts/ManageProducts';
 import MyOrdersPage from '../pages/Dashboard/BuyerRoutes/MyOrdersPage/MyOrdersPage';
 import TrackOrderPage from '../pages/Dashboard/BuyerRoutes/TrackOrderPage/TrackOrderPage';
+import NotFound from '../pages/NotFound/NotFound';
+import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     Component: RootLayout,
+    errorElement: <NotFound />,
+    hydrateFallbackElement: <LoadingSpinner />,
     children: [
       {
         index: true,
