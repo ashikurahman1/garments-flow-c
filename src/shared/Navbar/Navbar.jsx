@@ -40,7 +40,9 @@ const Navbar = () => {
           <div className="flex items-center gap-3 lg:gap-15">
             <ul className="hidden lg:flex items-center gap-8 font-semibold">
               {menuLinks.map((link, i) => (
-                <NavLink key={i}>{link.name} </NavLink>
+                <NavLink to={link.path} key={i}>
+                  {link.name}{' '}
+                </NavLink>
               ))}
             </ul>
             {user ? (

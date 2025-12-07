@@ -3,6 +3,8 @@ import RootLayout from '../layouts/RootLayouts/RootLayout';
 import HomePage from '../pages/HomePage/HomePage';
 import LoginPage from '../pages/LoginPage/LoginPage';
 import RegisterPage from '../pages/RegisterPage/RegisterPage';
+import AboutUs from '../pages/AboutUs/AboutUs';
+import Contact from '../pages/Contact/Contact';
 
 export const router = createBrowserRouter([
   {
@@ -12,6 +14,14 @@ export const router = createBrowserRouter([
       {
         index: true,
         Component: HomePage,
+      },
+      {
+        path: 'about-us',
+        Component: AboutUs,
+      },
+      {
+        path: 'contact',
+        Component: Contact,
       },
       {
         path: 'login',
