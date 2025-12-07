@@ -12,8 +12,15 @@ import {
   IconClipboardList,
   IconMenu2,
   IconLogout,
+  IconPlus,
+  IconUserCircle,
+  IconClock,
+  IconClipboardCheck,
+  IconHome,
+  IconShoppingBag,
+  IconTruckDelivery,
 } from '@tabler/icons-react';
-import { NavLink, Outlet, useNavigate } from 'react-router';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
@@ -35,6 +42,45 @@ const DashboardLayout = () => {
       path: '/dashboard/all-orders',
       icon: <IconClipboardList size={20} />,
     },
+
+    // Managers
+    {
+      name: 'Add Product',
+      path: '/dashboard/add-product',
+      icon: <IconPlus size={20} />,
+    },
+    {
+      name: 'Manage Products',
+      path: '/dashboard/manage-products',
+      icon: <IconBox size={20} />,
+    },
+    {
+      name: 'Pending Orders',
+      path: '/dashboard/pending-orders',
+      icon: <IconClock size={20} />,
+    },
+    {
+      name: 'Approved Orders',
+      path: '/dashboard/approved-orders',
+      icon: <IconClipboardCheck size={20} />,
+    },
+    // Buyer
+    {
+      name: 'My Orders',
+      path: '/dashboard/my-orders',
+      icon: <IconShoppingBag size={20} />,
+    },
+    {
+      name: 'Track Order',
+      path: '/dashboard/track-order',
+      icon: <IconTruckDelivery size={20} />,
+    },
+    // Manager & Buyer
+    {
+      name: 'My Profile',
+      path: '/dashboard/profile',
+      icon: <IconUserCircle size={20} />,
+    },
   ];
 
   const handleLogout = () => {
@@ -45,9 +91,11 @@ const DashboardLayout = () => {
   return (
     <div className="flex flex-col min-h-screen bg-amber-gradient">
       {/* Top bar for Mobile */}
-      <div className="md:hidden flex justify-between items-center bg-amber-800 text-white px-4 py-3 shadow-md">
+      <div className="lg:hidden flex justify-between items-center bg-amber-800 text-white px-4 py-3 shadow-md fixed top-0 w-full">
         <div className="flex items-center gap-2 font-bold text-lg">
-          <span>Garments Flow</span>
+          <Link to="/dashboard">
+            <span>Garments Flow</span>
+          </Link>
         </div>
         <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
           <DrawerTrigger asChild>
@@ -88,10 +136,12 @@ const DashboardLayout = () => {
         </Drawer>
       </div>
 
-      <div className="flex flex-1">
+      <div className="lg:flex">
         {/* Permanent Sidebar for Desktop */}
-        <aside className="hidden md:flex md:flex-col md:w-64 bg-amber-800 text-white p-6">
-          <h2 className="text-2xl font-bold mb-6">Garments Flow</h2>
+        <aside className="hidden lg:flex lg:flex-col md:w-64 bg-amber-800 text-white p-6">
+          <Link to="/dashboard">
+            <h2 className="text-2xl font-bold mb-6">Garments Flow</h2>
+          </Link>
 
           <nav className="flex flex-col gap-3 flex-1">
             {navItems.map(item => (
@@ -120,18 +170,23 @@ const DashboardLayout = () => {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 flex flex-col">
-          <div className="hidden md:flex p-4 shadow-md">
+        <main className="flex-1 flex flex-col mt-20 lg:mt-0 min-h-screen">
+          <div className="hidden lg:flex items-center p-4 shadow-md">
+            <Link to="/dashboard" className="text-amber-900 mr-5">
+              <IconHome size={30} />
+            </Link>
             <h2 className="text-2xl font-bold text-amber-900">
               Admin Dashboard
             </h2>
           </div>
-          <section className="p-4">
+          <section className=" ">
             <Outlet />
           </section>
           {/* Footer */}
-          <footer className="mt-auto  not-only: text-amber-900 text-center py-4 shadow-inner">
-            © {new Date().getFullYear()} Garments Flow. All rights reserved.
+          <footer className="   text-amber-900 text-right       shadow-inner ">
+            <p className="py-3 fixed bottom-0 right-5 ">
+              © {new Date().getFullYear()} Garments Flow. All rights reserved.
+            </p>
           </footer>
         </main>
       </div>

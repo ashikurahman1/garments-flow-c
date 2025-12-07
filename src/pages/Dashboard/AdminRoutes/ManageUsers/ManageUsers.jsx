@@ -11,8 +11,8 @@ const ManageUsers = () => {
   ];
 
   return (
-    <div className="p-6">
-      <h2 className="text-3xl font-bold text-amber-900 mb-6">Manage Users</h2>
+    <div className="bg-white p-6 shadow rounded-xl lg:m-6">
+      <h2 className="text-3xl font-bold  mb-6">Manage Users</h2>
       <div className="overflow-x-auto bg-white shadow rounded-lg">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-amber-200">

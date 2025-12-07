@@ -12,6 +12,13 @@ import MyDashboard from '../pages/Dashboard/MyDashboard/MyDashboard';
 import ManageUsers from '../pages/Dashboard/AdminRoutes/ManageUsers/ManageUsers';
 import AllOrders from '../pages/Dashboard/AdminRoutes/AllOrders/AllOrders';
 import AdminAllProducts from '../pages/Dashboard/AdminRoutes/AllProducts/AllProducts';
+import AddProduct from '../pages/Dashboard/ManagerRoutes/AddProduct/AddProduct';
+import ProfilePage from '../pages/Dashboard/ProfilePage/ProfilePage';
+import ApprovedOrders from '../pages/Dashboard/ManagerRoutes/ApprovedOrders/ApprovedOrders';
+import PendingOrders from '../pages/Dashboard/ManagerRoutes/PendingOrders/PendingOrders';
+import ManageProducts from '../pages/Dashboard/ManagerRoutes/ManageProducts/ManageProducts';
+import MyOrdersPage from '../pages/Dashboard/BuyerRoutes/MyOrdersPage/MyOrdersPage';
+import TrackOrderPage from '../pages/Dashboard/BuyerRoutes/TrackOrderPage/TrackOrderPage';
 
 export const router = createBrowserRouter([
   {
@@ -57,7 +64,11 @@ export const router = createBrowserRouter([
         index: true,
         Component: MyDashboard,
       },
-      // Addmin Routes Only
+      {
+        path: 'profile',
+        Component: ProfilePage,
+      },
+      // Admin Routes Only
       {
         path: 'manage-users',
         Component: ManageUsers,
@@ -69,6 +80,33 @@ export const router = createBrowserRouter([
       {
         path: 'all-orders',
         Component: AllOrders,
+      },
+
+      // Manager Routes Only
+      {
+        path: 'add-product',
+        element: <AddProduct></AddProduct>,
+      },
+      {
+        path: 'approved-orders',
+        element: <ApprovedOrders></ApprovedOrders>,
+      },
+      {
+        path: 'pending-orders',
+        element: <PendingOrders></PendingOrders>,
+      },
+      {
+        path: 'manage-products',
+        element: <ManageProducts></ManageProducts>,
+      },
+      // Buyer Routes
+      {
+        path: 'my-orders',
+        element: <MyOrdersPage></MyOrdersPage>,
+      },
+      {
+        path: 'track-order',
+        element: <TrackOrderPage></TrackOrderPage>,
       },
     ],
   },
