@@ -34,7 +34,7 @@ const Hero = () => {
         // pagination={{ clickable: true }}
         autoplay={{ delay: 3000 }}
         loop
-        className="w-full h-[500px] md:h-[650px]"
+        className="w-full h-[400px] md:h-[650px]"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
@@ -55,7 +55,7 @@ const Hero = () => {
                 <h1 className="text-3xl md:text-5xl font-bold mb-6">
                   {slide.title}
                 </h1>
-                <p className="text-lg md:text-xl max-w-2xl mb-10">
+                <p className="text-lg md:text-xl max-w-2xl mb-8">
                   {slide.desc}
                 </p>
 
