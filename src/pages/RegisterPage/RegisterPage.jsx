@@ -7,15 +7,51 @@ import { useNavigate } from 'react-router';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    photo: null,
+    role: 'buyer',
+    password: '',
+  });
 
-  const handleRegister = async e => {
-    e.preventDefault();
+  const handleChange = e => {
+    const { name, value, files } = e.target;
+    if (name === 'photo') {
+      setFormData(prev => ({ ...prev, photo: files[0] }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
-  const handleGoogleRegister = () => {};
+  const validatePassword = password => {
+    const uppercase = /[A-Z]/.test(password);
+    const lowercase = /[a-z]/.test(password);
+    const minLength = password.length >= 6;
+    return uppercase && lowercase && minLength;
+  };
+
+  const handleRegister = e => {
+    e.preventDefault();
+    if (!validatePassword(formData.password)) {
+      alert(
+        'Password must have at least 6 characters, 1 uppercase letter, and 1 lowercase letter.'
+      );
+      return;
+    }
+
+    // Here you can handle the file upload (photo) along with other form data
+    console.log(formData);
+
+    // Dummy success (replace with actual API call)
+    alert('Registration successful!');
+    navigate('/login'); // redirect to login page
+  };
+
+  const handleGoogleRegister = () => {
+    // Dummy Google login
+    alert('Google register clicked!');
+  };
 
   return (
     <div className="py-20 px-2 lg:py-30 flex items-center justify-center">
@@ -27,9 +63,10 @@ const RegisterPage = () => {
             <Label className="mb-2">Name</Label>
             <Input
               type="text"
+              name="name"
               placeholder="Enter your name"
-              value={name}
-              onChange={e => setName(e.target.value)}
+              value={formData.name}
+              onChange={handleChange}
               required
             />
           </div>
@@ -38,20 +75,46 @@ const RegisterPage = () => {
             <Label className="mb-2">Email</Label>
             <Input
               type="email"
+              name="email"
               placeholder="Enter your email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
               required
             />
+          </div>
+
+          <div>
+            <Label className="mb-2">Photo</Label>
+            <Input
+              type="file"
+              name="photo"
+              accept="image/*"
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <Label className="mb-2">Role</Label>
+            <select
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="w-full border rounded-md p-2"
+            >
+              <option value="buyer">Buyer</option>
+              <option value="manager">Manager</option>
+            </select>
           </div>
 
           <div>
             <Label className="mb-2">Password</Label>
             <Input
               type="password"
+              name="password"
               placeholder="Enter your password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
               required
             />
           </div>

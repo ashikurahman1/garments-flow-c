@@ -20,8 +20,8 @@ const Navbar = () => {
       name: 'Home',
     },
     {
-      path: '/all-product',
-      name: 'All-Product',
+      path: '/all-products',
+      name: 'All-Products',
     },
     {
       path: '/about-us',
