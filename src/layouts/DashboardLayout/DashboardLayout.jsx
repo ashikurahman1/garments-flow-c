@@ -24,28 +24,35 @@ import {
 import { Link, NavLink, Outlet, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
+import useRole from '../../hooks/useRole';
+import { Loader } from 'lucide-react';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { user, userLogout } = useAuth();
-  console.log(user);
+  const { userLogout } = useAuth();
+
+  const { role, isLoading } = useRole();
+  if (isLoading) return <Loader />;
 
   const navItems = [
     {
       name: 'Manage Users',
       path: '/dashboard/manage-users',
       icon: <IconUsers size={20} />,
+      roles: ['admin'],
     },
     {
       name: 'All Products',
       path: '/dashboard/all-products',
       icon: <IconBox size={20} />,
+      roles: ['admin'],
     },
     {
       name: 'All Orders',
       path: '/dashboard/all-orders',
       icon: <IconClipboardList size={20} />,
+      roles: ['admin'],
     },
 
     // Managers
@@ -53,40 +60,52 @@ const DashboardLayout = () => {
       name: 'Add Product',
       path: '/dashboard/add-product',
       icon: <IconPlus size={20} />,
+      roles: ['manager'],
     },
     {
       name: 'Manage Products',
       path: '/dashboard/manage-products',
       icon: <IconBox size={20} />,
+      roles: ['manager'],
     },
     {
       name: 'Pending Orders',
       path: '/dashboard/pending-orders',
       icon: <IconClock size={20} />,
+      roles: ['manager'],
     },
     {
       name: 'Approved Orders',
       path: '/dashboard/approved-orders',
       icon: <IconClipboardCheck size={20} />,
+      roles: ['manager'],
     },
     // Buyer
     {
       name: 'My Orders',
       path: '/dashboard/my-orders',
       icon: <IconShoppingBag size={20} />,
+      roles: ['buyer'],
     },
     {
       name: 'Track Order',
       path: '/dashboard/track-order',
       icon: <IconTruckDelivery size={20} />,
+      roles: ['buyer'],
     },
     // Manager & Buyer
     {
       name: 'My Profile',
       path: '/dashboard/profile',
       icon: <IconUserCircle size={20} />,
+      roles: ['admin', 'manager', 'buyer'],
     },
   ];
+
+  const filteredNavItems = navItems.filter(item =>
+    item.roles.includes(role?.role)
+  );
+  console.log(filteredNavItems);
 
   const handleLogout = () => {
     Swal.fire({
@@ -140,11 +159,11 @@ const DashboardLayout = () => {
           <DrawerOverlay />
           <DrawerContent className="bg-amber-800 text-white w-64 p-6">
             <DrawerTitle className="text-2xl font-bold mb-6">
-              Admin Dashboard
+              My Dashboard
             </DrawerTitle>
 
             <nav className="flex flex-col gap-3">
-              {navItems.map(item => (
+              {filteredNavItems.map(item => (
                 <NavLink
                   key={item.path}
                   to={item.path}
@@ -180,7 +199,7 @@ const DashboardLayout = () => {
           </Link>
 
           <nav className="flex flex-col gap-3 flex-1">
-            {navItems.map(item => (
+            {filteredNavItems.map(item => (
               <NavLink
                 key={item.path}
                 to={item.path}
@@ -211,9 +230,7 @@ const DashboardLayout = () => {
             <Link to="/dashboard" className="text-amber-900 mr-5">
               <IconHome size={30} />
             </Link>
-            <h2 className="text-2xl font-bold text-amber-900">
-              Admin Dashboard
-            </h2>
+            <h2 className="text-2xl font-bold text-amber-900">My Dashboard</h2>
           </div>
           <section className=" ">
             <Outlet />
