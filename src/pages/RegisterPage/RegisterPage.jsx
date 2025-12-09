@@ -9,15 +9,36 @@ import useAuth from '../../hooks/useAuth';
 import axios from 'axios';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 const RegisterPage = () => {
   usePageTitle('Register');
   const { registerUser, updateUserProfile, googleLogin } = useAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm();
 
   const handleRegister = data => {
+    setLoading(true);
+
+    // Password validation
+    const password = data.password;
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+
+    if (!passwordRegex.test(password)) {
+      Swal.fire({
+        title: 'Weak Password!',
+        text: 'Password must contain: Uppercase, Lowercase, and at least 6 characters.',
+        icon: 'warning',
+        confirmButtonColor: '#92400E',
+      });
+      setLoading(false);
+      return;
+    }
+
     // store the image data in a variable
     const profileImage = data.image[0];
 
@@ -61,9 +82,11 @@ const RegisterPage = () => {
           };
           updateUserProfile(userProfile)
             .then(() => {
+              setLoading(false);
               navigate('/dashboard');
             })
             .catch(err => {
+              setLoading(false);
               Swal.fire({
                 title: 'Profile Update Failed',
                 text: "We couldn't update your profile image.",
@@ -74,6 +97,7 @@ const RegisterPage = () => {
         });
       })
       .catch(err => {
+        setLoading(false);
         Swal.fire({
           title: 'Registration Failed',
           text: err.message,
@@ -186,8 +210,18 @@ const RegisterPage = () => {
             />
           </div>
 
-          <Button type="submit" className="bg-amber-800 hover:opacity-90">
-            Register
+          <Button
+            disabled={loading}
+            type="submit"
+            className="bg-amber-800 hover:opacity-90"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" size={18} /> Processing
+              </>
+            ) : (
+              'Register'
+            )}
           </Button>
         </form>
 
