@@ -1,58 +1,128 @@
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { useState } from 'react';
 import { IconBrandGoogle } from '@tabler/icons-react';
 import { useNavigate } from 'react-router';
 import usePageTitle from '../../hooks/usePageTitle';
-
+import { useForm } from 'react-hook-form';
+import useAuth from '../../hooks/useAuth';
+import axios from 'axios';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import Swal from 'sweetalert2';
 const RegisterPage = () => {
   usePageTitle('Register');
+  const { registerUser, updateUserProfile, googleLogin } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    photo: null,
-    role: 'buyer',
-    password: '',
-  });
 
-  const handleChange = e => {
-    const { name, value, files } = e.target;
-    if (name === 'photo') {
-      setFormData(prev => ({ ...prev, photo: files[0] }));
-    } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
-    }
-  };
+  const { register, handleSubmit } = useForm();
 
-  const validatePassword = password => {
-    const uppercase = /[A-Z]/.test(password);
-    const lowercase = /[a-z]/.test(password);
-    const minLength = password.length >= 6;
-    return uppercase && lowercase && minLength;
-  };
+  const handleRegister = data => {
+    // store the image data in a variable
+    const profileImage = data.image[0];
 
-  const handleRegister = e => {
-    e.preventDefault();
-    if (!validatePassword(formData.password)) {
-      alert(
-        'Password must have at least 6 characters, 1 uppercase letter, and 1 lowercase letter.'
-      );
-      return;
-    }
+    // firebase registration method
+    registerUser(data.email, data.password)
+      .then(result => {
+        console.log(result);
+        // store the variable in a formData with key name
+        const formData = new FormData();
+        formData.append('image', profileImage);
 
-    // Here you can handle the file upload (photo) along with other form data
-    console.log(formData);
+        // store the api url in a var
+        const IMGBBAPI_URL = `https://api.imgbb.com/1/upload?&key=${
+          import.meta.env.VITE_IMGBB_API
+        }`;
+        // post method for store image in IMGBB
+        axios.post(IMGBBAPI_URL, formData).then(res => {
+          // When store image in IMGBB again create a post method to store data in Database
+          const photoURL = res.data.data.url;
+          const userInfo = {
+            email: data.email,
+            displayName: data.name,
+            photoURL,
+            role: data.role,
+          };
+          axiosSecure.post('/users', userInfo).then(res => {
+            if (res.data.insertedId) {
+              Swal.fire({
+                title: 'Registration Successful!',
+                text: 'Your account has been created.',
+                icon: 'success',
+                confirmButtonColor: '#92400E',
+              });
+            }
+          });
 
-    // Dummy success (replace with actual API call)
-    alert('Registration successful!');
-    navigate('/login'); // redirect to login page
+          // update the users in firebase
+          const userProfile = {
+            displayName: data.name,
+            photoURL: photoURL,
+          };
+          updateUserProfile(userProfile)
+            .then(() => {
+              navigate('/dashboard');
+            })
+            .catch(err => {
+              Swal.fire({
+                title: 'Profile Update Failed',
+                text: "We couldn't update your profile image.",
+                icon: 'error',
+                confirmButtonColor: '#92400E',
+              });
+            });
+        });
+      })
+      .catch(err => {
+        Swal.fire({
+          title: 'Registration Failed',
+          text: err.message,
+          icon: 'error',
+          confirmButtonColor: '#92400E',
+        });
+      });
   };
 
   const handleGoogleRegister = () => {
-    // Dummy Google login
-    alert('Google register clicked!');
+    googleLogin()
+      .then(async result => {
+        const user = result.user;
+
+        const userInfo = {
+          name: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL,
+          role: 'buyer',
+        };
+
+        try {
+          const res = await axiosSecure.post('/users', userInfo);
+
+          Swal.fire({
+            title: 'Login Successful!',
+            text: 'You are now logged in.',
+            icon: 'success',
+            confirmButtonColor: '#92400E',
+          }).then(() => {
+            navigate('/dashboard');
+          });
+        } catch (err) {
+          Swal.fire({
+            title: 'Something went wrong',
+            text: err.response?.data?.message || 'Please try again.',
+            icon: 'error',
+            confirmButtonColor: '#92400E',
+          });
+        }
+      })
+      .catch(err => {
+        Swal.fire({
+          title: 'Google Login Failed',
+          text: err.message,
+          icon: 'error',
+          confirmButtonColor: '#92400E',
+        });
+      });
   };
 
   return (
@@ -60,16 +130,17 @@ const RegisterPage = () => {
       <div className="bg-white shadow-lg rounded-xl p-5 lg:p-10 w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
 
-        <form onSubmit={handleRegister} className="flex flex-col gap-4">
+        <form
+          onSubmit={handleSubmit(handleRegister)}
+          className="flex flex-col gap-4"
+        >
           <div>
             <Label className="mb-2">Name</Label>
             <Input
               type="text"
-              name="name"
               placeholder="Enter your name"
-              value={formData.name}
-              onChange={handleChange}
               required
+              {...register('name')}
             />
           </div>
 
@@ -77,11 +148,9 @@ const RegisterPage = () => {
             <Label className="mb-2">Email</Label>
             <Input
               type="email"
-              name="email"
               placeholder="Enter your email"
-              value={formData.email}
-              onChange={handleChange}
               required
+              {...register('email')}
             />
           </div>
 
@@ -89,10 +158,9 @@ const RegisterPage = () => {
             <Label className="mb-2">Photo</Label>
             <Input
               type="file"
-              name="photo"
               accept="image/*"
-              onChange={handleChange}
               required
+              {...register('image')}
             />
           </div>
 
@@ -100,9 +168,8 @@ const RegisterPage = () => {
             <Label className="mb-2">Role</Label>
             <select
               name="role"
-              value={formData.role}
-              onChange={handleChange}
               className="w-full border rounded-md p-2"
+              {...register('role')}
             >
               <option value="buyer">Buyer</option>
               <option value="manager">Manager</option>
@@ -113,11 +180,9 @@ const RegisterPage = () => {
             <Label className="mb-2">Password</Label>
             <Input
               type="password"
-              name="password"
               placeholder="Enter your password"
-              value={formData.password}
-              onChange={handleChange}
               required
+              {...register('password')}
             />
           </div>
 

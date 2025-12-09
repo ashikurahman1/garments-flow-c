@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { motion } from 'framer-motion';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -23,7 +24,7 @@ const ProductDetails = () => {
     image:
       'https://images.unsplash.com/photo-1523381214311-56c6b1f38c12?auto=format&fit=crop&w=800&q=80',
   };
-
+  usePageTitle('All Products', product.name);
   // Simulate logged-in user
   const user = { role: 'buyer', status: 'active', email: 'user@example.com' };
 

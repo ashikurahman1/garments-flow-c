@@ -1,6 +1,8 @@
 import { Button } from '@/components/ui/button';
+import usePageTitle from '../../../hooks/usePageTitle';
 
 const ProfilePage = () => {
+  usePageTitle('My Profile');
   return (
     <div className="bg-white p-6 rounded-xl shadow max-w-lg m-6">
       <h2 className="text-2xl font-bold mb-6">My Profile</h2>

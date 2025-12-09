@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import usePageTitle from '../../../../hooks/usePageTitle';
 
 const MyOrdersPage = () => {
   const orders = [
@@ -17,7 +18,7 @@ const MyOrdersPage = () => {
       payment: 'PayFast',
     },
   ];
-
+  usePageTitle('My Orders');
   return (
     <div className="bg-white p-6 shadow rounded-xl lg:m-6">
       <h1 className="text-2xl font-bold mb-4">My Orders</h1>

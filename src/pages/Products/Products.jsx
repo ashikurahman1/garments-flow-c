@@ -2,10 +2,11 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const AllProducts = () => {
   const navigate = useNavigate();
-
+  usePageTitle('All Products');
   // Static array of products
   const products = [
     {
@@ -116,7 +117,7 @@ const AllProducts = () => {
                 </div>
                 <Button
                   className="bg-amber-800 hover:opacity-90 mt-auto"
-                  onClick={() => navigate(`/product/${product._id}`)}
+                  onClick={() => navigate(`/products/${product._id}`)}
                 >
                   View Details
                 </Button>

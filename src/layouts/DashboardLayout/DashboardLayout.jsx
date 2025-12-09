@@ -22,10 +22,14 @@ import {
   IconTruckDelivery,
 } from '@tabler/icons-react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router';
+import useAuth from '../../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { user, userLogout } = useAuth();
+  console.log(user);
 
   const navItems = [
     {
@@ -85,8 +89,37 @@ const DashboardLayout = () => {
   ];
 
   const handleLogout = () => {
-    alert('Logged out!');
-    navigate('/login');
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will be logged out from your account.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#92400E',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Logout',
+    }).then(result => {
+      if (result.isConfirmed) {
+        userLogout()
+          .then(() => {
+            Swal.fire({
+              title: 'Logged Out!',
+              text: 'You have been successfully logged out.',
+              icon: 'success',
+              confirmButtonColor: '#92400E',
+            }).then(() => {
+              navigate('/');
+            });
+          })
+          .catch(err => {
+            Swal.fire({
+              title: 'Logout Failed',
+              text: 'Something went wrong. Please try again.',
+              icon: 'error',
+              confirmButtonColor: '#92400E',
+            });
+          });
+      }
+    });
   };
 
   return (

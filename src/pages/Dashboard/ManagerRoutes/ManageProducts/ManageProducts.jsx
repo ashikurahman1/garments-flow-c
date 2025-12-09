@@ -1,7 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { IconTrash, IconEdit } from '@tabler/icons-react';
+import usePageTitle from '../../../../hooks/usePageTitle';
 
 const ManageProducts = () => {
+  usePageTitle('Manage Products');
   return (
     <div className="bg-white p-6 shadow rounded-xl lg:m-6">
       <h2 className="text-2xl font-bold mb-6">Manage Products</h2>

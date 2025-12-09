@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { IconUsers, IconAward, IconBuildingFactory } from '@tabler/icons-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const AboutUs = () => {
   const team = [
@@ -42,7 +43,7 @@ const AboutUs = () => {
       transition: { duration: 0.6, ease: 'easeOut' },
     },
   };
-
+  usePageTitle('About us');
   return (
     <div className=" ">
       {/* Hero Section */}

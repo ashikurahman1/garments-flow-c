@@ -1,3 +1,5 @@
+import usePageTitle from '../../../../hooks/usePageTitle';
+
 const TrackOrderPage = () => {
   const trackingSteps = [
     { step: 'Cutting Completed', date: '2025-01-04 10:30 AM' },
@@ -7,7 +9,7 @@ const TrackOrderPage = () => {
     { step: 'Packed', date: '2025-01-07 06:00 PM' },
     { step: 'Shipped', date: '2025-01-08 02:15 PM' },
   ];
-
+  usePageTitle('Track Order');
   return (
     <div className="bg-white p-6 shadow rounded-xl lg:m-6 max-w-lg">
       <h1 className="text-2xl font-bold mb-4">Track Order</h1>

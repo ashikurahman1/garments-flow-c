@@ -4,6 +4,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { motion } from 'framer-motion';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -33,7 +34,7 @@ const Contact = () => {
       transition: { duration: 0.3, ease: 'easeOut' },
     },
   };
-
+  usePageTitle('Contact');
   return (
     <motion.section
       className="bg-amber-gradient  py-20 lg:py-30 px-4"

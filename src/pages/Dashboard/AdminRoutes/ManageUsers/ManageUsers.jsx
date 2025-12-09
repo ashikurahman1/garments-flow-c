@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Table } from '@/components/ui/table';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
+import usePageTitle from '../../../../hooks/usePageTitle';
 
 const ManageUsers = () => {
   const users = [
@@ -9,7 +10,7 @@ const ManageUsers = () => {
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'manager' },
     { id: 3, name: 'Alex Johnson', email: 'alex@example.com', role: 'buyer' },
   ];
-
+  usePageTitle('Manage Users');
   return (
     <div className="bg-white p-6 shadow rounded-xl lg:m-6">
       <h2 className="text-3xl font-bold  mb-6">Manage Users</h2>

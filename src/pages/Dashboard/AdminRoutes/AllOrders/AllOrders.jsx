@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { IconEye } from '@tabler/icons-react';
+import usePageTitle from '../../../../hooks/usePageTitle';
 
 const AllOrders = () => {
   const [filter, setFilter] = useState('All');
@@ -24,7 +25,7 @@ const AllOrders = () => {
 
   const filteredOrders =
     filter === 'All' ? orders : orders.filter(o => o.status === filter);
-
+  usePageTitle('All Orders');
   return (
     <div className="bg-white p-6 shadow rounded-xl lg:m-6">
       <h2 className="text-3xl font-bold  mb-6">All Orders</h2>

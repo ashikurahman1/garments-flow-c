@@ -1,8 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router';
+import usePageTitle from '../../hooks/usePageTitle';
 
 const NotFound = () => {
   const navigate = useNavigate();
+  usePageTitle('Not Found');
 
   return (
     <div className="h-screen flex flex-col items-center justify-center text-center px-6 bg-amber-50">

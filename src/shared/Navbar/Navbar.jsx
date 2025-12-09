@@ -112,6 +112,7 @@ const Navbar = () => {
             </ul>
             {user ? (
               <Button
+                onClick={() => setIsMobileMenu(false)}
                 size="lg"
                 variant="primary"
                 className="bg-amber-950 text-white hover:opacity-90"
@@ -121,6 +122,7 @@ const Navbar = () => {
             ) : (
               <Link to="/register">
                 <Button
+                  onClick={() => setIsMobileMenu(false)}
                   size="sm"
                   className="lg:hidden hover:opacity-90 cursor-pointer"
                 >

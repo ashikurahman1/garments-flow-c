@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
+import usePageTitle from '../../../../hooks/usePageTitle';
 
 const AddProduct = () => {
   const [images, setImages] = useState([]);
@@ -12,7 +13,7 @@ const AddProduct = () => {
     const files = Array.from(e.target.files);
     setImages(files.map(file => URL.createObjectURL(file)));
   };
-
+  usePageTitle('Add Product');
   return (
     <div className="bg-white shadow p-6 lg:m-5 rounded-xl">
       <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
