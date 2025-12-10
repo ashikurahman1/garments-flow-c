@@ -1,7 +1,9 @@
 import { Button } from '@/components/ui/button';
 import usePageTitle from '../../../hooks/usePageTitle';
+import useAuth from '../../../hooks/useAuth';
 
 const ProfilePage = () => {
+  const { user } = useAuth();
   usePageTitle('My Profile');
   return (
     <div className="bg-white p-6 rounded-xl shadow max-w-lg m-6">
@@ -10,7 +12,7 @@ const ProfilePage = () => {
       <div className="flex flex-col gap-4">
         <div>
           <p className="text-gray-600">Full Name</p>
-          <p className="font-semibold">Manager Name</p>
+          <p className="font-semibold"></p>
         </div>
 
         <div>

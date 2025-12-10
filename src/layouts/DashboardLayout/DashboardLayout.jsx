@@ -105,7 +105,6 @@ const DashboardLayout = () => {
   const filteredNavItems = navItems.filter(item =>
     item.roles.includes(role?.role)
   );
-  console.log(filteredNavItems);
 
   const handleLogout = () => {
     Swal.fire({
@@ -178,15 +177,14 @@ const DashboardLayout = () => {
                   {item.name}
                 </NavLink>
               ))}
+              <Button
+                variant="outline"
+                className="mt-10 w-full text-amber-800 border-white hover:bg-white hover:text-amber-800 flex items-center justify-center gap-2"
+                onClick={handleLogout}
+              >
+                <IconLogout size={18} /> Logout
+              </Button>
             </nav>
-
-            <Button
-              variant="outline"
-              className="mt-6 w-full text-amber-800 border-white hover:bg-white hover:text-amber-800 flex items-center justify-center gap-2"
-              onClick={handleLogout}
-            >
-              <IconLogout size={18} /> Logout
-            </Button>
           </DrawerContent>
         </Drawer>
       </div>
@@ -213,15 +211,14 @@ const DashboardLayout = () => {
                 {item.name}
               </NavLink>
             ))}
+            <Button
+              variant="outline"
+              className="mt-10 w-full border-white text-amber-800 hover:bg-white hover:text-amber-800 flex items-center justify-center gap-2"
+              onClick={handleLogout}
+            >
+              <IconLogout size={18} /> Logout
+            </Button>
           </nav>
-
-          <Button
-            variant="outline"
-            className="mt-6 w-full border-white text-amber-800 hover:bg-white hover:text-amber-800 flex items-center justify-center gap-2"
-            onClick={handleLogout}
-          >
-            <IconLogout size={18} /> Logout
-          </Button>
         </aside>
 
         {/* Main Content */}
@@ -232,12 +229,12 @@ const DashboardLayout = () => {
             </Link>
             <h2 className="text-2xl font-bold text-amber-900">My Dashboard</h2>
           </div>
-          <section className=" ">
+          <section className="min-h-screen ">
             <Outlet />
           </section>
           {/* Footer */}
-          <footer className="   text-amber-900 text-right       shadow-inner ">
-            <p className="py-3 fixed bottom-0 right-5 ">
+          <footer className="  text-amber-900 p-3  text-center    shadow-inner ">
+            <p className=" ">
               © {new Date().getFullYear()} Garments Flow. All rights reserved.
             </p>
           </footer>

@@ -4,8 +4,8 @@ import { useNavigate } from 'react-router';
 import useAuth from './useAuth';
 
 const axiosSecure = axios.create({
-  // baseURL: 'http://localhost:5000/api',
-  baseURL: 'https://garments-flow-server.vercel.app/api',
+  baseURL: 'http://localhost:5000/api',
+  // baseURL: 'https://garments-flow-server.vercel.app/api',
 });
 
 const useAxiosSecure = () => {
