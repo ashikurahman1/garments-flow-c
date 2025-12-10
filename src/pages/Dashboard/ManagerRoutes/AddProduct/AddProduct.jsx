@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -8,11 +8,14 @@ import { Switch } from '@/components/ui/switch';
 import usePageTitle from '../../../../hooks/usePageTitle';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
-import { Navigate } from 'react-router';
+import { useNavigate } from 'react-router';
+import useAuth from '../../../../hooks/useAuth';
 const AddProduct = () => {
   usePageTitle('Add Product');
+  const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const [previewImages, setPreviewImages] = useState([]);
+  const { user } = useAuth();
 
   const {
     register,
@@ -20,6 +23,7 @@ const AddProduct = () => {
     setError,
     clearErrors,
     formState: { errors },
+    control,
   } = useForm();
 
   const handleImagePreview = e => {
@@ -47,6 +51,7 @@ const AddProduct = () => {
       for (const key in data) {
         formData.append(key, data[key]);
       }
+      formData.append('managerEmail', user?.email);
       for (let img of imgFiles) {
         formData.append('images', img);
       }
@@ -59,9 +64,10 @@ const AddProduct = () => {
           confirmButtonColor: '#3085d6',
         });
         setPreviewImages([]);
-        Navigate('/manage-products');
+        navigate('/dashboard/manage-products');
       }
     } catch (error) {
+      console.error('Add product error:', error?.response?.data || error);
       Swal.fire({
         title: 'Failed to Add Product',
         text: 'Please try again later',
@@ -199,7 +205,15 @@ const AddProduct = () => {
 
         {/* Show on Home */}
         <div className="flex items-center gap-3">
-          <Switch {...register('showOnHome')} />
+          <Controller
+            name="showOnHome"
+            control={control}
+            defaultValue={false}
+            render={({ field }) => (
+              <Switch checked={field.value} onCheckedChange={field.onChange} />
+            )}
+          />
+
           <Label>Show on Home Page</Label>
         </div>
 
