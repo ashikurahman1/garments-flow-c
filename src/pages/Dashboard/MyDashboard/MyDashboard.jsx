@@ -1,7 +1,12 @@
 import React from 'react';
 import usePageTitle from '../../../hooks/usePageTitle';
 import useDashboard from '../../../hooks/useDashboard';
-
+import {
+  FaBox,
+  FaUsers,
+  FaShoppingCart,
+  FaClipboardList,
+} from 'react-icons/fa';
 const MyDashboard = () => {
   usePageTitle('Dashboard');
 
@@ -49,13 +54,29 @@ const MyDashboard = () => {
   );
 };
 
-const Card = ({ title, value, onClick }) => (
+const Card = ({
+  title,
+  value,
+  onClick,
+  bgColor = 'bg-white',
+  icon,
+  iconBg = 'bg-gray-300',
+}) => (
   <div
-    className="bg-white shadow p-6 rounded-lg cursor-pointer"
+    className={`${bgColor} shadow p-6 rounded-lg cursor-pointer flex items-center gap-4`}
     onClick={onClick}
   >
-    <p className="text-lg font-semibold">{title}</p>
-    <h3 className="text-3xl font-bold mt-2">{value}</h3>
+    {icon && (
+      <div
+        className={`${iconBg} p-3 rounded-full text-white text-xl flex items-center justify-center`}
+      >
+        {icon}
+      </div>
+    )}
+    <div>
+      <p className="text-lg font-semibold">{title}</p>
+      <h3 className="text-3xl font-bold mt-2">{value}</h3>
+    </div>
   </div>
 );
 
