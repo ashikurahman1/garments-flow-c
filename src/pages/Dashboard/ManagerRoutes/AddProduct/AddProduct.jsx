@@ -41,6 +41,8 @@ const AddProduct = () => {
   };
 
   const handleAddProduct = async data => {
+    console.log('Form data:', data);
+
     const imgFiles = document.getElementById('productImages').files;
     if (imgFiles.length === 0) {
       setError('images', { message: 'Product images are required' });
@@ -51,15 +53,29 @@ const AddProduct = () => {
       for (const key in data) {
         formData.append(key, data[key]);
       }
+
+      formData.append('name', data.name);
+      formData.append('description', data.description);
+      formData.append('category', data.category);
+      formData.append('price', Number(data.price));
+      formData.append('availableQuantity', Number(data.availableQuantity));
+      formData.append('moq', Number(data.moq));
+      formData.append('demoVideo', data.demoVideo || '');
       formData.append('managerEmail', user?.email);
+      formData.append('paymentOption', data.paymentOption);
+      formData.append('showOnHome', data.showOnHome ? 'true' : 'false'); // <-- send as string
       for (let img of imgFiles) {
         formData.append('images', img);
       }
+
       const res = await axiosSecure.post('/products', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
+
+      for (let img of imgFiles) {
+        formData.append('images', img);
+      }
+
       if (res.data.success) {
         Swal.fire({
           title: 'Product Added Successfully',
@@ -214,7 +230,10 @@ const AddProduct = () => {
             control={control}
             defaultValue={false}
             render={({ field }) => (
-              <Switch checked={field.value} onCheckedChange={field.onChange} />
+              <Switch
+                checked={field.value}
+                onCheckedChange={val => field.onChange(val)}
+              />
             )}
           />
 

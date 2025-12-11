@@ -11,6 +11,7 @@ import 'swiper/css/pagination';
 
 import slider1 from '../../../assets/slider/slider1.jpg';
 import slider2 from '../../../assets/slider/slider2.jpg';
+import { Link } from 'react-router';
 const Hero = () => {
   const slides = [
     {
@@ -59,12 +60,14 @@ const Hero = () => {
                   {slide.desc}
                 </p>
 
-                <Button
-                  size="lg"
-                  className="bg-amber-800 hover:bg-amber-900 text-white "
-                >
-                  {slide.btn}
-                </Button>
+                <Link to="/all-products">
+                  <Button
+                    size="lg"
+                    className="bg-amber-800 hover:bg-amber-900 text-white "
+                  >
+                    {slide.btn}
+                  </Button>
+                </Link>
               </motion.div>
             </div>
           </SwiperSlide>

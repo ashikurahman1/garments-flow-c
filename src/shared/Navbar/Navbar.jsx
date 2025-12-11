@@ -8,12 +8,14 @@ import {
   IconUserEdit,
   IconX,
 } from '@tabler/icons-react';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
+import useAuth from '../../hooks/useAuth';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const Navbar = () => {
   const [isMobileMenu, setIsMobileMenu] = useState(false);
+  const { user, loading } = useAuth();
 
-  const user = false;
   const menuLinks = [
     {
       path: '/',
@@ -32,6 +34,8 @@ const Navbar = () => {
       name: 'Contact',
     },
   ];
+  const navigate = useNavigate();
+  if (loading) return <LoadingSpinner />;
   return (
     <header className="shadow p-3">
       <nav className="container mx-auto">
@@ -48,6 +52,7 @@ const Navbar = () => {
             {user ? (
               <div>
                 <Button
+                  onClick={() => navigate(`/dashboard`)}
                   size="sm"
                   variant="primary"
                   className="bg-amber-900 text-white hover:opacity-90"

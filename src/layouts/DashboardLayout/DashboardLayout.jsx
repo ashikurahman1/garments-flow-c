@@ -34,6 +34,7 @@ const DashboardLayout = () => {
 
   const { role, isLoading } = useRole();
   if (isLoading) return <Loader />;
+  // console.log(role);
 
   const navItems = [
     {
@@ -102,9 +103,7 @@ const DashboardLayout = () => {
     },
   ];
 
-  const filteredNavItems = navItems.filter(item =>
-    item.roles.includes(role?.role)
-  );
+  const filteredNavItems = navItems.filter(item => item.roles.includes(role));
 
   const handleLogout = () => {
     Swal.fire({

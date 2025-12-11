@@ -21,6 +21,10 @@ import MyOrdersPage from '../pages/Dashboard/BuyerRoutes/MyOrdersPage/MyOrdersPa
 import TrackOrderPage from '../pages/Dashboard/BuyerRoutes/TrackOrderPage/TrackOrderPage';
 import NotFound from '../pages/NotFound/NotFound';
 import LoadingSpinner from '../components/LoadingSpinner/LoadingSpinner';
+import PrivateRouter from './PrivateRouter';
+import AdminRoute from './AdminRoute';
+import ManagerRoute from './ManagerRoute';
+import BuyerRoute from './BuyerRoute';
 
 export const router = createBrowserRouter([
   {
@@ -41,10 +45,15 @@ export const router = createBrowserRouter([
         path: 'all-products',
         Component: AllProducts,
       },
+
       // Private Route
       {
         path: 'products/:id',
-        Component: ProductDetails,
+        element: (
+          <PrivateRouter>
+            <ProductDetails></ProductDetails>
+          </PrivateRouter>
+        ),
       },
       {
         path: 'contact',
@@ -62,7 +71,11 @@ export const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    element: <DashboardLayout></DashboardLayout>,
+    element: (
+      <PrivateRouter>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRouter>
+    ),
     children: [
       {
         index: true,
@@ -75,42 +88,78 @@ export const router = createBrowserRouter([
       // Admin Routes Only
       {
         path: 'manage-users',
-        Component: ManageUsers,
+        element: (
+          <AdminRoute>
+            <ManageUsers></ManageUsers>
+          </AdminRoute>
+        ),
       },
       {
         path: 'all-products',
-        Component: AdminAllProducts,
+        element: (
+          <AdminRoute>
+            <AdminAllProducts></AdminAllProducts>
+          </AdminRoute>
+        ),
       },
       {
         path: 'all-orders',
-        Component: AllOrders,
+        element: (
+          <AdminRoute>
+            <AllOrders></AllOrders>
+          </AdminRoute>
+        ),
       },
 
       // Manager Routes Only
       {
         path: 'add-product',
-        element: <AddProduct></AddProduct>,
+        element: (
+          <ManagerRoute>
+            <AddProduct></AddProduct>
+          </ManagerRoute>
+        ),
       },
       {
         path: 'approved-orders',
-        element: <ApprovedOrders></ApprovedOrders>,
+        element: (
+          <ManagerRoute>
+            <ApprovedOrders></ApprovedOrders>
+          </ManagerRoute>
+        ),
       },
       {
         path: 'pending-orders',
-        element: <PendingOrders></PendingOrders>,
+        element: (
+          <ManagerRoute>
+            <PendingOrders></PendingOrders>
+          </ManagerRoute>
+        ),
       },
       {
         path: 'manage-products',
-        element: <ManageProducts></ManageProducts>,
+        element: (
+          <ManagerRoute>
+            <ManageProducts></ManageProducts>
+          </ManagerRoute>
+        ),
       },
       // Buyer Routes
       {
         path: 'my-orders',
-        element: <MyOrdersPage></MyOrdersPage>,
+        element: (
+          <BuyerRoute>
+            <MyOrdersPage></MyOrdersPage>
+          </BuyerRoute>
+        ),
       },
       {
         path: 'track-order',
-        element: <TrackOrderPage></TrackOrderPage>,
+        element: (
+          <BuyerRoute>
+            <TrackOrderPage></TrackOrderPage>
+          </BuyerRoute>
+        ),
       },
     ],
   },

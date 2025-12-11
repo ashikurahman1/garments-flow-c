@@ -44,12 +44,15 @@ const ManageProducts = () => {
   });
 
   // Filter by search text
-  const filteredProducts = products.filter(p => {
+  const filteredProducts = (products || []).filter(p => {
     const t = search.toLowerCase();
-    return (
-      p.name.toLowerCase().includes(t) || p.category.toLowerCase().includes(t)
-    );
+    const name = Array.isArray(p.name) ? p.name[0] : p.name || '';
+    const category = Array.isArray(p.category)
+      ? p.category[0]
+      : p.category || '';
+    return name.toLowerCase().includes(t) || category.toLowerCase().includes(t);
   });
+
   console.log(filteredProducts);
 
   // Delete product mutation
@@ -177,7 +180,13 @@ const ManageProducts = () => {
               <tr key={product._id} className="border">
                 <td className="p-2">
                   <img
-                    src={product.images?.[0]}
+                    src={
+                      product.images?.[0]?.startsWith('http')
+                        ? product.images[0]
+                        : `http://localhost:5000/${product.images[0]}`
+                    }
+                    // src={product.images?.[0]}
+
                     className="w-16 h-16 object-cover rounded"
                   />
                 </td>
