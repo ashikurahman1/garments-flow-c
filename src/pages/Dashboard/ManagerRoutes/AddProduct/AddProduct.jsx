@@ -55,7 +55,11 @@ const AddProduct = () => {
       for (let img of imgFiles) {
         formData.append('images', img);
       }
-      const res = await axiosSecure.post('/products', formData);
+      const res = await axiosSecure.post('/products', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       if (res.data.success) {
         Swal.fire({
           title: 'Product Added Successfully',
