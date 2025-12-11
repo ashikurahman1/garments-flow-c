@@ -29,13 +29,18 @@ const TrackOrderPage = () => {
       <h1 className="text-2xl font-bold mb-4">Track Your Order</h1>
 
       {/* Input for tracking ID */}
-      <form onSubmit={handleTrack} className="flex gap-2 mb-6">
+      <form
+        onSubmit={handleTrack}
+        className="flex flex-col items-center md:flex-row gap-3 mb-6"
+      >
         <Input
           placeholder="Enter Tracking ID"
           value={trackingId}
           onChange={e => setTrackingId(e.target.value)}
         />
-        <Button type="submit">Track</Button>
+        <Button className="w-full md:w-sm" type="submit">
+          Track
+        </Button>
       </form>
 
       {order && (

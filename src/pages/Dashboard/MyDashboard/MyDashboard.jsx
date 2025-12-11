@@ -11,7 +11,7 @@ const MyDashboard = () => {
   usePageTitle('Dashboard');
 
   const { role, adminStats, managerStats, buyerStats } = useDashboard();
-  // console.log(role);
+  // console.log(buyerStats);
 
   return (
     <div className="p-5 space-y-6">
@@ -41,13 +41,22 @@ const MyDashboard = () => {
 
       {/* BUYER DASHBOARD */}
       {role === 'buyer' && (
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 items-center  gap-5">
           <Card
             title="All Products"
             value="See Products"
             onClick={() => (window.location.href = '/all-products')}
+            bgColor="bg-yellow-100"
+            icon={<FaBox />}
+            iconBg="bg-yellow-500"
           />
-          <Card title="Total My Orders" value={buyerStats.orderCount} />
+          <Card
+            title="Total My Orders"
+            value={buyerStats.orderCount || 0}
+            bgColor="bg-indigo-100"
+            icon={<FaShoppingCart />}
+            iconBg="bg-indigo-500"
+          />
         </div>
       )}
     </div>
