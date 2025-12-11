@@ -81,6 +81,7 @@ const MyOrdersPage = () => {
           <thead className="bg-amber-800 text-white">
             <tr>
               <th className="px-4 py-2">Order ID</th>
+              <th className="px-4 py-2">Tracking ID</th>
               <th className="px-4 py-2">Product</th>
               <th className="px-4 py-2">Quantity</th>
               <th className="px-4 py-2">Status</th>
@@ -98,6 +99,7 @@ const MyOrdersPage = () => {
               return (
                 <tr key={order._id} className="border-b">
                   <td className="px-4 py-2">{order._id.slice(-6)}</td>
+                  <td className="px-4 py-2">{order.trackingId}</td>
                   <td className="px-4 py-2">{order.productName}</td>
                   <td className="px-4 py-2">{order.quantity}</td>
                   <td className="px-4 py-2">
