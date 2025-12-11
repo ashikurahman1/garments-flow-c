@@ -19,7 +19,7 @@ const ProfilePage = () => {
     queryKey: ['userProfile', user.email],
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/users/${user.email}`);
-      return data.user; // backend returns { success: true, user: { ... } }
+      return data.user;
     },
     enabled: !!user?.email,
   });
@@ -34,27 +34,67 @@ const ProfilePage = () => {
     }
   }, [userData]);
 
-  // Handle image selection
+  // Handle image selection with validation
   const handleFileChange = e => {
     const file = e.target.files[0];
-    if (file) {
-      setPhotoFile(file);
-      setPreview(URL.createObjectURL(file));
+    if (!file) return;
+
+    // Validate type
+    if (!file.type.startsWith('image/')) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Invalid file type',
+        text: 'Please select an image.',
+      });
+      return;
     }
+
+    // Validate size (max 2MB)
+    if (file.size > 2 * 1024 * 1024) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Image too large',
+        text: 'Max 2MB allowed.',
+      });
+      return;
+    }
+
+    setPhotoFile(file);
+    setPreview(URL.createObjectURL(file));
+  };
+
+  // Upload image to ImgBB
+  const uploadImageToImgBB = async file => {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('key', import.meta.env.VITE_IMGBB_API);
+
+    const res = await fetch('https://api.imgbb.com/1/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await res.json();
+    if (data.success) return data.data.url;
+    throw new Error('Image upload failed');
   };
 
   // Handle profile update
   const handleUpdate = async () => {
     try {
       setLoading(true);
-      const formData = new FormData();
-      formData.append('displayName', displayName);
-      if (photoFile) formData.append('photo', photoFile);
+      let photoURL;
+
+      if (photoFile) {
+        photoURL = await uploadImageToImgBB(photoFile);
+      }
 
       const { data } = await axiosSecure.patch(
         `/users/${user.email}/update-profile`,
-        formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        {
+          displayName,
+          photoURL, // only URL sent
+        }
       );
 
       if (!data.success)
@@ -131,7 +171,7 @@ const ProfilePage = () => {
 
         <div>
           <p className="text-gray-600">Role</p>
-          <p className="font-semibold">{userData?.role || 'Manager'}</p>
+          <p className="font-semibold">{userData?.role || 'Buyer'}</p>
         </div>
 
         <div>
@@ -164,7 +204,7 @@ const ProfilePage = () => {
               : 'bg-amber-800 hover:bg-amber-700'
           }`}
         >
-          {loading ? 'Uploading...' : 'Update Profile'}
+          {loading ? 'Updating...' : 'Update Profile'}
         </button>
       </div>
     </div>
