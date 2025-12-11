@@ -7,7 +7,7 @@ const useFeaturedProducts = () => {
     queryKey: ['featuredProducts'],
     queryFn: async () => {
       const res = await axios.get(
-        'http://localhost:5000/api/products/featured'
+        'https://garments-flow-server.vercel.app/api/products/featured'
       );
       return res.data;
     },
