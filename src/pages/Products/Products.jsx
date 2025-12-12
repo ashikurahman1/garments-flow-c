@@ -1,30 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router';
-
-import usePageTitle from '../../hooks/usePageTitle';
-import useAxiosPublic from '../../hooks/useAxiosPublic';
 import { useQuery } from '@tanstack/react-query';
+import useAxiosPublic from '../../hooks/useAxiosPublic';
+import usePageTitle from '../../hooks/usePageTitle';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const AllProducts = () => {
   const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
-
   usePageTitle('All Products');
 
-  // Fetch all products from backend
-  const {
-    data: products = [],
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['allProducts'],
+  const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const limit = 8; // products per page
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['allProducts', searchTerm, page],
     queryFn: async () => {
-      const res = await axiosPublic.get('/products');
+      const res = await axiosPublic.get(
+        `/products?search=${searchTerm}&page=${page}&limit=${limit}`
+      );
       return res.data;
     },
+    keepPreviousData: true,
   });
 
   const cardVariants = {
@@ -32,7 +33,7 @@ const AllProducts = () => {
     visible: i => ({
       opacity: 1,
       y: 0,
-      transition: { delay: i * 0.1, duration: 0.5 },
+      transition: { delay: i * 0.05, duration: 0.4 },
     }),
   };
 
@@ -45,10 +46,12 @@ const AllProducts = () => {
       </div>
     );
 
+  const totalPages = data?.totalPages || 1;
+
   return (
     <div className="bg-amber-gradient py-20 lg:py-30 px-4">
       <motion.h1
-        className="text-4xl lg:text-5xl font-extrabold text-amber-900 dark:text-white text-center mb-12"
+        className="text-4xl lg:text-5xl font-extrabold text-amber-900 dark:text-white text-center mb-8"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
         viewport={{ once: true }}
@@ -56,10 +59,21 @@ const AllProducts = () => {
         All Products
       </motion.h1>
 
+      {/* Search Input */}
+      <div className="flex justify-center mb-10">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
+          placeholder="Search products..."
+          className="w-full max-w-md px-4 py-2 rounded-lg border shadow focus:outline-none focus:ring focus:border-amber-500"
+        />
+      </div>
+
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-8">
-          {products.length > 0 ? (
-            products.map((product, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {data?.products?.length > 0 ? (
+            data.products.map((product, index) => (
               <motion.div
                 key={product._id}
                 custom={index}
@@ -75,7 +89,7 @@ const AllProducts = () => {
                   className="w-full h-48 object-cover rounded-lg mb-4"
                 />
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-amber-900  mb-2">
+                  <h3 className="text-xl font-semibold text-amber-900 mb-2">
                     {product.name}
                   </h3>
                   <p className="text-gray-600 mb-1">
@@ -87,7 +101,7 @@ const AllProducts = () => {
                   </p>
                 </div>
                 <Button
-                  className="bg-amber-800 text-white  hover:bg-amber-800/90 mt-auto"
+                  className="bg-amber-800 text-white hover:bg-amber-800/90 mt-auto"
                   onClick={() => navigate(`/products/${product._id}`)}
                 >
                   View Details
@@ -95,11 +109,38 @@ const AllProducts = () => {
               </motion.div>
             ))
           ) : (
-            <p className="text-center col-span-3 text-gray-700">
-              No products available.
+            <p className="text-center col-span-full text-gray-700">
+              No products found.
             </p>
           )}
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-12 space-x-2">
+            <Button
+              disabled={page === 1}
+              onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+            >
+              Prev
+            </Button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+              <Button
+                key={p}
+                className={p === page ? 'bg-amber-700 text-white' : ''}
+                onClick={() => setPage(p)}
+              >
+                {p}
+              </Button>
+            ))}
+            <Button
+              disabled={page === totalPages}
+              onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+            >
+              Next
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -2,7 +2,14 @@ import React, { useState } from 'react';
 import usePageTitle from '../../../hooks/usePageTitle';
 import useDashboard from '../../../hooks/useDashboard';
 
-import { FaBox, FaShoppingCart, FaUsers, FaUserTie } from 'react-icons/fa';
+import {
+  FaBox,
+  FaShoppingCart,
+  FaUsers,
+  FaUserTie,
+  FaClipboardList,
+  FaCheckCircle,
+} from 'react-icons/fa';
 
 import {
   BarChart,
@@ -26,23 +33,19 @@ const filterOptions = [
 ];
 
 const MyDashboard = () => {
-  usePageTitle('Admin Dashboard');
-  const { adminStats, role } = useDashboard();
+  usePageTitle('Dashboard');
+
+  const { role, adminStats, managerStats } = useDashboard();
   const [selectedFilter, setSelectedFilter] = useState('today');
 
-  const pieData = [
-    { name: 'Users', value: adminStats?.users?.total || 0 },
-    { name: 'Managers', value: adminStats?.managersActive || 0 },
-    { name: 'Orders', value: adminStats?.ordersThisMonth || 0 },
-  ];
-
-  const colorSet = ['#6366f1', '#10b981', '#f59e0b'];
+  // Pie chart colors
+  const adminColors = ['#6366f1', '#10b981', '#f59e0b'];
+  const managerColors = ['#f59e0b', '#10b981'];
 
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Analytics Overview</h2>
-
         <select
           value={selectedFilter}
           onChange={e => setSelectedFilter(e.target.value)}
@@ -56,9 +59,10 @@ const MyDashboard = () => {
         </select>
       </div>
 
-      {/* ADMIN CARDS */}
-      {role === 'admin' && (
+      {/* ------------------ ADMIN DASHBOARD ------------------ */}
+      {role === 'admin' && adminStats && (
         <>
+          {/* Admin Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 text-2xl">
             <StatCard
               title="Products Today"
@@ -66,42 +70,36 @@ const MyDashboard = () => {
               icon={<FaBox size={30} />}
               iconBg="bg-blue-500"
             />
-
             <StatCard
               title="Products This Week"
               value={adminStats?.productStats?.week}
               icon={<FaBox size={30} />}
               iconBg="bg-indigo-500"
             />
-
             <StatCard
               title="Products This Month"
               value={adminStats?.productStats?.month}
               icon={<FaBox size={30} />}
               iconBg="bg-purple-500"
             />
-
             <StatCard
               title="Orders This Month"
               value={adminStats?.ordersThisMonth}
               icon={<FaShoppingCart size={30} />}
               iconBg="bg-green-500"
             />
-
             <StatCard
               title="New Users"
               value={adminStats?.users?.new}
               icon={<FaUsers size={30} />}
               iconBg="bg-orange-500"
             />
-
             <StatCard
               title="Total Users"
               value={adminStats?.users?.total}
               icon={<FaUsers size={30} />}
               iconBg="bg-amber-600"
             />
-
             <StatCard
               title="Active Managers"
               value={adminStats?.managersActive}
@@ -110,7 +108,7 @@ const MyDashboard = () => {
             />
           </div>
 
-          {/* CHARTS */}
+          {/* Admin Charts */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-6">
             <ChartContainer title="Monthly Orders">
               <ResponsiveContainer width="100%" height={280}>
@@ -145,21 +143,83 @@ const MyDashboard = () => {
               <ResponsiveContainer width="100%" height={280}>
                 <PieChart>
                   <Pie
-                    data={pieData}
+                    data={[
+                      { name: 'Users', value: adminStats?.users?.total || 0 },
+                      {
+                        name: 'Managers',
+                        value: adminStats?.managersActive || 0,
+                      },
+                      {
+                        name: 'Orders',
+                        value: adminStats?.ordersThisMonth || 0,
+                      },
+                    ]}
                     dataKey="value"
                     nameKey="name"
                     outerRadius={120}
                     innerRadius={60}
                     paddingAngle={4}
                   >
-                    {pieData.map((_, index) => (
-                      <Cell key={index} fill={colorSet[index]} />
+                    {Array.from({ length: 3 }).map((_, index) => (
+                      <Cell key={index} fill={adminColors[index]} />
                     ))}
                   </Pie>
                   <Tooltip />
                 </PieChart>
               </ResponsiveContainer>
             </ChartContainer>
+          </div>
+        </>
+      )}
+
+      {/* ------------------ MANAGER DASHBOARD ------------------ */}
+      {role === 'manager' && managerStats && (
+        <>
+          {/* Manager Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-2xl">
+            <StatCard
+              title="Pending Orders"
+              value={managerStats?.pendingOrders}
+              icon={<FaClipboardList size={30} />}
+              iconBg="bg-yellow-500"
+            />
+            <StatCard
+              title="Approved Orders"
+              value={managerStats?.approvedOrders}
+              icon={<FaCheckCircle size={30} />}
+              iconBg="bg-green-500"
+            />
+          </div>
+
+          {/* Manager Pie Chart */}
+          <div className="mt-6 bg-white shadow rounded-lg p-5 border">
+            <h3 className="text-lg font-semibold mb-4">Orders Distribution</h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={[
+                    {
+                      name: 'Pending Orders',
+                      value: managerStats?.pendingOrders || 0,
+                    },
+                    {
+                      name: 'Approved Orders',
+                      value: managerStats?.approvedOrders || 0,
+                    },
+                  ]}
+                  dataKey="value"
+                  nameKey="name"
+                  outerRadius={100}
+                  innerRadius={50}
+                  paddingAngle={5}
+                  label
+                >
+                  <Cell fill="#f59e0b" />
+                  <Cell fill="#10b981" />
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
           </div>
         </>
       )}
