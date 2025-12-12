@@ -20,93 +20,75 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm();
 
-  const handleRegister = data => {
+  const handleRegister = async data => {
     setLoading(true);
 
-    // Password validation
-    const password = data.password;
-
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
-
-    if (!passwordRegex.test(password)) {
-      Swal.fire({
-        title: 'Weak Password!',
-        text: 'Password must contain: Uppercase, Lowercase, and at least 6 characters.',
-        icon: 'warning',
-        confirmButtonColor: '#92400E',
-      });
-      setLoading(false);
-      return;
-    }
-
-    // store the image data in a variable
-    const profileImage = data.image[0];
-
-    // firebase registration method
-    registerUser(data.email, data.password)
-      .then(result => {
-        console.log(result);
-        // store the variable in a formData with key name
-        const formData = new FormData();
-        formData.append('image', profileImage);
-
-        // store the api url in a var
-        const IMGBBAPI_URL = `https://api.imgbb.com/1/upload?&key=${
-          import.meta.env.VITE_IMGBB_API
-        }`;
-        // post method for store image in IMGBB
-        axios.post(IMGBBAPI_URL, formData).then(res => {
-          // When store image in IMGBB again create a post method to store data in Database
-          const photoURL = res.data.data.url;
-          const userInfo = {
-            email: data.email,
-            displayName: data.name,
-            photoURL,
-            role: data.role,
-          };
-          axiosSecure.post('/users', userInfo).then(res => {
-            if (res.data.insertedId) {
-              Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Registration Successful!',
-                text: 'Your account has been created.',
-                showConfirmButton: false,
-                timer: 1500,
-              });
-            }
-          });
-
-          // update the users in firebase
-          const userProfile = {
-            displayName: data.name,
-            photoURL: photoURL,
-          };
-          updateUserProfile(userProfile)
-            .then(() => {
-              setLoading(false);
-              navigate('/dashboard');
-            })
-            .catch(err => {
-              setLoading(false);
-              Swal.fire({
-                title: 'Profile Update Failed',
-                text: "We couldn't update your profile image.",
-                icon: 'error',
-                confirmButtonColor: '#92400E',
-              });
-            });
-        });
-      })
-      .catch(err => {
-        setLoading(false);
+    try {
+      // Password validation
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+      if (!passwordRegex.test(data.password)) {
         Swal.fire({
-          title: 'Registration Failed',
-          text: err.message,
-          icon: 'error',
+          title: 'Weak Password!',
+          text: 'Password must contain: Uppercase, Lowercase, and at least 6 characters.',
+          icon: 'warning',
           confirmButtonColor: '#92400E',
         });
+        return;
+      }
+
+      // Firebase Registration
+      const result = await registerUser(data.email, data.password);
+      console.log('Firebase User:', result);
+
+      // Upload Image to IMGBB
+      const profileImage = data.image[0];
+      const formData = new FormData();
+      formData.append('image', profileImage);
+
+      const IMGBBAPI_URL = `https://api.imgbb.com/1/upload?&key=${
+        import.meta.env.VITE_IMGBB_API
+      }`;
+      const imgRes = await axios.post(IMGBBAPI_URL, formData);
+      const photoURL = imgRes.data.data.url;
+
+      // Save user in backend
+      const userInfo = {
+        email: data.email,
+        displayName: data.name,
+        photoURL,
+        role: data.role,
+      };
+      const dbRes = await axiosSecure.post('/users', userInfo);
+
+      if (dbRes.data.insertedId) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Registration Successful!',
+          text: 'Please Login',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+
+      // Update Firebase profile
+      await updateUserProfile({ displayName: data.name, photoURL });
+
+      // Navigate to login
+      navigate('/login');
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        title: 'Registration Failed',
+        text:
+          err.response?.data?.message || err.message || 'Something went wrong!',
+        icon: 'error',
+        confirmButtonColor: '#92400E',
       });
+    } finally {
+      // stop loading
+      setLoading(false);
+    }
   };
 
   const handleGoogleRegister = () => {
@@ -127,8 +109,8 @@ const RegisterPage = () => {
           Swal.fire({
             position: 'top-end',
             icon: 'success',
-            title: 'Registration Successful!',
-            text: 'Your account has been created.',
+            title: 'Login Successful!',
+
             showConfirmButton: false,
             timer: 1500,
           });
@@ -154,6 +136,9 @@ const RegisterPage = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 

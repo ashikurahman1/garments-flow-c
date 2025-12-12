@@ -9,82 +9,81 @@ import useAuth from '../../hooks/useAuth';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
+import { useState } from 'react';
 const LoginPage = () => {
   const navigate = useNavigate();
   usePageTitle('Login');
 
   const { googleLogin, signInUser } = useAuth();
   const axiosSecure = useAxiosSecure();
-
+  const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm();
+  // Email/Password Login
+  const handleLogin = async data => {
+    setLoading(true);
+    try {
+      await signInUser(data.email, data.password);
 
-  const handleLogin = data => {
-    signInUser(data.email, data.password)
-      .then(() => {
-        Swal.fire({
-          title: 'Login Successful!',
-          text: 'Welcome back!',
-          icon: 'success',
-          confirmButtonColor: '#92400E',
-        });
-        navigate('/dashboard');
-      })
-      .catch(err => {
-        Swal.fire({
-          title: 'Login Failed',
-          text: err.message,
-          icon: 'error',
-          confirmButtonColor: '#92400E',
-        });
+      Swal.fire({
+        title: 'Login Successful!',
+        text: 'Welcome back!',
+        icon: 'success',
+        confirmButtonColor: '#92400E',
       });
+
+      navigate('/dashboard');
+    } catch (err) {
+      Swal.fire({
+        title: 'Login Failed',
+        text: err.message,
+        icon: 'error',
+        confirmButtonColor: '#92400E',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleGoogleLogin = () => {
-    googleLogin()
-      .then(async result => {
-        const user = result.user;
-        console.log(user);
+  // Google Login
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    try {
+      const result = await googleLogin();
+      const user = result.user;
 
-        const userInfo = {
-          email: user.email,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          role: 'buyer',
-        };
-        console.log(userInfo);
-        try {
-          const res = await axiosSecure.post('/users', userInfo);
-          Swal.fire({
-            position: 'top-end',
-            icon: 'success',
-            title: 'Login Successful!',
-            text: 'Welcome Back',
-            showConfirmButton: false,
-            timer: 1500,
-          });
-          navigate('/dashboard');
-        } catch (error) {
-          Swal.fire({
-            position: 'top-end',
-            icon: 'error',
-            text: error.response?.data?.message || 'Please try again.',
-            title: 'Something went wrong ',
-            showConfirmButton: false,
-            timer: 1500,
-          });
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        Swal.fire({
-          position: 'top-end',
-          icon: 'error',
-          text: error.response?.data?.message || 'Please try again.',
-          title: 'Login Failed',
-          showConfirmButton: false,
-          timer: 1500,
-        });
+      const userInfo = {
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        role: 'buyer',
+      };
+
+      await axiosSecure.post('/users', userInfo);
+
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Login Successful!',
+        text: 'Welcome back!',
+        showConfirmButton: false,
+        timer: 1500,
       });
+
+      navigate('/dashboard');
+    } catch (error) {
+      console.error(error);
+      Swal.fire({
+        position: 'top-end',
+        icon: 'error',
+        text:
+          error.response?.data?.message || error.message || 'Please try again.',
+        title: 'Login Failed',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

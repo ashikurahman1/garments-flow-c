@@ -12,10 +12,11 @@ import {
 import { Link, NavLink, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
   const [isMobileMenu, setIsMobileMenu] = useState(false);
-  const { user, loading } = useAuth();
+  const { user, loading, userLogout } = useAuth();
 
   const menuLinks = [
     {
@@ -36,6 +37,44 @@ const Navbar = () => {
     },
   ];
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will be logged out from your account.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#92400E',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Logout',
+    }).then(result => {
+      if (result.isConfirmed) {
+        userLogout()
+          .then(() => {
+            Swal.fire({
+              position: 'top-end',
+              icon: 'error',
+              text: 'You have been successfully logged out.',
+              showConfirmButton: false,
+              timer: 1500,
+              title: 'Logged Out!',
+            }).then(() => {
+              navigate('/');
+              setIsMobileMenu(false);
+            });
+          })
+          .catch(err => {
+            Swal.fire({
+              title: 'Logout Failed',
+              text: 'Something went wrong. Please try again.',
+              icon: 'error',
+              confirmButtonColor: '#92400E',
+            });
+          });
+      }
+    });
+  };
+
   if (loading) return <LoadingSpinner />;
   return (
     <header className="shadow p-3">
@@ -62,7 +101,7 @@ const Navbar = () => {
                   Dashboard
                 </Button>
                 <Button
-                  onClick={() => setIsMobileMenu(false)}
+                  onClick={handleLogout}
                   size="sm"
                   variant="primary"
                   className="bg-amber-950 text-white hover:opacity-90 hidden lg:flex"
@@ -129,7 +168,7 @@ const Navbar = () => {
             </ul>
             {user ? (
               <Button
-                onClick={() => setIsMobileMenu(false)}
+                onClick={handleLogout}
                 size="lg"
                 variant="primary"
                 className="bg-amber-950 text-white hover:opacity-90"

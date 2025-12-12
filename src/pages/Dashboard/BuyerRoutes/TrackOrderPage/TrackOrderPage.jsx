@@ -1,34 +1,59 @@
 import { useState } from 'react';
-import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
 const TrackOrderPage = () => {
   const axiosSecure = useAxiosSecure();
   const [trackingId, setTrackingId] = useState('');
-  const [order, setOrder] = useState(null);
 
-  const { refetch } = useQuery({
+  // React Query for fetching order
+  const {
+    data: order,
+    refetch,
+    isFetching,
+    error,
+  } = useQuery({
     queryKey: ['trackOrder', trackingId],
-    enabled: false, // only fetch when user submits
+    enabled: false, // fetch only when user submits
     queryFn: async () => {
       const res = await axiosSecure.get(`/orders/track-by-id/${trackingId}`);
-      setOrder(res.data.order);
       return res.data.order;
     },
   });
 
-  const handleTrack = async e => {
+  const handleTrack = e => {
     e.preventDefault();
     if (!trackingId) return;
     refetch();
   };
 
+  // Combine statusHistory + tracking into one chronological array
+  const getTimeline = () => {
+    if (!order) return [];
+    const combined = [
+      ...order.statusHistory.map(s => ({
+        ...s,
+        type: 'status',
+      })),
+      ...order.tracking.map(t => ({
+        ...t,
+        type: 'tracking',
+      })),
+    ];
+
+    // Sort by date ascending
+    return combined.sort((a, b) => new Date(a.date) - new Date(b.date));
+  };
+
+  const timeline = getTimeline();
+
   return (
     <div className="p-6 lg:m-6 bg-white shadow rounded-xl">
       <h1 className="text-2xl font-bold mb-4">Track Your Order</h1>
 
-      {/* Input for tracking ID */}
+      {/* Input */}
       <form
         onSubmit={handleTrack}
         className="flex flex-col items-center md:flex-row gap-3 mb-6"
@@ -38,10 +63,16 @@ const TrackOrderPage = () => {
           value={trackingId}
           onChange={e => setTrackingId(e.target.value)}
         />
-        <Button className="w-full md:w-sm" type="submit">
-          Track
+        <Button className="w-full md:w-sm" type="submit" disabled={isFetching}>
+          {isFetching ? 'Loading...' : 'Track'}
         </Button>
       </form>
+
+      {error && (
+        <p className="text-red-600 mt-2">
+          {error.response?.data?.message || 'Order not found'}
+        </p>
+      )}
 
       {order && (
         <div>
@@ -51,21 +82,22 @@ const TrackOrderPage = () => {
 
           {/* Timeline */}
           <div className="space-y-4">
-            {order.statusHistory?.map((step, idx) => {
-              const isLatest = idx === order.statusHistory.length - 1;
+            {timeline.map((step, idx) => {
+              const isLatest = idx === timeline.length - 1;
               return (
                 <div
                   key={idx}
-                  className={`p-4 border-l-4 ${
+                  className={`p-4 border-l-4 rounded-md ${
                     isLatest
                       ? 'border-green-600 bg-green-50'
-                      : 'border-gray-300'
-                  } rounded-md`}
+                      : 'border-gray-300 bg-gray-50'
+                  }`}
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-semibold">
                       {step.status.charAt(0).toUpperCase() +
                         step.status.slice(1)}
+                      {step.type === 'tracking' && ' (Tracking Update)'}
                     </span>
                     {step.date && (
                       <span className="text-sm text-gray-500">
@@ -76,8 +108,8 @@ const TrackOrderPage = () => {
                   {step.location && (
                     <p className="text-gray-600">Location: {step.location}</p>
                   )}
-                  {step.notes && (
-                    <p className="text-gray-600">Notes: {step.notes}</p>
+                  {step.note && (
+                    <p className="text-gray-600">Notes: {step.note}</p>
                   )}
                 </div>
               );
