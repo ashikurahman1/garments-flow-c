@@ -77,10 +77,10 @@ const AllProducts = () => {
   if (isLoading) return <p className="text-center p-10">Loading...</p>;
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-white lg:m-5 rounded-xl">
       <h2 className="text-2xl font-semibold mb-5">All Products</h2>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto ">
         <table className="min-w-full border text-sm">
           <thead className="bg-gray-100 border-b text-left">
             <tr>
