@@ -15,11 +15,21 @@ const ManageUsers = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [suspendData, setSuspendData] = useState({ reason: '', feedback: '' });
 
-  // Fetch users
+  // Search & Filter state
+  const [searchText, setSearchText] = useState('');
+  const [filterRole, setFilterRole] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
+
+  // Fetch users with search & filters
   const { data: users = [], isLoading } = useQuery({
-    queryKey: ['users'],
+    queryKey: ['users', searchText, filterRole, filterStatus],
     queryFn: async () => {
-      const res = await axiosSecure.get('/users');
+      let url = '/users?';
+      if (searchText) url += `searchText=${encodeURIComponent(searchText)}&`;
+      if (filterRole) url += `role=${encodeURIComponent(filterRole)}&`;
+      if (filterStatus) url += `status=${encodeURIComponent(filterStatus)}&`;
+
+      const res = await axiosSecure.get(url);
       return res.data;
     },
   });
@@ -139,6 +149,35 @@ const ManageUsers = () => {
     <div className="bg-white dark:bg-black/10 p-6 shadow rounded-xl lg:m-6">
       <h2 className="text-3xl font-bold mb-6">Manage Users</h2>
 
+      {/* Search & Filters */}
+      <div className="flex flex-col md:flex-row gap-4 mb-4">
+        <input
+          type="text"
+          placeholder="Search by name or email"
+          value={searchText}
+          onChange={e => setSearchText(e.target.value)}
+          className="border p-2 rounded w-full md:w-1/3"
+        />
+        <select
+          value={filterRole}
+          onChange={e => setFilterRole(e.target.value)}
+          className="border p-2 rounded w-full md:w-1/6"
+        >
+          <option value="">All Roles</option>
+          <option value="buyer">Buyer</option>
+          <option value="manager">Manager</option>
+          <option value="admin">Admin</option>
+        </select>
+        <select
+          value={filterStatus}
+          onChange={e => setFilterStatus(e.target.value)}
+          className="border p-2 rounded w-full md:w-1/6"
+        >
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="suspended">Suspended</option>
+        </select>
+      </div>
       <div className="overflow-x-auto   shadow rounded-lg">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="  dark:bg-amber-900">
