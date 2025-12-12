@@ -145,7 +145,7 @@ const DashboardLayout = () => {
   return (
     <div className="flex flex-col min-h-screen bg-amber-gradient">
       {/* Top bar for Mobile */}
-      <div className="lg:hidden flex justify-between items-center bg-amber-800 text-white dark:text-black px-4 py-3 shadow-md fixed top-0 w-full">
+      <div className="lg:hidden flex justify-between items-center bg-amber-800 text-white  px-4 py-3 shadow-md fixed top-0 w-full">
         <div className="flex items-center gap-2 font-bold text-lg">
           <Link to="/dashboard">
             <span>Garments Flow</span>
@@ -156,12 +156,12 @@ const DashboardLayout = () => {
         </div>
         <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
           <DrawerTrigger asChild>
-            <Button variant="outline" className="text-amber-800 border-white">
+            <Button variant="outline" className="text-white border-white">
               <IconMenu2 size={20} />
             </Button>
           </DrawerTrigger>
           <DrawerOverlay />
-          <DrawerContent className="bg-amber-800 text-white dark:text-black w-64 p-6">
+          <DrawerContent className="bg-amber-800 text-white w-64 p-6">
             <DrawerTitle className="text-2xl font-bold mb-6">
               My Dashboard
             </DrawerTitle>
@@ -240,11 +240,11 @@ const DashboardLayout = () => {
           <div className="hidden lg:flex items-center p-4 shadow-md">
             <Link
               to="/dashboard"
-              className="text-amber-900 dark:text-amber-500 dark:text-amber-500 mr-5"
+              className="text-amber-900   dark:text-amber-500 mr-5"
             >
               <IconHome size={30} />
             </Link>
-            <h2 className="text-2xl font-bold text-amber-900 dark:text-amber-500 dark:text-amber-500 ">
+            <h2 className="text-2xl font-bold text-amber-900 dark:text-amber-500 ">
               My Dashboard
             </h2>
           </div>
@@ -252,7 +252,7 @@ const DashboardLayout = () => {
             <Outlet />
           </section>
           {/* Footer */}
-          <footer className="  text-amber-900 dark:text-amber-500 dark:text-amber-500 p-3  text-center    shadow-inner ">
+          <footer className="  text-amber-900   dark:text-amber-500 p-3  text-center    shadow-inner ">
             <p className=" ">
               © {new Date().getFullYear()} Garments Flow. All rights reserved.
             </p>
