@@ -1,90 +1,146 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { IconEdit, IconTrash } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import usePageTitle from '../../../../hooks/usePageTitle';
+import { IconEdit, IconTrash } from '@tabler/icons-react';
+import Swal from 'sweetalert2';
 
-const AdminAllProducts = () => {
-  const products = [
-    {
-      id: 1,
-      image:
-        'https://images.unsplash.com/photo-1523381214311-56c6b1f38c12?auto=format&fit=crop&w=80&q=80',
-      name: 'Classic T-Shirt',
-      price: 25,
-      category: 'Tops',
-      createdBy: 'John Doe',
-      showOnHome: true,
-    },
-    {
-      id: 2,
-      image:
-        'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=80&q=80',
-      name: 'Jeans',
-      price: 40,
-      category: 'Bottoms',
-      createdBy: 'Jane Smith',
-      showOnHome: false,
-    },
-  ];
+const AllProducts = () => {
   usePageTitle('All Products');
+  const axiosSecure = useAxiosSecure();
+
+  const {
+    data: products = [],
+    refetch,
+    isLoading,
+  } = useQuery({
+    queryKey: ['admin-all-products'],
+    queryFn: async () => {
+      const res = await axiosSecure.get('/products');
+      return res.data;
+    },
+  });
+
+  // Toggle Show On Home
+
+  const handleToggleHome = async (id, currentValue) => {
+    try {
+      await axiosSecure.patch(`/products/${id}/toggle-home`, {
+        showOnHome: !currentValue,
+      });
+
+      Swal.fire({
+        title: !currentValue ? 'Added to Home' : 'Removed from Home',
+        toast: true,
+        position: 'top-end',
+        timer: 1500,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        icon: !currentValue ? 'success' : 'info',
+      });
+
+      refetch();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // Delete Product
+
+  const handleDelete = async id => {
+    const confirm = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'This cannot be undone!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#92400e',
+    });
+
+    if (!confirm.isConfirmed) return;
+
+    await axiosSecure.delete(`/products/${id}`);
+
+    Swal.fire({
+      title: 'Deleted Successfully',
+      icon: 'success',
+      timer: 1200,
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+    });
+
+    refetch();
+  };
+
+  if (isLoading) return <p className="text-center p-10">Loading...</p>;
+
   return (
-    <div className="bg-white p-6 shadow rounded-xl lg:m-6 ">
-      <h2 className="text-3xl font-bold mb-6">All Products</h2>
-      <div className="overflow-x-auto bg-white shadow rounded-lg">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-amber-200">
+    <div className="p-6">
+      <h2 className="text-2xl font-semibold mb-5">All Products</h2>
+
+      <div className="overflow-x-auto">
+        <table className="min-w-full border text-sm">
+          <thead className="bg-gray-100 border-b text-left">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                Image
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                Product Name
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                Price
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                Category
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                Created By
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                Show on Home
-              </th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
-                Actions
-              </th>
+              <th className="p-3">Image</th>
+              <th className="p-3">Name</th>
+              <th className="p-3">Price</th>
+              <th className="p-3">Category</th>
+              <th className="p-3">Created By</th>
+              <th className="p-3">Show on Home</th>
+              <th className="p-3">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+
+          <tbody>
             {products.map(product => (
-              <tr key={product.id}>
-                <td className="px-6 py-4">
+              <tr
+                key={product._id}
+                className="border-b hover:bg-gray-50 transition"
+              >
+                <td className="p-3">
                   <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-16 h-16 rounded-lg"
+                    src={product.images?.[0]}
+                    className="w-14 h-14 rounded object-cover"
                   />
                 </td>
-                <td className="px-6 py-4">{product.name}</td>
-                <td className="px-6 py-4">${product.price}</td>
-                <td className="px-6 py-4">{product.category}</td>
-                <td className="px-6 py-4">{product.createdBy}</td>
-                <td className="px-6 py-4">
+
+                <td className="p-3">{product.name}</td>
+                <td className="p-3">${product.price}</td>
+                <td className="p-3">{product.category}</td>
+
+                <td className="p-3">{product.managerEmail}</td>
+
+                <td className="p-3">
                   <input
                     type="checkbox"
                     checked={product.showOnHome}
-                    readOnly
+                    onChange={() =>
+                      handleToggleHome(product._id, product.showOnHome)
+                    }
                   />
                 </td>
-                <td className="px-6 py-4 flex gap-2">
-                  <Button className="bg-amber-800 hover:opacity-90 flex items-center gap-1">
-                    <IconEdit size={16} /> Update
-                  </Button>
-                  <Button className="bg-red-600 hover:opacity-90 flex items-center gap-1">
-                    <IconTrash size={16} /> Delete
-                  </Button>
+
+                <td className=" text-right">
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() =>
+                        (window.location.href = `/dashboard/edit-product/${product._id}`)
+                      }
+                      className="px-3 py-1 bg-blue-700 text-white rounded flex items-center gap-1"
+                    >
+                      <IconEdit size={16} /> Edit
+                    </button>
+
+                    <button
+                      onClick={() => handleDelete(product._id)}
+                      className="px-3 py-1 bg-amber-800 text-white rounded flex items-center gap-1"
+                    >
+                      <IconTrash size={16} /> Delete
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -95,4 +151,4 @@ const AdminAllProducts = () => {
   );
 };
 
-export default AdminAllProducts;
+export default AllProducts;

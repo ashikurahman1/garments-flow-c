@@ -25,6 +25,8 @@ import PrivateRouter from './PrivateRouter';
 import AdminRoute from './AdminRoute';
 import ManagerRoute from './ManagerRoute';
 import BuyerRoute from './BuyerRoute';
+import EditProduct from '../pages/Dashboard/EditProduct/EditProduct';
+import ManagerAdminRoute from './ManagerAdminRoute';
 
 export const router = createBrowserRouter([
   {
@@ -84,6 +86,15 @@ export const router = createBrowserRouter([
       {
         path: 'profile',
         Component: ProfilePage,
+      },
+      // Admin & Managers Only
+      {
+        path: 'edit-product/:id',
+        element: (
+          <ManagerAdminRoute>
+            <EditProduct />
+          </ManagerAdminRoute>
+        ),
       },
       // Admin Routes Only
       {
