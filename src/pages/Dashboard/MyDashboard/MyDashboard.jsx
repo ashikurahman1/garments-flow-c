@@ -7,26 +7,53 @@ import {
   FaShoppingCart,
   FaClipboardList,
 } from 'react-icons/fa';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+} from 'recharts';
 const MyDashboard = () => {
   usePageTitle('Dashboard');
 
   const { role, adminStats, managerStats, buyerStats } = useDashboard();
   // console.log(buyerStats);
-
+  const chartData = adminStats?.monthlyOrders || [];
   return (
     <div className="p-5 space-y-6">
       <h2 className="text-2xl font-semibold">Welcome Back</h2>
 
       {/* ADMIN DASHBOARD */}
+
       {role === 'admin' && (
-        <div className="grid grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <Card title="Total Orders" value={adminStats.totalOrders} />
           <Card title="Total Products" value={adminStats.totalProducts} />
           <Card title="Total Users" value={adminStats.totalUsers} />
 
-          {/* Recharts section */}
-          <div className="col-span-3 bg-white shadow p-5 rounded-lg">
-            Admin Order Statistics Chart Here
+          {/* Chart */}
+          <div className="col-span-1 md:col-span-3 bg-white shadow p-5 rounded-lg">
+            <h3 className="text-lg font-semibold mb-4">
+              Monthly Order Statistics
+            </h3>
+
+            <ResponsiveContainer width="100%" height={320}>
+              <LineChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis />
+                <Tooltip />
+                <Line
+                  type="monotone"
+                  dataKey="orders"
+                  stroke="#4f46e5"
+                  strokeWidth={3}
+                />
+              </LineChart>
+            </ResponsiveContainer>
           </div>
         </div>
       )}
