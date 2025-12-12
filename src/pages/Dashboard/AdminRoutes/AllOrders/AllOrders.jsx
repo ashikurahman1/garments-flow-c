@@ -14,6 +14,7 @@ import {
 import usePageTitle from '../../../../hooks/usePageTitle';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import useAuth from '../../../../hooks/useAuth';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 
 const AllOrders = () => {
   usePageTitle('All Orders');
@@ -41,11 +42,10 @@ const AllOrders = () => {
     enabled: !!user?.email,
   });
 
-  if (isLoading)
-    return <div className="p-6 text-center">Loading orders...</div>;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-white p-6 shadow rounded-xl lg:m-6">
+    <div className="bg-white dark:bg-white/10 p-6 shadow rounded-xl lg:m-6">
       <h2 className="text-3xl font-bold mb-6">All Orders</h2>
 
       {/* Search Input */}
@@ -59,7 +59,7 @@ const AllOrders = () => {
         />
         <Button
           onClick={() => refetch()}
-          className="bg-amber-800 text-white hover:opacity-90"
+          className="bg-amber-800 text-white dark:text-black hover:opacity-90"
         >
           Search
         </Button>
@@ -71,7 +71,7 @@ const AllOrders = () => {
           <Button
             key={status}
             variant={filter === status ? 'default' : 'outline'}
-            className="bg-amber-800 hover:opacity-90 text-amber-100"
+            className="bg-amber-800 hover:opacity-90 text-white"
             onClick={() => setFilter(status)}
           >
             {status}
@@ -82,9 +82,9 @@ const AllOrders = () => {
       {/* Orders Table */}
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-amber-200">
-            <tr className="text-left">
-              <th>SL </th>
+          <thead className=" bg-amber-900 ">
+            <tr className="text-left p-2">
+              <th className="p-2">SL </th>
               <th>Tracking ID</th>
               <th>User</th>
               <th>Product</th>
@@ -121,8 +121,8 @@ const AllOrders = () => {
                 <td>
                   <Dialog>
                     <DialogTrigger asChild>
-                      <Button className="bg-amber-800 hover:opacity-90 flex items-center gap-1">
-                        <IconEye size={16} /> View
+                      <Button className="bg-amber-800 text-white hover:opacity-90 flex items-center gap-1">
+                        <IconEye size={14} /> View
                       </Button>
                     </DialogTrigger>
                     <DialogContent className="max-w-2xl">

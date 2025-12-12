@@ -98,7 +98,7 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="bg-white shadow p-6 lg:m-5 rounded-xl">
+    <div className="bg-white dark:bg-white/10 shadow p-6 lg:m-5 rounded-xl">
       <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
 
       <form

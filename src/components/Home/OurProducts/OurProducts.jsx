@@ -52,7 +52,7 @@ const OurProducts = () => {
               <div className="px-6 pb-6">
                 <Button
                   onClick={() => navigate(`/products/${product._id}`)}
-                  className="w-full bg-amber-800 hover:bg-amber-900"
+                  className="w-full bg-amber-800 hover:bg-amber-900 text-white"
                 >
                   View Details
                 </Button>

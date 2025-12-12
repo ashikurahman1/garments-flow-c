@@ -45,10 +45,10 @@ const Contact = () => {
     >
       {/* Hero / Header */}
       <motion.div className="text-center mb-16" variants={fadeUp}>
-        <h1 className="text-4xl lg:text-5xl font-bold text-amber-900 mb-4">
+        <h1 className="text-4xl lg:text-5xl font-bold text-amber-900 dark:text-amber-500 mb-4">
           Contact Us
         </h1>
-        <p className="text-gray-700 max-w-2xl mx-auto">
+        <p className="text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
           Have questions, suggestions, or need support? Fill out the form below
           and we'll get back to you shortly.
         </p>
@@ -56,7 +56,7 @@ const Contact = () => {
 
       {/* Contact Form */}
       <motion.form
-        className="max-w-3xl mx-auto bg-white shadow-lg rounded-xl p-8 flex flex-col gap-6"
+        className="max-w-3xl mx-auto bg-white/10 shadow-lg rounded-xl p-8 flex flex-col gap-6"
         onSubmit={handleSubmit}
         variants={container}
       >
@@ -91,7 +91,7 @@ const Contact = () => {
         <motion.div variants={fadeUp}>
           <Button
             type="submit"
-            className="bg-amber-800 hover:opacity-90 w-full"
+            className="bg-amber-800 dark:text-white hover:opacity-90 w-full"
           >
             Send Message
           </Button>
@@ -103,10 +103,16 @@ const Contact = () => {
         className="mt-16 max-w-3xl mx-auto text-center"
         variants={fadeUp}
       >
-        <h2 className="text-2xl font-bold text-amber-900 mb-4">Get in Touch</h2>
-        <p className="text-gray-700 mb-2">Email: support@garmentsflow.com</p>
-        <p className="text-gray-700 mb-2">Phone: +880 1845 6840900</p>
-        <p className="text-gray-700">
+        <h2 className="text-2xl font-bold text-amber-900 dark:text-amber-500 mb-4">
+          Get in Touch
+        </h2>
+        <p className="text-gray-700 dark:text-gray-300 mb-2">
+          Email: support@garmentsflow.com
+        </p>
+        <p className="text-gray-700 dark:text-gray-300 mb-2">
+          Phone: +880 1845 6840900
+        </p>
+        <p className="text-gray-700 dark:text-gray-300">
           Address: 123 Main Street, Dhaka, Bangladesh
         </p>
       </motion.div>

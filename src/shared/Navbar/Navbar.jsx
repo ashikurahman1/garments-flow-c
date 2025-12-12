@@ -13,6 +13,7 @@ import { Link, NavLink, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import Swal from 'sweetalert2';
+import ThemeToggle from '../../components/ThemeToggle/ThemeToggle';
 
 const Navbar = () => {
   const [isMobileMenu, setIsMobileMenu] = useState(false);
@@ -95,7 +96,7 @@ const Navbar = () => {
                   onClick={() => navigate(`/dashboard`)}
                   size="sm"
                   variant="primary"
-                  className="bg-amber-900 text-white hover:opacity-90"
+                  className="bg-amber-900 text-white  hover:opacity-90 hidden lg:flex"
                 >
                   <IconLayoutDashboard stroke={2} />
                   Dashboard
@@ -104,18 +105,18 @@ const Navbar = () => {
                   onClick={handleLogout}
                   size="sm"
                   variant="primary"
-                  className="bg-amber-950 text-white hover:opacity-90 hidden lg:flex"
+                  className="bg-amber-950 text-white  hover:opacity-90 hidden lg:flex"
                 >
                   <IconLogin2 stroke={2} /> Logout
                 </Button>
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <Link to="/login">
+                <Link to="/login" className="hidden lg:flex">
                   <Button
                     size="sm"
                     variant="primary"
-                    className="bg-amber-900 text-white hover:opacity-90 cursor-pointer"
+                    className="bg-amber-900 text-white   hover:opacity-90 cursor-pointer"
                   >
                     <IconLogin2 stroke={2} /> Login
                   </Button>
@@ -132,14 +133,17 @@ const Navbar = () => {
                 </Link>
               </div>
             )}
+            <div className="">
+              <ThemeToggle />
+            </div>
             <div
               onClick={() => setIsMobileMenu(!isMobileMenu)}
               className="lg:hidden"
             >
               {isMobileMenu ? (
-                <IconX stroke={2} size={30} />
+                <IconX stroke={2} size={32} />
               ) : (
-                <IconMenu2 stroke={2} size={30} />
+                <IconMenu2 stroke={2} size={32} />
               )}
             </div>
           </div>
@@ -150,12 +154,15 @@ const Navbar = () => {
           <div
             className={`bg-amber-900/90 py-15 absolute  w-full h-screen flex flex-col items-center ${
               isMobileMenu ? 'top-15 left-0' : '-top-100 -left-100 '
-            } transition-all delay-3000 duration-3000 z-1000 text-white`}
+            } transition-all delay-3000 duration-3000 z-1000 text-white dark:text-black`}
           >
             <ul className="lg:hidden flex flex-col items-center gap-8 font-semibold mb-10">
-              <div className="w-10 h-10 bg-amber-900 flex items-center justify-center rounded-full overflow-hidden">
-                <IconUser />
-              </div>
+              {user && (
+                <div className="w-10 h-10 bg-amber-900 flex items-center justify-center rounded-full overflow-hidden">
+                  <IconUser />
+                </div>
+              )}
+
               {menuLinks.map((link, i) => (
                 <NavLink
                   to={link.path}
@@ -167,25 +174,48 @@ const Navbar = () => {
               ))}
             </ul>
             {user ? (
-              <Button
-                onClick={handleLogout}
-                size="lg"
-                variant="primary"
-                className="bg-amber-950 text-white hover:opacity-90"
-              >
-                <IconLogin2 stroke={2} /> Logout
-              </Button>
-            ) : (
-              <Link to="/register">
+              <>
                 <Button
-                  onClick={() => setIsMobileMenu(false)}
+                  onClick={() => navigate(`/dashboard`)}
                   size="sm"
-                  className="lg:hidden hover:opacity-90 cursor-pointer"
+                  variant="primary"
+                  className="bg-amber-700 text-white hover:opacity-90 mb-3"
                 >
-                  <IconUserEdit stroke={2} />
-                  Register
+                  <IconLayoutDashboard stroke={2} />
+                  Dashboard
                 </Button>
-              </Link>
+                <Button
+                  onClick={handleLogout}
+                  size="lg"
+                  variant="primary"
+                  className="bg-amber-950 text-white  hover:opacity-90"
+                >
+                  <IconLogin2 stroke={2} /> Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className=" lg:hidden mb-3 ">
+                  <Button
+                    onClick={() => setIsMobileMenu(false)}
+                    size="sm"
+                    variant="primary"
+                    className="bg-amber-700 text-white  hover:opacity-90 cursor-pointer"
+                  >
+                    <IconLogin2 stroke={2} /> Login
+                  </Button>
+                </Link>
+                <Link to="/register">
+                  <Button
+                    onClick={() => setIsMobileMenu(false)}
+                    size="sm"
+                    className="lg:hidden hover:opacity-90 cursor-pointer"
+                  >
+                    <IconUserEdit stroke={2} />
+                    Register
+                  </Button>
+                </Link>
+              </>
             )}
           </div>
         )}

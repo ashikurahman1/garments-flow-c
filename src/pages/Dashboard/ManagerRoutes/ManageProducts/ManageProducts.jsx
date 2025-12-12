@@ -7,6 +7,7 @@ import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import useAuth from '../../../../hooks/useAuth';
 import { useNavigate } from 'react-router';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 const ManageProducts = () => {
   usePageTitle('Manage Products');
   const { user } = useAuth();
@@ -69,12 +70,10 @@ const ManageProducts = () => {
     }
   };
 
-  if (isLoading) {
-    return <div className="p-6 text-center text-lg">Loading products...</div>;
-  }
+  if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-white p-6 shadow rounded-xl lg:m-6">
+    <div className="bg-white dark:bg-white/10 p-6 shadow rounded-xl lg:m-6">
       <h2 className="text-2xl font-bold mb-6">Manage Products</h2>
 
       {/* Search */}
@@ -88,7 +87,7 @@ const ManageProducts = () => {
 
       <div className="overflow-x-auto w-full">
         <table className=" border min-w-max w-full  ">
-          <thead className="bg-amber-800 text-white text-left">
+          <thead className="bg-amber-800 text-white dark:text-black text-left">
             <tr className="">
               <th className="p-2">Image</th>
               <th>Name</th>
@@ -120,7 +119,7 @@ const ManageProducts = () => {
                     onClick={() =>
                       navigate(`/dashboard/edit-product/${product._id}`)
                     }
-                    className="px-3 py-1 bg-amber-800 text-white rounded flex items-center gap-1"
+                    className="px-3 py-1 bg-amber-800 text-white dark:text-black rounded flex items-center gap-1"
                   >
                     <IconEdit size={16} /> Edit
                   </Button>
@@ -128,7 +127,7 @@ const ManageProducts = () => {
                   {/* Delete */}
                   <Button
                     onClick={() => handleDelete(product._id)}
-                    className="px-3 py-1 bg-red-600 text-white rounded flex items-center gap-1"
+                    className="px-3 py-1 bg-red-600 text-white dark:text-black rounded flex items-center gap-1"
                   >
                     <IconTrash size={16} /> Delete
                   </Button>

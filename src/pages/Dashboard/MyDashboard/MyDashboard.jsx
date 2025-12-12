@@ -77,12 +77,12 @@ const Card = ({
   >
     {icon && (
       <div
-        className={`${iconBg} p-3 rounded-full text-white text-xl flex items-center justify-center`}
+        className={`${iconBg} p-3 rounded-full text-white dark:text-black text-xl flex items-center justify-center`}
       >
         {icon}
       </div>
     )}
-    <div>
+    <div className="dark:text-black">
       <p className="text-lg font-semibold">{title}</p>
       <h3 className="text-3xl font-bold mt-2">{value}</h3>
     </div>

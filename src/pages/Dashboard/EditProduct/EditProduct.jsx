@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import usePageTitle from '../../../hooks/usePageTitle';
+import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
 
 const EditProduct = () => {
   usePageTitle('Edit Product');
@@ -110,10 +111,10 @@ const EditProduct = () => {
     }
   };
 
-  if (isLoading) return <p className="p-5">Loading product...</p>;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-white shadow p-6 lg:m-5 rounded-xl">
+    <div className="bg-white dark:bg-white/10 shadow p-6 lg:m-5 rounded-xl">
       <h2 className="text-2xl font-bold mb-6">Edit Product</h2>
 
       <form

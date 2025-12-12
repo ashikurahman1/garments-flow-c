@@ -4,6 +4,7 @@ import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import usePageTitle from '../../../../hooks/usePageTitle';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
 import Swal from 'sweetalert2';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 
 const AllProducts = () => {
   usePageTitle('All Products');
@@ -74,15 +75,15 @@ const AllProducts = () => {
     refetch();
   };
 
-  if (isLoading) return <p className="text-center p-10">Loading...</p>;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="p-6 bg-white lg:m-5 rounded-xl">
+    <div className="p-6 bg-white dark:bg-white/10 lg:m-5 rounded-xl">
       <h2 className="text-2xl font-semibold mb-5">All Products</h2>
 
       <div className="overflow-x-auto ">
         <table className="min-w-full border text-sm">
-          <thead className="bg-gray-100 border-b text-left">
+          <thead className="bg-amber-200 dark:bg-amber-900 border-b text-left">
             <tr>
               <th className="p-3">Image</th>
               <th className="p-3">Name</th>
@@ -129,14 +130,14 @@ const AllProducts = () => {
                       onClick={() =>
                         (window.location.href = `/dashboard/edit-product/${product._id}`)
                       }
-                      className="px-3 py-1 bg-blue-700 text-white rounded flex items-center gap-1"
+                      className="px-3 py-1 bg-blue-700 text-white dark:text-black rounded flex items-center gap-1"
                     >
                       <IconEdit size={16} /> Edit
                     </button>
 
                     <button
                       onClick={() => handleDelete(product._id)}
-                      className="px-3 py-1 bg-amber-800 text-white rounded flex items-center gap-1"
+                      className="px-3 py-1 bg-amber-800 text-white dark:text-black rounded flex items-center gap-1"
                     >
                       <IconTrash size={16} /> Delete
                     </button>

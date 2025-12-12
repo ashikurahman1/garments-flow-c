@@ -25,6 +25,7 @@ import {
   SelectItem,
   SelectValue,
 } from '@/components/ui/select';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 
 const ApprovedOrders = () => {
   usePageTitle('Approved Orders');
@@ -76,17 +77,15 @@ const ApprovedOrders = () => {
     });
   };
 
-  if (isLoading) {
-    return <div className="p-6 text-center">Loading...</div>;
-  }
+  if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-white p-6 shadow rounded-xl lg:m-6">
+    <div className="bg-white dark:bg-white/10 p-6 shadow rounded-xl lg:m-6">
       <h2 className="text-2xl font-bold mb-6">Approved Orders</h2>
 
-      <div className="overflow-x-auto shadow bg-white rounded-md">
+      <div className="overflow-x-auto shadow   rounded-md">
         <table className="table-auto w-full text-left">
-          <thead className="bg-amber-700 text-white">
+          <thead className="  bg-amber-800 text-white ">
             <tr>
               <th className="p-2">Order ID</th>
               <th>User</th>
@@ -111,7 +110,7 @@ const ApprovedOrders = () => {
                   <Dialog open={openModal} onOpenChange={setOpenModal}>
                     <DialogTrigger asChild>
                       <Button
-                        className="bg-amber-700 text-white"
+                        className="bg-amber-700 text-white "
                         onClick={() => {
                           setSelected(order);
                           setOpenModal(true);
@@ -183,7 +182,7 @@ const ApprovedOrders = () => {
                   <Dialog open={openView} onOpenChange={setOpenView}>
                     <DialogTrigger asChild>
                       <Button
-                        className="bg-blue-700 text-white"
+                        className="bg-blue-700 text-white "
                         onClick={() => {
                           setSelected(order);
                           setOpenView(true);

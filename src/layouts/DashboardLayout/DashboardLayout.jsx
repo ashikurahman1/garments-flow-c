@@ -26,6 +26,7 @@ import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
 import useRole from '../../hooks/useRole';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
+import ThemeToggle from '../../components/ThemeToggle/ThemeToggle';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
@@ -144,11 +145,14 @@ const DashboardLayout = () => {
   return (
     <div className="flex flex-col min-h-screen bg-amber-gradient">
       {/* Top bar for Mobile */}
-      <div className="lg:hidden flex justify-between items-center bg-amber-800 text-white px-4 py-3 shadow-md fixed top-0 w-full">
+      <div className="lg:hidden flex justify-between items-center bg-amber-800 text-white dark:text-black px-4 py-3 shadow-md fixed top-0 w-full">
         <div className="flex items-center gap-2 font-bold text-lg">
           <Link to="/dashboard">
             <span>Garments Flow</span>
           </Link>
+        </div>
+        <div className="flex item-center justify-center">
+          <ThemeToggle />
         </div>
         <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
           <DrawerTrigger asChild>
@@ -157,7 +161,7 @@ const DashboardLayout = () => {
             </Button>
           </DrawerTrigger>
           <DrawerOverlay />
-          <DrawerContent className="bg-amber-800 text-white w-64 p-6">
+          <DrawerContent className="bg-amber-800 text-white dark:text-black w-64 p-6">
             <DrawerTitle className="text-2xl font-bold mb-6">
               My Dashboard
             </DrawerTitle>
@@ -200,13 +204,16 @@ const DashboardLayout = () => {
             <h2 className="text-2xl font-bold mb-6">Garments Flow</h2>
           </Link>
 
-          <nav className="flex flex-col gap-3 flex-1">
+          <nav className="flex flex-col   gap-3 flex-1">
+            <div className="flex item-center  justify-center">
+              <ThemeToggle />
+            </div>
             {filteredNavItems.map(item => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `flex items-center gap-2 p-2 rounded hover:bg-amber-700 ${
+                  `dark:text-white flex items-center gap-2 p-2 rounded hover:bg-amber-700 ${
                     isActive ? 'bg-amber-700 font-semibold' : ''
                   }`
                 }
@@ -217,12 +224,12 @@ const DashboardLayout = () => {
             ))}
             <Button
               variant="outline"
-              className="mt-10 w-full border-white text-amber-800 hover:bg-white hover:text-amber-800 flex items-center justify-center gap-2"
+              className="mt-10 w-full border-white text-amber-800 dark:text-white hover:bg-white hover:text-amber-800 flex items-center justify-center gap-2"
               onClick={handleLogout}
             >
               <IconLogout size={18} /> Logout
             </Button>
-            <div className="bg-linear-to-b from-amber-600  to-amber-900 p-3 text-center rounded-md mt-10 font-semibold ">
+            <div className="bg-linear-to-b from-amber-600  to-amber-900 p-3 text-center rounded-md mt-10 font-semibold dark:text-white">
               <Link to="/">Go to Home Page</Link>
             </div>
           </nav>
@@ -231,16 +238,21 @@ const DashboardLayout = () => {
         {/* Main Content */}
         <main className="flex-1 flex flex-col mt-20 lg:mt-0 min-h-screen">
           <div className="hidden lg:flex items-center p-4 shadow-md">
-            <Link to="/dashboard" className="text-amber-900 mr-5">
+            <Link
+              to="/dashboard"
+              className="text-amber-900 dark:text-amber-500 dark:text-amber-500 mr-5"
+            >
               <IconHome size={30} />
             </Link>
-            <h2 className="text-2xl font-bold text-amber-900">My Dashboard</h2>
+            <h2 className="text-2xl font-bold text-amber-900 dark:text-amber-500 dark:text-amber-500 ">
+              My Dashboard
+            </h2>
           </div>
           <section className="min-h-screen ">
             <Outlet />
           </section>
           {/* Footer */}
-          <footer className="  text-amber-900 p-3  text-center    shadow-inner ">
+          <footer className="  text-amber-900 dark:text-amber-500 dark:text-amber-500 p-3  text-center    shadow-inner ">
             <p className=" ">
               © {new Date().getFullYear()} Garments Flow. All rights reserved.
             </p>

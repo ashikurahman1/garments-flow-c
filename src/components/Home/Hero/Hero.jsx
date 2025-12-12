@@ -63,7 +63,7 @@ const Hero = () => {
                 <Link to="/all-products">
                   <Button
                     size="lg"
-                    className="bg-amber-800 hover:bg-amber-900 text-white "
+                    className="bg-amber-800 hover:bg-amber-900 text-white  "
                   >
                     {slide.btn}
                   </Button>

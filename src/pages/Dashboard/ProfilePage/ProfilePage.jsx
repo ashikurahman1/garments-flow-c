@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
 
 const ProfilePage = () => {
   const { user, updateUserProfile } = useAuth();
@@ -137,10 +138,10 @@ const ProfilePage = () => {
     }
   };
 
-  if (isLoading) return <p>Loading user data...</p>;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow max-w-lg m-6">
+    <div className="bg-white dark:bg-white/10 p-6 rounded-xl shadow max-w-lg m-6">
       <h2 className="text-2xl font-bold mb-6">My Profile</h2>
 
       <div className="flex flex-col items-center gap-4 mb-6">
@@ -198,7 +199,7 @@ const ProfilePage = () => {
         <button
           onClick={handleUpdate}
           disabled={loading}
-          className={`mt-4 w-full p-2 rounded text-white ${
+          className={`mt-4 w-full p-2 rounded text-white  ${
             loading
               ? 'bg-gray-400 cursor-not-allowed'
               : 'bg-amber-800 hover:bg-amber-700'

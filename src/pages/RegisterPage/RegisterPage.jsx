@@ -144,7 +144,7 @@ const RegisterPage = () => {
 
   return (
     <div className="py-20 px-2 lg:py-30 flex items-center justify-center">
-      <div className="bg-white shadow-lg rounded-xl p-5 lg:p-10 w-full max-w-md">
+      <div className="bg-white dark:bg-black/90 shadow-lg rounded-xl p-5 lg:p-10 w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
 
         <form
@@ -222,7 +222,7 @@ const RegisterPage = () => {
 
         <Button
           onClick={handleGoogleRegister}
-          className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-100 hover:text-amber-900"
+          className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-100 hover:text-amber-900 dark:text-amber-500"
         >
           <IconBrandGoogle size={20} /> Continue with Google
         </Button>

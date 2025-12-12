@@ -5,6 +5,7 @@ import usePageTitle from '../../../../hooks/usePageTitle';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import { Dialog, DialogTitle, DialogPanel } from '@headlessui/react';
 import Swal from 'sweetalert2';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 
 const MyOrdersPage = () => {
   const axiosSecure = useAxiosSecure();
@@ -58,7 +59,7 @@ const MyOrdersPage = () => {
     }
   };
 
-  if (isLoading) return <p className="text-center py-20">Loading orders...</p>;
+  if (isLoading) return <LoadingSpinner />;
   if (error)
     return (
       <p className="text-center py-20 text-red-600">Failed to load orders.</p>
@@ -73,12 +74,12 @@ const MyOrdersPage = () => {
   ];
 
   return (
-    <div className="bg-white p-6 shadow rounded-xl lg:m-6">
+    <div className="bg-white dark:bg-white/10 p-6 shadow rounded-xl lg:m-6">
       <h1 className="text-2xl font-bold mb-4">My Orders</h1>
 
-      <div className="overflow-x-auto shadow bg-white rounded-md">
+      <div className="overflow-x-auto shadow  rounded-md">
         <table className="table-auto w-full text-left">
-          <thead className="bg-amber-800 text-white">
+          <thead className="bg-amber-800 text-white ">
             <tr>
               <th className="px-4 py-2">Order ID</th>
               <th className="px-4 py-2">Tracking ID</th>
@@ -152,7 +153,7 @@ const MyOrdersPage = () => {
           <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
             <DialogPanel className="fixed inset-0 bg-black opacity-30" />
 
-            <div className="bg-white rounded-xl p-6 w-full max-w-lg z-10 shadow-lg space-y-4">
+            <div className="bg-white dark:bg-black/70 rounded-xl p-6 w-full max-w-lg z-10 shadow-lg space-y-4">
               <DialogTitle className="text-2xl font-bold mb-2">
                 {selectedOrder.productName}
               </DialogTitle>

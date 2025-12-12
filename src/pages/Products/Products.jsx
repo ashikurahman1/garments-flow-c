@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router';
 import usePageTitle from '../../hooks/usePageTitle';
 import useAxiosPublic from '../../hooks/useAxiosPublic';
 import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const AllProducts = () => {
   const navigate = useNavigate();
@@ -35,12 +36,7 @@ const AllProducts = () => {
     }),
   };
 
-  if (isLoading)
-    return (
-      <div className="text-center py-20 text-xl font-semibold">
-        Loading products...
-      </div>
-    );
+  if (isLoading) return <LoadingSpinner />;
 
   if (error)
     return (
@@ -52,7 +48,7 @@ const AllProducts = () => {
   return (
     <div className="bg-amber-gradient py-20 lg:py-30 px-4">
       <motion.h1
-        className="text-4xl lg:text-5xl font-extrabold text-amber-900 text-center mb-12"
+        className="text-4xl lg:text-5xl font-extrabold text-amber-900 dark:text-white text-center mb-12"
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6 } }}
         viewport={{ once: true }}
@@ -79,7 +75,7 @@ const AllProducts = () => {
                   className="w-full h-48 object-cover rounded-lg mb-4"
                 />
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-amber-900 mb-2">
+                  <h3 className="text-xl font-semibold text-amber-900  mb-2">
                     {product.name}
                   </h3>
                   <p className="text-gray-600 mb-1">
@@ -91,7 +87,7 @@ const AllProducts = () => {
                   </p>
                 </div>
                 <Button
-                  className="bg-amber-800 hover:opacity-90 mt-auto"
+                  className="bg-amber-800 text-white  hover:bg-amber-800/90 mt-auto"
                   onClick={() => navigate(`/products/${product._id}`)}
                 >
                   View Details

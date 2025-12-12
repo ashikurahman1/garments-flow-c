@@ -61,7 +61,9 @@ const TrustedBy = () => {
             `}
           >
             <div className="text-amber-800 mb-3">{item.icon}</div>
-            <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
+            <h3 className="text-lg font-semibold mb-1 text-amber-800">
+              {item.title}
+            </h3>
             <p className="text-gray-600 text-sm">{item.desc}</p>
           </motion.div>
         ))}

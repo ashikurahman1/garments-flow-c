@@ -6,6 +6,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import Swal from 'sweetalert2';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 
 const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
@@ -132,15 +133,15 @@ const ManageUsers = () => {
     );
   };
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-white p-6 shadow rounded-xl lg:m-6">
+    <div className="bg-white dark:bg-black/10 p-6 shadow rounded-xl lg:m-6">
       <h2 className="text-3xl font-bold mb-6">Manage Users</h2>
 
-      <div className="overflow-x-auto bg-white shadow rounded-lg">
+      <div className="overflow-x-auto   shadow rounded-lg">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-amber-200">
+          <thead className="  dark:bg-amber-900">
             <tr>
               <th className="px-6 py-3 text-left">Name</th>
               <th className="px-6 py-3 text-left">Email</th>
@@ -159,13 +160,13 @@ const ManageUsers = () => {
                 <td className="px-6 py-4 flex gap-2">
                   <Button
                     onClick={() => handleOpenModal(user)}
-                    className="bg-amber-800 flex items-center gap-1"
+                    className="bg-amber-800 text-white flex items-center gap-1"
                   >
                     <IconEdit size={16} /> Update
                   </Button>
                   <Button
                     onClick={() => handleDelete(user)}
-                    className="bg-red-600 flex items-center gap-1"
+                    className="bg-red-600 text-white flex items-center gap-1"
                   >
                     <IconTrash size={16} /> Delete
                   </Button>

@@ -50,7 +50,7 @@ const TrackOrderPage = () => {
   const timeline = getTimeline();
 
   return (
-    <div className="p-6 lg:m-6 bg-white shadow rounded-xl">
+    <div className="p-6 lg:m-6  bg-white dark:bg-white/10 shadow rounded-xl">
       <h1 className="text-2xl font-bold mb-4">Track Your Order</h1>
 
       {/* Input */}

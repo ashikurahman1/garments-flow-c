@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import { useSearchParams } from 'react-router';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
 
 const Payment = () => {
   const [searchParams] = useSearchParams();
@@ -32,12 +33,7 @@ const Payment = () => {
     window.location.href = res.data.url;
   };
 
-  if (isLoading)
-    return (
-      <div className="flex justify-center py-20">
-        <span className="loading loading-infinity loading-xl"></span>
-      </div>
-    );
+  if (isLoading) return <LoadingSpinner />;
   if (!order)
     return (
       <div className="text-center py-20 text-red-600 font-semibold">
@@ -45,7 +41,7 @@ const Payment = () => {
       </div>
     );
   return (
-    <div className="max-w-xl mx-auto p-6 bg-white shadow rounded-xl mt-10">
+    <div className="max-w-xl mx-auto p-6 bg-white dark:bg-white/10 shadow rounded-xl mt-10">
       <h2 className="text-2xl font-bold mb-4">
         Payment for {order.productName}
       </h2>
@@ -55,7 +51,7 @@ const Payment = () => {
       <p className="mb-4 font-semibold">Total Amount: ${order.orderPrice}</p>
       <button
         onClick={handlePayment}
-        className="w-full bg-amber-800 hover:bg-amber-900 text-white py-2 px-4 rounded"
+        className="w-full bg-amber-800 hover:bg-amber-900 text-white dark:text-black py-2 px-4 rounded"
       >
         Pay Now
       </button>

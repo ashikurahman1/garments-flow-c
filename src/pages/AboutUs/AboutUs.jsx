@@ -54,16 +54,16 @@ const AboutUs = () => {
         viewport={{ once: true, amount: 0.2 }}
         variants={fadeUp}
       >
-        <h1 className="text-4xl lg:text-5xl font-bold text-amber-900 mb-4">
+        <h1 className="text-4xl lg:text-5xl font-bold text-amber-900 dark:text-amber-500 mb-4">
           About Garments Flow
         </h1>
-        <p className="text-gray-700 max-w-2xl mx-auto mb-6">
+        <p className="text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-6">
           Garments Flow is committed to providing high-quality garments with
           fast delivery and affordable pricing. We prioritize customer
           satisfaction and strive to innovate continuously.
         </p>
         <Link to="/all-products">
-          <Button className="bg-amber-800 hover:opacity-90">
+          <Button className="bg-amber-800 dark:text-white hover:opacity-90">
             View Products
           </Button>
         </Link>
@@ -71,34 +71,27 @@ const AboutUs = () => {
 
       {/* Mission & Vision */}
       <motion.section
-        className="py-20 px-4 container mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
+        className="py-20 px-4 container mx-auto text-center"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.2 }}
         variants={fadeUp}
       >
-        <motion.div variants={fadeUp}>
-          <h2 className="text-3xl font-bold text-amber-900 mb-4">
-            Our Mission
-          </h2>
-          <p className="text-gray-700 mb-6">
-            To provide premium quality garments that combine style, comfort, and
-            affordability. We aim to make every customer feel valued and
-            satisfied.
-          </p>
-          <h2 className="text-3xl font-bold text-amber-900 mb-4">Our Vision</h2>
-          <p className="text-gray-700">
-            To be the most trusted and innovative garments brand in Bangladesh,
-            known for reliability, quality, and outstanding customer service.
-          </p>
-        </motion.div>
-        <motion.div variants={fadeUp}>
-          <img
-            src="https://images.unsplash.com/photo-1581091012184-89a6b1de8dfc?auto=format&fit=crop&w=800&q=80"
-            alt="Mission Vision"
-            className="rounded-xl shadow-lg"
-          />
-        </motion.div>
+        <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-500 mb-4">
+          Our Mission
+        </h2>
+        <p className="text-gray-700 dark:text-gray-300 mb-6">
+          To provide premium quality garments that combine style, comfort, and
+          affordability. We aim to make every customer feel valued and
+          satisfied.
+        </p>
+        <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-500 mb-4">
+          Our Vision
+        </h2>
+        <p className="text-gray-700 dark:text-gray-300">
+          To be the most trusted and innovative garments brand in Bangladesh,
+          known for reliability, quality, and outstanding customer service.
+        </p>
       </motion.section>
 
       {/* Stats Section */}
@@ -116,10 +109,12 @@ const AboutUs = () => {
               className="bg-amber-100 rounded-xl p-6 shadow hover:shadow-lg transition transform hover:scale-105"
               variants={fadeUp}
             >
-              <div className="flex justify-center text-amber-900 mb-4">
+              <div className="flex justify-center text-amber-900 dark:text-amber-500 mb-4">
                 {stat.icon}
               </div>
-              <h3 className="text-3xl font-bold mb-2">{stat.value}</h3>
+              <h3 className="text-3xl font-bold mb-2 dark:text-black">
+                {stat.value}
+              </h3>
               <p className="text-gray-700">{stat.label}</p>
             </motion.div>
           ))}
@@ -134,7 +129,7 @@ const AboutUs = () => {
         viewport={{ once: true, amount: 0.2 }}
         variants={container}
       >
-        <h2 className="text-3xl font-bold text-center text-amber-900 mb-12">
+        <h2 className="text-3xl font-bold text-center text-amber-900 dark:text-amber-500 mb-12">
           Meet Our Team
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -144,7 +139,9 @@ const AboutUs = () => {
               className="bg-white shadow-md rounded-xl p-6 text-center hover:shadow-lg transition transform hover:scale-105"
               variants={fadeUp}
             >
-              <h3 className="text-xl font-semibold">{member.name}</h3>
+              <h3 className="text-xl font-semibold dark:text-black">
+                {member.name}
+              </h3>
               <p className="text-gray-600">{member.role}</p>
             </motion.div>
           ))}

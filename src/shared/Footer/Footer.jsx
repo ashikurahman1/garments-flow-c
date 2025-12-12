@@ -27,7 +27,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-amber-900 text-white pt-14 pb-6">
+    <footer className="bg-amber-900 text-white  pt-14 pb-6">
       <div className="container mx-auto px-4">
         {/* Grid: 1 column on small, 4 on md+ */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10">
@@ -140,13 +140,13 @@ const Footer = () => {
               <input
                 type="email"
                 placeholder="Your email"
-                className="flex-1 rounded-md px-3 py-2 text-amber-900 placeholder-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-300 bg-amber-100"
+                className="flex-1 rounded-md px-3 py-2 text-amber-900 dark:text-amber-500 placeholder-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-300 bg-amber-100"
                 required
                 aria-label="Email address"
               />
               <button
                 type="submit"
-                className="px-3 py-2 rounded-md bg-amber-700 hover:bg-amber-600 text-white font-semibold"
+                className="px-3 py-2 rounded-md bg-amber-700 hover:bg-amber-600 text-white dark:text-black font-semibold"
               >
                 Subscribe
               </button>

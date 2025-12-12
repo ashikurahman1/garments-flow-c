@@ -13,6 +13,7 @@ import {
   DialogClose,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 
 const PendingOrders = () => {
   usePageTitle('Pending Orders');
@@ -41,17 +42,15 @@ const PendingOrders = () => {
     queryClient.invalidateQueries(['pending-orders']);
   };
 
-  if (isLoading) {
-    return <div className="p-6 text-center">Loading...</div>;
-  }
+  if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-white p-6 shadow rounded-xl lg:m-6">
+    <div className="bg-white dark:bg-white/10 p-6 shadow rounded-xl lg:m-6">
       <h2 className="text-2xl font-bold mb-6">Pending Orders</h2>
 
-      <div className="overflow-x-auto shadow bg-white rounded-md">
+      <div className="overflow-x-auto shadow   rounded-md">
         <table className="table-auto w-full text-left">
-          <thead className="bg-amber-800 text-white">
+          <thead className="   bg-amber-800 text-white">
             <tr>
               <th className="p-2">Order ID</th>
               <th>User</th>
@@ -73,14 +72,14 @@ const PendingOrders = () => {
 
                 <td className="flex gap-2 p-2">
                   <Button
-                    className="bg-green-600 text-white"
+                    className="bg-green-600 text-white  "
                     onClick={() => handleApprove(order._id)}
                   >
                     Approve
                   </Button>
 
                   <Button
-                    className="bg-red-600 text-white"
+                    className="bg-red-600 text-white "
                     onClick={() => handleReject(order._id)}
                   >
                     Reject
@@ -90,7 +89,7 @@ const PendingOrders = () => {
                     <DialogTrigger asChild>
                       <Button
                         onClick={() => setSelected(order)}
-                        className="bg-amber-700 text-white"
+                        className="bg-amber-700 text-white  "
                       >
                         <IconEye size={16} />
                       </Button>

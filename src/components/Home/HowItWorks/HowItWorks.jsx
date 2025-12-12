@@ -75,8 +75,6 @@ const HowItWorks = ({ steps = defaultSteps }) => {
             'Simple steps to get your product — transparent process, trusted quality.'
           }
         />
-        <h2 className="text-3xl md:text-4xl font-extrabold"></h2>
-        <p className="mt-3 text-gray-600 max-w-2xl mx-auto"></p>
       </div>
 
       <motion.div
@@ -101,14 +99,14 @@ const HowItWorks = ({ steps = defaultSteps }) => {
                   aria-hidden
                   className={`
                     w-12 h-12 rounded-lg flex items-center justify-center
-                    text-amber-900 bg-white shadow-sm ring-1 ring-inset ring-amber-100
+                    text-amber-900 dark:text-amber-500  shadow-sm ring-1 ring-inset ring-amber-100
                     transition-all duration-300 group-hover:scale-105
                   `}
                 >
                   {step.icon}
                 </div>
 
-                <CardTitle className="text-lg font-semibold">
+                <CardTitle className="text-lg font-semibold text-amber-900">
                   {step.title}
                 </CardTitle>
                 <CardDescription className="text-sm text-gray-600">

@@ -18,6 +18,7 @@ import {
   DialogClose,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -93,7 +94,7 @@ const ProductDetails = () => {
     }
   };
 
-  if (isLoading) return <p className="text-center py-20">Loading...</p>;
+  if (isLoading) return <LoadingSpinner />;
   if (!product)
     return <p className="text-center py-20 text-red-600">Product not found</p>;
 
