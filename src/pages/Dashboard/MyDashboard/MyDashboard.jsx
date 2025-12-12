@@ -168,10 +168,12 @@ const MyDashboard = () => {
 };
 
 const StatCard = ({ title, value, icon, iconBg }) => (
-  <div className="bg-white shadow rounded-lg p-5 border hover:shadow-md transition flex items-center justify-between">
+  <div className="bg-white shadow rounded-lg p-5 border hover:shadow-md transition flex items-center justify-around">
     <div>
       <p className="text-sm text-gray-600">{title}</p>
-      <h3 className="text-3xl font-bold mt-2">{value ?? 0}</h3>
+      <h3 className="text-3xl lg:text-5xl font-bold mt-2 text-amber-900">
+        {value ?? 0}
+      </h3>
     </div>
 
     <div
