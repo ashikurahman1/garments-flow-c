@@ -29,6 +29,20 @@ const testimonials = [
       'Very smooth ordering process. Clear communication and excellent customer support. Highly recommended!',
     img: 'https://i.pravatar.cc/100?img=3',
   },
+  {
+    name: 'Abdul Karim',
+    role: 'Clothing Store Owner',
+    feedback:
+      'Their product quality is top-notch! The stitching, fabric, and finishing were far better than I expected.',
+    img: 'https://i.pravatar.cc/100?img=1',
+  },
+  {
+    name: 'Mahmud Hasan',
+    role: 'Online Seller',
+    feedback:
+      'Very smooth ordering process. Clear communication and excellent customer support. Highly recommended!',
+    img: 'https://i.pravatar.cc/100?img=3',
+  },
 ];
 
 const CustomerFeedback = () => {

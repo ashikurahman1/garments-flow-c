@@ -43,40 +43,46 @@ const LoginPage = () => {
     googleLogin()
       .then(async result => {
         const user = result.user;
+        console.log(user);
 
         const userInfo = {
-          name: user.displayName,
           email: user.email,
+          displayName: user.displayName,
           photoURL: user.photoURL,
           role: 'buyer',
         };
-
+        console.log(userInfo);
         try {
           const res = await axiosSecure.post('/users', userInfo);
-
           Swal.fire({
-            title: 'Login Successful!',
-            text: 'You are now logged in.',
+            position: 'top-end',
             icon: 'success',
-            confirmButtonColor: '#92400E',
-          }).then(() => {
-            navigate('/dashboard');
+            title: 'Login Successful!',
+            text: 'Welcome Back',
+            showConfirmButton: false,
+            timer: 1500,
           });
-        } catch (err) {
+          navigate('/dashboard');
+        } catch (error) {
           Swal.fire({
-            title: 'Something went wrong',
-            text: err.response?.data?.message || 'Please try again.',
+            position: 'top-end',
             icon: 'error',
-            confirmButtonColor: '#92400E',
+            text: error.response?.data?.message || 'Please try again.',
+            title: 'Something went wrong ',
+            showConfirmButton: false,
+            timer: 1500,
           });
         }
       })
-      .catch(err => {
+      .catch(error => {
+        console.log(error);
         Swal.fire({
-          title: 'Google Login Failed',
-          text: err.message,
+          position: 'top-end',
           icon: 'error',
-          confirmButtonColor: '#92400E',
+          text: error.response?.data?.message || 'Please try again.',
+          title: 'Login Failed',
+          showConfirmButton: false,
+          timer: 1500,
         });
       });
   };
@@ -123,7 +129,7 @@ const LoginPage = () => {
           onClick={handleGoogleLogin}
           className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-100 hover:text-amber-900"
         >
-          <IconBrandGoogle size={20} /> Login with Google
+          <IconBrandGoogle size={20} /> Continue with Google
         </Button>
 
         <p className="mt-4 text-center text-gray-600">

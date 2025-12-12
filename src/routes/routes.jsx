@@ -27,6 +27,7 @@ import ManagerRoute from './ManagerRoute';
 import BuyerRoute from './BuyerRoute';
 import EditProduct from '../pages/Dashboard/EditProduct/EditProduct';
 import ManagerAdminRoute from './ManagerAdminRoute';
+import Payment from '../pages/Dashboard/Payment/Payment';
 
 export const router = createBrowserRouter([
   {
@@ -54,6 +55,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRouter>
             <ProductDetails></ProductDetails>
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: 'payment',
+        element: (
+          <PrivateRouter>
+            <Payment></Payment>
           </PrivateRouter>
         ),
       },

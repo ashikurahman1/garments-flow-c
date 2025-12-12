@@ -25,7 +25,7 @@ import { Link, NavLink, Outlet, useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
 import Swal from 'sweetalert2';
 import useRole from '../../hooks/useRole';
-import { Loader } from 'lucide-react';
+import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ const DashboardLayout = () => {
   const { userLogout } = useAuth();
 
   const { role, isLoading } = useRole();
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoadingSpinner />;
   // console.log(role);
 
   const navItems = [
@@ -119,10 +119,12 @@ const DashboardLayout = () => {
         userLogout()
           .then(() => {
             Swal.fire({
-              title: 'Logged Out!',
+              position: 'top-end',
+              icon: 'error',
               text: 'You have been successfully logged out.',
-              icon: 'success',
-              confirmButtonColor: '#92400E',
+              showConfirmButton: false,
+              timer: 1500,
+              title: 'Logged Out!',
             }).then(() => {
               navigate('/');
             });
@@ -183,6 +185,9 @@ const DashboardLayout = () => {
               >
                 <IconLogout size={18} /> Logout
               </Button>
+              <div className="bg-linear-to-b from-amber-600  to-amber-900 p-2 text-center rounded-md mt-10 font-semibold ">
+                <Link to="/">Go to Home Page</Link>
+              </div>
             </nav>
           </DrawerContent>
         </Drawer>
@@ -217,6 +222,9 @@ const DashboardLayout = () => {
             >
               <IconLogout size={18} /> Logout
             </Button>
+            <div className="bg-linear-to-b from-amber-600  to-amber-900 p-3 text-center rounded-md mt-10 font-semibold ">
+              <Link to="/">Go to Home Page</Link>
+            </div>
           </nav>
         </aside>
 

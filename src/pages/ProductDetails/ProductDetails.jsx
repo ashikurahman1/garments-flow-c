@@ -11,10 +11,13 @@ import useAuth from '../../hooks/useAuth';
 import { useQuery } from '@tanstack/react-query';
 import {
   Dialog,
-  DialogPanel,
+  DialogContent,
+  DialogHeader,
   DialogTitle,
-  Description,
-} from '@headlessui/react';
+  DialogDescription,
+  DialogClose,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -30,7 +33,6 @@ const ProductDetails = () => {
       return res.data;
     },
   });
-  console.log(product);
 
   const { register, handleSubmit, watch, reset } = useForm({
     defaultValues: {
@@ -61,7 +63,7 @@ const ProductDetails = () => {
       address: data.address,
       notes: data.notes,
       paymentOption: product.paymentOption,
-      status: product.paymentOption === 'payfirst' ? 'initiated ' : 'pending',
+      status: product.paymentOption === 'payfirst' ? 'initiated' : 'pending',
     };
 
     try {
@@ -72,7 +74,7 @@ const ProductDetails = () => {
         reset();
 
         if (product.paymentOption === 'payfirst') {
-          navigate(`/payment/${res.data.orderId}`);
+          navigate(`/payment?trackingId=${res.data.trackingId}`);
         } else {
           Swal.fire({
             title: 'Order Placed!',
@@ -96,24 +98,24 @@ const ProductDetails = () => {
     return <p className="text-center py-20 text-red-600">Product not found</p>;
 
   return (
-    <div className="container mx-auto py-10 px-4">
+    <div className="container mx-auto py-20 lg:py-30 px-4">
       <div className="flex flex-col lg:flex-row gap-8">
         {/* Left Side: Images & Demo Video */}
         <div className="flex-1 space-y-4">
-          {product.images?.map((img, idx) => (
+          <div className="rounded-lg overflow-hidden shadow-lg">
             <img
-              key={idx}
-              src={img}
+              src={product.images[0]}
               alt={product.name}
-              className="w-full h-72 object-cover rounded-lg shadow"
+              className="w-full object-cover"
             />
-          ))}
+          </div>
+
           {product.demoVideo && (
             <a
               href={product.demoVideo}
               target="_blank"
               rel="noreferrer"
-              className="text-blue-600 underline"
+              className="text-blue-600 underline block mt-2"
             >
               Watch Demo Video
             </a>
@@ -121,130 +123,123 @@ const ProductDetails = () => {
         </div>
 
         {/* Right Side: Product Info & Booking */}
-        <div className="flex-1 bg-white p-6 rounded-xl shadow space-y-4">
-          <h2 className="text-3xl font-bold">{product.name}</h2>
-          <p>{product.description}</p>
-          <p>
-            <strong>Category:</strong> {product.category}
-          </p>
-          <p>
-            <strong>Price:</strong> ${product.price}
-          </p>
-          <p>
-            <strong>Available Quantity:</strong> {product.availableQuantity}
-          </p>
-          <p>
-            <strong>Minimum Order:</strong> {product.moq}
-          </p>
-          <p>
-            <strong>Payment Option:</strong> {product.paymentOption}
-          </p>
+        <div className="flex-1 space-y-4">
+          <div className="bg-white shadow-lg rounded-xl p-6 space-y-3">
+            <h2 className="text-2xl lg:text-3xl font-bold mb-8">
+              {product.name}
+            </h2>
+            <p>{product.description}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+              <div className="shadow-md p-5 rounded-md hover:bg-amber-800/10 hover:-translate-y-1.5 transition ">
+                <strong>Category:</strong> {product.category}
+              </div>
+              <div className="shadow-md p-5 rounded-md hover:bg-amber-800/10 hover:-translate-y-1.5 transition">
+                <strong>Price:</strong> ${product.price}
+              </div>
+              <div className="shadow-md p-5 rounded-md hover:bg-amber-800/10 hover:-translate-y-1.5 transition">
+                <strong>Available Quantity:</strong> {product.availableQuantity}
+              </div>
+              <div className="shadow-md p-5 rounded-md hover:bg-amber-800/10 hover:-translate-y-1.5 transition">
+                <strong>Minimum Order:</strong> {product.moq}
+              </div>
+              <div className="shadow-md p-5 rounded-md hover:bg-amber-800/10 hover:-translate-y-1.5 transition">
+                <strong>Payment Option:</strong> {product.paymentOption}
+              </div>
+            </div>
 
-          {user && product.paymentOption && (
-            <Button
-              className="bg-amber-800 hover:opacity-90 mt-4"
-              onClick={() => setIsModalOpen(true)}
-            >
-              Booking Now
-            </Button>
-          )}
+            {user && product.paymentOption && (
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="bg-amber-800 hover:opacity-90 mt-4 w-full">
+                    Book Now
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-xl">
+                  <DialogHeader>
+                    <DialogTitle>Place Your Order</DialogTitle>
+                    <DialogDescription>
+                      Fill out the form below to book this product.
+                    </DialogDescription>
+                  </DialogHeader>
+
+                  <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="flex flex-col gap-4 mt-4"
+                  >
+                    <div>
+                      <p>Email: {user.email}</p>
+                      <p>Product: {product.name}</p>
+                      <p>Price: {`$ ${product.price}`}</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div>
+                        <Label>First Name</Label>
+                        <Input {...register('firstName', { required: true })} />
+                      </div>
+                      <div>
+                        <Label>Last Name</Label>
+                        <Input {...register('lastName', { required: true })} />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label>Order Quantity</Label>
+                      <Input
+                        type="number"
+                        {...register('quantity', {
+                          required: true,
+                          min: product.moq,
+                          max: product.availableQuantity,
+                          valueAsNumber: true,
+                        })}
+                      />
+                      <p className="text-gray-500 text-sm">
+                        Min: {product.moq}, Max: {product.availableQuantity}
+                      </p>
+                    </div>
+
+                    <div>
+                      <Label>Order Price</Label>
+                      <Input value={`$${orderPrice}`} readOnly />
+                    </div>
+
+                    <div>
+                      <Label>Contact Number</Label>
+                      <Input {...register('contact', { required: true })} />
+                    </div>
+
+                    <div>
+                      <Label>Delivery Address</Label>
+                      <Textarea
+                        {...register('address', { required: true })}
+                        rows={3}
+                      />
+                    </div>
+
+                    <div>
+                      <Label>Additional Notes</Label>
+                      <Textarea {...register('notes')} rows={3} />
+                    </div>
+
+                    <div className="flex justify-end gap-2 mt-2">
+                      <DialogClose asChild>
+                        <Button variant="outline">Cancel</Button>
+                      </DialogClose>
+                      <Button
+                        type="submit"
+                        className="bg-amber-800 hover:opacity-90"
+                      >
+                        Place Order
+                      </Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            )}
+          </div>
         </div>
       </div>
-
-      {/* Modal */}
-      <Dialog
-        open={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        className="relative z-50"
-      >
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="max-w-xl w-full space-y-4 bg-white p-6 rounded-xl shadow-lg">
-            <DialogTitle className="text-2xl font-bold">
-              Place Your Order
-            </DialogTitle>
-            <Description>
-              Fill out the booking form to place your order.
-            </Description>
-
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-4"
-            >
-              <div>
-                <Label>Email</Label>
-                <Input value={user.email} readOnly />
-              </div>
-              <div>
-                <Label>Product</Label>
-                <Input value={product.name} readOnly />
-              </div>
-              <div>
-                <Label>Price (per unit)</Label>
-                <Input value={`$${product.price}`} readOnly />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <Label>First Name</Label>
-                  <Input {...register('firstName', { required: true })} />
-                </div>
-                <div>
-                  <Label>Last Name</Label>
-                  <Input {...register('lastName', { required: true })} />
-                </div>
-              </div>
-
-              <div>
-                <Label>Order Quantity</Label>
-                <Input
-                  type="number"
-                  {...register('quantity', {
-                    required: true,
-                    min: product.moq,
-                    max: product.availableQuantity,
-                    valueAsNumber: true,
-                  })}
-                />
-                <p className="text-gray-500 text-sm">
-                  Min: {product.moq}, Max: {product.availableQuantity}
-                </p>
-              </div>
-
-              <div>
-                <Label>Order Price</Label>
-                <Input type="text" value={`$${orderPrice}`} readOnly />
-              </div>
-
-              <div>
-                <Label>Contact Number</Label>
-                <Input {...register('contact', { required: true })} />
-              </div>
-
-              <div>
-                <Label>Delivery Address</Label>
-                <Textarea
-                  {...register('address', { required: true })}
-                  rows={3}
-                />
-              </div>
-
-              <div>
-                <Label>Additional Notes</Label>
-                <Textarea {...register('notes')} rows={3} />
-              </div>
-
-              <div className="flex justify-end gap-2 mt-2">
-                <Button type="button" onClick={() => setIsModalOpen(false)}>
-                  Cancel
-                </Button>
-                <Button type="submit" className="bg-amber-800 hover:opacity-90">
-                  Place Order
-                </Button>
-              </div>
-            </form>
-          </DialogPanel>
-        </div>
-      </Dialog>
     </div>
   );
 };

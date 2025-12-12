@@ -5,6 +5,7 @@ import {
   IconLayoutDashboard,
   IconLogin2,
   IconMenu2,
+  IconUser,
   IconUserEdit,
   IconX,
 } from '@tabler/icons-react';
@@ -50,7 +51,7 @@ const Navbar = () => {
               ))}
             </ul>
             {user ? (
-              <div>
+              <div className="space-x-2 flex">
                 <Button
                   onClick={() => navigate(`/dashboard`)}
                   size="sm"
@@ -59,6 +60,14 @@ const Navbar = () => {
                 >
                   <IconLayoutDashboard stroke={2} />
                   Dashboard
+                </Button>
+                <Button
+                  onClick={() => setIsMobileMenu(false)}
+                  size="sm"
+                  variant="primary"
+                  className="bg-amber-950 text-white hover:opacity-90 hidden lg:flex"
+                >
+                  <IconLogin2 stroke={2} /> Logout
                 </Button>
               </div>
             ) : (
@@ -105,6 +114,9 @@ const Navbar = () => {
             } transition-all delay-3000 duration-3000 z-1000 text-white`}
           >
             <ul className="lg:hidden flex flex-col items-center gap-8 font-semibold mb-10">
+              <div className="w-10 h-10 bg-amber-900 flex items-center justify-center rounded-full overflow-hidden">
+                <IconUser />
+              </div>
               {menuLinks.map((link, i) => (
                 <NavLink
                   to={link.path}

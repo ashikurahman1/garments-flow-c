@@ -14,16 +14,16 @@ import {
 const Footer = () => {
   const quickLinks = [
     { to: '/', label: 'Home' },
-    { to: '/all-product', label: 'All Product' },
+    { to: '/all-products', label: 'All Product' },
     { to: '/about-us', label: 'About Us' },
     { to: '/contact', label: 'Contact' },
   ];
 
   const supportLinks = [
-    { to: '/faq', label: 'FAQ' },
-    { to: '/shipping', label: 'Shipping' },
-    { to: '/returns', label: 'Returns' },
-    { to: '/terms', label: 'Terms & Privacy' },
+    { to: '', label: 'FAQ' },
+    { to: '', label: 'Shipping' },
+    { to: '', label: 'Returns' },
+    { to: '', label: 'Terms & Privacy' },
   ];
 
   return (
@@ -104,7 +104,7 @@ const Footer = () => {
 
             <div className="flex gap-4 mb-4">
               <a
-                href="#"
+                href="https://facebook.com/ashikurrdev"
                 aria-label="Facebook"
                 className="hover:text-amber-300"
               >
@@ -118,7 +118,7 @@ const Footer = () => {
                 <IconBrandInstagram stroke={1.5} size={24} />
               </a>
               <a
-                href="#"
+                href="https://linkedin.com/in/ashikur-dev"
                 aria-label="LinkedIn"
                 className="hover:text-amber-300"
               >

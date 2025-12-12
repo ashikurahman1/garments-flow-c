@@ -14,13 +14,14 @@ import { Button } from '@/components/ui/button';
 import axios from 'axios';
 
 import useFeaturedProducts from '../../../hooks/useFeaturedProducts';
-import { Loader } from 'lucide-react';
+
 import { Link, useNavigate } from 'react-router';
+import LoadingSpinner from '../../LoadingSpinner/LoadingSpinner';
 
 const OurProducts = () => {
   const navigate = useNavigate();
   const { data: products = [], isLoading } = useFeaturedProducts();
-  if (isLoading) return <Loader />;
+  if (isLoading) return <LoadingSpinner />;
 
   return (
     <div className="bg-amber-gradient shadow">
@@ -28,7 +29,7 @@ const OurProducts = () => {
         <div className="mb-8 lg:mb-15">
           <SectionTitle title="Our Products" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4  gap-8 mb-8">
           {products.map(product => (
             <Card key={product._id} className="overflow-hidden">
               <img
