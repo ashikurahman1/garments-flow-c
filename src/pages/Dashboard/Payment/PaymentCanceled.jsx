@@ -1,10 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 const PaymentCanceled = () => {
   return (
     <div>
       <h2>Payment Canceled </h2>
-      <button className="btn btn-primary text-black">Try again</button>
+      <Link to="">
+        <button className="btn btn-primary text-black">Try again</button>
+      </Link>
     </div>
   );
 };

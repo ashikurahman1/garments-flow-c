@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 
 const TrackOrderPage = () => {
   const axiosSecure = useAxiosSecure();
@@ -14,6 +15,7 @@ const TrackOrderPage = () => {
     refetch,
     isFetching,
     error,
+    isLoading,
   } = useQuery({
     queryKey: ['trackOrder', trackingId],
     enabled: false, // fetch only when user submits
@@ -49,6 +51,7 @@ const TrackOrderPage = () => {
 
   const timeline = getTimeline();
 
+  if (isLoading) return <LoadingSpinner />;
   return (
     <div className="p-6 lg:m-6  bg-white dark:bg-white/10 shadow rounded-xl">
       <h1 className="text-2xl font-bold mb-4">Track Your Order</h1>

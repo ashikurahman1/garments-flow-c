@@ -28,6 +28,8 @@ import BuyerRoute from './BuyerRoute';
 import EditProduct from '../pages/Dashboard/EditProduct/EditProduct';
 import ManagerAdminRoute from './ManagerAdminRoute';
 import Payment from '../pages/Dashboard/Payment/Payment';
+import PaymentCanceled from '../pages/Dashboard/Payment/PaymentCanceled';
+import PaymentSuccess from '../pages/Dashboard/Payment/PaymentSuccess';
 
 export const router = createBrowserRouter([
   {
@@ -63,6 +65,22 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRouter>
             <Payment></Payment>
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: 'payment-success',
+        element: (
+          <PrivateRouter>
+            <PaymentSuccess></PaymentSuccess>
+          </PrivateRouter>
+        ),
+      },
+      {
+        path: 'payment-cancelled',
+        element: (
+          <PrivateRouter>
+            <PaymentCanceled></PaymentCanceled>
           </PrivateRouter>
         ),
       },
