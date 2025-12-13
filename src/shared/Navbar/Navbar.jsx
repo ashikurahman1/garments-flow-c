@@ -78,12 +78,12 @@ const Navbar = () => {
 
   if (loading) return <LoadingSpinner />;
   return (
-    <header className="shadow p-3">
-      <nav className="container mx-auto">
+    <header className="shadow p-3 fixed z-10 w-full top-0 bg-amber-50">
+      <nav className="container mx-auto ">
         <div className="flex justify-between items-center">
           <Logo />
           <div className="flex items-center gap-3 lg:gap-15">
-            <ul className="hidden lg:flex items-center gap-8 font-semibold">
+            <ul className="hidden lg:flex items-center gap-8 dark:text-amber-900 font-semibold">
               {menuLinks.map((link, i) => (
                 <NavLink to={link.path} key={i}>
                   {link.name}{' '}
@@ -152,7 +152,7 @@ const Navbar = () => {
         {/* Mobile Menu */}
         {isMobileMenu && (
           <div
-            className={`bg-amber-900/90 py-15 absolute  w-full h-screen flex flex-col items-center ${
+            className={`bg-amber-900 py-15 absolute  w-full h-screen flex flex-col items-center ${
               isMobileMenu ? 'top-15 left-0' : '-top-100 -left-100 '
             } transition-all delay-3000 duration-3000 z-1000 text-white dark:text-black`}
           >
@@ -179,7 +179,7 @@ const Navbar = () => {
                   onClick={() => navigate(`/dashboard`)}
                   size="sm"
                   variant="primary"
-                  className="bg-amber-700 text-white hover:opacity-90 mb-3"
+                  className="bg-amber-700 text-white hover:opacity-90 mb-5"
                 >
                   <IconLayoutDashboard stroke={2} />
                   Dashboard
@@ -195,7 +195,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link to="/login" className=" lg:hidden mb-3 ">
+                <Link to="/login" className=" lg:hidden mb-5 ">
                   <Button
                     onClick={() => setIsMobileMenu(false)}
                     size="sm"

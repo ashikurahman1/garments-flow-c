@@ -35,7 +35,7 @@ const filterOptions = [
 const MyDashboard = () => {
   usePageTitle('Dashboard');
 
-  const { role, adminStats, managerStats } = useDashboard();
+  const { role, adminStats, managerStats, buyerStats } = useDashboard();
   const [selectedFilter, setSelectedFilter] = useState('today');
 
   // Pie chart colors
@@ -222,6 +222,16 @@ const MyDashboard = () => {
             </ResponsiveContainer>
           </div>
         </>
+      )}
+
+      {/* ----------------- BUYER DASHBOARD */}
+      {role === 'buyer' && buyerStats && (
+        <StatCard
+          title="Total Orders"
+          value={buyerStats?.orderCount}
+          icon={<FaClipboardList size={30} />}
+          iconBg="bg-yellow-500"
+        />
       )}
     </div>
   );

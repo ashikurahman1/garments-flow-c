@@ -156,12 +156,15 @@ const DashboardLayout = () => {
         </div>
         <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
           <DrawerTrigger asChild>
-            <Button variant="outline" className="text-white border-white">
+            <Button
+              variant="outline"
+              className="text-amber-800 dark:text-white border-white"
+            >
               <IconMenu2 size={20} />
             </Button>
           </DrawerTrigger>
           <DrawerOverlay />
-          <DrawerContent className="bg-amber-800 text-white w-64 p-6">
+          <DrawerContent className="bg-amber-800  text-white w-64 p-6">
             <DrawerTitle className="text-2xl font-bold mb-6">
               My Dashboard
             </DrawerTitle>

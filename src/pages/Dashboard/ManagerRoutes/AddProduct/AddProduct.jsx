@@ -10,12 +10,27 @@ import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router';
 import useAuth from '../../../../hooks/useAuth';
+import useRole from '../../../../hooks/useRole';
+import { useQuery } from '@tanstack/react-query';
+import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
 const AddProduct = () => {
   usePageTitle('Add Product');
+
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const [previewImages, setPreviewImages] = useState([]);
   const { user } = useAuth();
+
+  const { data: userInfo, isLoading } = useQuery({
+    queryKey: ['userInfo', user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/users/${user.email}`);
+      return res.data;
+    },
+  });
+
+  const userStatus = userInfo?.user?.status;
 
   const {
     register,
@@ -63,7 +78,7 @@ const AddProduct = () => {
       formData.append('demoVideo', data.demoVideo || '');
       formData.append('managerEmail', user?.email);
       formData.append('paymentOption', data.paymentOption);
-      formData.append('showOnHome', data.showOnHome ? 'true' : 'false'); // <-- send as string
+      formData.append('showOnHome', data.showOnHome ? 'true' : 'false');
       for (let img of imgFiles) {
         formData.append('images', img);
       }
@@ -97,156 +112,170 @@ const AddProduct = () => {
     }
   };
 
+  if (isLoading) return <LoadingSpinner />;
   return (
     <div className="bg-white dark:bg-white/10 shadow p-6 lg:m-5 rounded-xl">
-      <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
-
-      <form
-        className="grid grid-cols-1 md:grid-cols-2 gap-6"
-        onSubmit={handleSubmit(handleAddProduct)}
-        encType="multipart/form-data"
-      >
-        {/* Product Name */}
-        <div>
-          <Label>Product Name</Label>
-          <Input
-            placeholder="Enter product name"
-            {...register('name', { required: 'Product name is required' })}
-          />
-          <p className="text-red-500 text-sm">{errors.name?.message}</p>
-        </div>
-
-        {/* Category */}
-        <div>
-          <Label>Category</Label>
-          <select
-            className="border rounded-md w-full p-3"
-            {...register('category', { required: 'Category is required' })}
+      {userStatus === 'active' ? (
+        <>
+          <h2 className="text-2xl font-bold mb-6">Add New Product</h2>
+          <form
+            className="grid grid-cols-1 md:grid-cols-2 gap-6"
+            onSubmit={handleSubmit(handleAddProduct)}
+            encType="multipart/form-data"
           >
-            <option value="">Select Category</option>
-            <option>Shirt</option>
-            <option>Pant</option>
-            <option>Jacket</option>
-            <option>Accessories</option>
-          </select>
-          <p className="text-red-500 text-sm">{errors.category?.message}</p>
-        </div>
-
-        {/* Description */}
-        <div className="md:col-span-2">
-          <Label>Description</Label>
-          <Textarea
-            rows={4}
-            {...register('description', { required: 'Description required' })}
-          />
-          <p className="text-red-500 text-sm">{errors.description?.message}</p>
-        </div>
-
-        {/* Price */}
-        <div>
-          <Label>Price</Label>
-          <Input
-            type="number"
-            {...register('price', { required: 'Price required' })}
-          />
-          <p className="text-red-500 text-sm">{errors.price?.message}</p>
-        </div>
-
-        {/* Available Quantity */}
-        <div>
-          <Label>Available Quantity</Label>
-          <Input
-            type="number"
-            {...register('availableQuantity', {
-              required: 'Available quantity required',
-            })}
-          />
-          <p className="text-red-500 text-sm">
-            {errors.availableQuantity?.message}
-          </p>
-        </div>
-
-        {/* MOQ */}
-        <div>
-          <Label>Minimum Order Quantity</Label>
-          <Input
-            type="number"
-            {...register('moq', { required: 'MOQ is required' })}
-          />
-          <p className="text-red-500 text-sm">{errors.moq?.message}</p>
-        </div>
-
-        {/* Images */}
-        <div className="md:col-span-2">
-          <Label>Upload Images</Label>
-          <Input
-            id="productImages"
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleImagePreview}
-          />
-          <p className="text-red-500 text-sm">{errors.images?.message}</p>
-
-          <div className="mt-3 flex gap-2 flex-wrap">
-            {previewImages.map((img, i) => (
-              <img
-                key={i}
-                src={img}
-                className="w-24 h-24 object-cover rounded-md border"
+            {/* Product Name */}
+            <div>
+              <Label>Product Name</Label>
+              <Input
+                placeholder="Enter product name"
+                {...register('name', { required: 'Product name is required' })}
               />
-            ))}
-          </div>
-        </div>
+              <p className="text-red-500 text-sm">{errors.name?.message}</p>
+            </div>
 
-        {/* Video Link */}
-        <div className="md:col-span-2">
-          <Label>Demo Video Link (Optional)</Label>
-          <Input type="text" {...register('demoVideo')} />
-        </div>
+            {/* Category */}
+            <div>
+              <Label>Category</Label>
+              <select
+                className="border rounded-md w-full p-3"
+                {...register('category', { required: 'Category is required' })}
+              >
+                <option value="">Select Category</option>
+                <option>Shirt</option>
+                <option>Pant</option>
+                <option>Jacket</option>
+                <option>Accessories</option>
+              </select>
+              <p className="text-red-500 text-sm">{errors.category?.message}</p>
+            </div>
 
-        {/* Payment Option */}
-        <div>
-          <Label>Payment Option</Label>
-          <select
-            className="border p-3 rounded-md w-full"
-            {...register('paymentOption', {
-              required: 'Please choose a payment option',
-            })}
-          >
-            <option value="">Select</option>
-            <option value="cod">Cash on Delivery</option>
-            <option value="payfirst">PayFirst</option>
-          </select>
-          <p className="text-red-500 text-sm">
-            {errors.paymentOption?.message}
-          </p>
-        </div>
-
-        {/* Show on Home */}
-        <div className="flex items-center gap-3">
-          <Controller
-            name="showOnHome"
-            control={control}
-            defaultValue={false}
-            render={({ field }) => (
-              <Switch
-                checked={field.value}
-                onCheckedChange={val => field.onChange(val)}
+            {/* Description */}
+            <div className="md:col-span-2">
+              <Label>Description</Label>
+              <Textarea
+                rows={4}
+                {...register('description', {
+                  required: 'Description required',
+                })}
               />
-            )}
-          />
+              <p className="text-red-500 text-sm">
+                {errors.description?.message}
+              </p>
+            </div>
 
-          <Label>Show on Home Page</Label>
-        </div>
+            {/* Price */}
+            <div>
+              <Label>Price</Label>
+              <Input
+                type="number"
+                {...register('price', { required: 'Price required' })}
+              />
+              <p className="text-red-500 text-sm">{errors.price?.message}</p>
+            </div>
 
-        <Button
-          type="submit"
-          className="bg-amber-800 hover:bg-amber-700 md:col-span-2"
-        >
-          Add Product
-        </Button>
-      </form>
+            {/* Available Quantity */}
+            <div>
+              <Label>Available Quantity</Label>
+              <Input
+                type="number"
+                {...register('availableQuantity', {
+                  required: 'Available quantity required',
+                })}
+              />
+              <p className="text-red-500 text-sm">
+                {errors.availableQuantity?.message}
+              </p>
+            </div>
+
+            {/* MOQ */}
+            <div>
+              <Label>Minimum Order Quantity</Label>
+              <Input
+                type="number"
+                {...register('moq', { required: 'MOQ is required' })}
+              />
+              <p className="text-red-500 text-sm">{errors.moq?.message}</p>
+            </div>
+
+            {/* Images */}
+            <div className="md:col-span-2">
+              <Label>Upload Images</Label>
+              <Input
+                id="productImages"
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImagePreview}
+              />
+              <p className="text-red-500 text-sm">{errors.images?.message}</p>
+
+              <div className="mt-3 flex gap-2 flex-wrap">
+                {previewImages.map((img, i) => (
+                  <img
+                    key={i}
+                    src={img}
+                    className="w-24 h-24 object-cover rounded-md border"
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Video Link */}
+            <div className="md:col-span-2">
+              <Label>Demo Video Link (Optional)</Label>
+              <Input type="text" {...register('demoVideo')} />
+            </div>
+
+            {/* Payment Option */}
+            <div>
+              <Label>Payment Option</Label>
+              <select
+                className="border p-3 rounded-md w-full"
+                {...register('paymentOption', {
+                  required: 'Please choose a payment option',
+                })}
+              >
+                <option value="">Select</option>
+                <option value="cod">Cash on Delivery</option>
+                <option value="payfirst">PayFirst</option>
+              </select>
+              <p className="text-red-500 text-sm">
+                {errors.paymentOption?.message}
+              </p>
+            </div>
+
+            {/* Show on Home */}
+            <div className="flex items-center gap-3">
+              <Controller
+                name="showOnHome"
+                control={control}
+                defaultValue={false}
+                render={({ field }) => (
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={val => field.onChange(val)}
+                  />
+                )}
+              />
+
+              <Label>Show on Home Page</Label>
+            </div>
+
+            <Button
+              type="submit"
+              className="bg-amber-800 hover:bg-amber-700 md:col-span-2"
+            >
+              Add Product
+            </Button>
+          </form>
+        </>
+      ) : (
+        <>
+          <h2 className="text-3xl text-red-500">
+            Only active manager can add product
+          </h2>
+        </>
+      )}
     </div>
   );
 };

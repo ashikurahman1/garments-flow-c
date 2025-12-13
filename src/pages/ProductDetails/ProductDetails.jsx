@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
@@ -26,6 +26,15 @@ const ProductDetails = () => {
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { data: userStatus } = useQuery({
+    queryKey: ['userStatus', user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/users/${user.email}`);
+      return res.data;
+    },
+  });
+  const userCurrentStatus = userStatus?.user?.status;
 
   const { data: product, isLoading } = useQuery({
     queryKey: ['product', id],
@@ -147,97 +156,107 @@ const ProductDetails = () => {
                 <strong>Payment Option:</strong> {product.paymentOption}
               </div>
             </div>
-
-            {user && product.paymentOption && (
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button className="bg-amber-800 hover:opacity-90 mt-4 w-full">
-                    Book Now
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="max-w-xl">
-                  <DialogHeader>
-                    <DialogTitle>Place Your Order</DialogTitle>
-                    <DialogDescription>
-                      Fill out the form below to book this product.
-                    </DialogDescription>
-                  </DialogHeader>
-
-                  <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className="flex flex-col gap-4 mt-4"
-                  >
-                    <div>
-                      <p>Email: {user.email}</p>
-                      <p>Product: {product.name}</p>
-                      <p>Price: {`$ ${product.price}`}</p>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label>First Name</Label>
-                        <Input {...register('firstName', { required: true })} />
-                      </div>
-                      <div>
-                        <Label>Last Name</Label>
-                        <Input {...register('lastName', { required: true })} />
-                      </div>
-                    </div>
-
-                    <div>
-                      <Label>Order Quantity</Label>
-                      <Input
-                        type="number"
-                        {...register('quantity', {
-                          required: true,
-                          min: product.moq,
-                          max: product.availableQuantity,
-                          valueAsNumber: true,
-                        })}
-                      />
-                      <p className="text-gray-500 text-sm">
-                        Min: {product.moq}, Max: {product.availableQuantity}
-                      </p>
-                    </div>
-
-                    <div>
-                      <Label>Order Price</Label>
-                      <Input value={`$${orderPrice}`} readOnly />
-                    </div>
-
-                    <div>
-                      <Label>Contact Number</Label>
-                      <Input {...register('contact', { required: true })} />
-                    </div>
-
-                    <div>
-                      <Label>Delivery Address</Label>
-                      <Textarea
-                        {...register('address', { required: true })}
-                        rows={3}
-                      />
-                    </div>
-
-                    <div>
-                      <Label>Additional Notes</Label>
-                      <Textarea {...register('notes')} rows={3} />
-                    </div>
-
-                    <div className="flex justify-end gap-2 mt-2">
-                      <DialogClose asChild>
-                        <Button variant="outline">Cancel</Button>
-                      </DialogClose>
-                      <Button
-                        type="submit"
-                        className="bg-amber-800 hover:opacity-90"
-                      >
-                        Place Order
-                      </Button>
-                    </div>
-                  </form>
-                </DialogContent>
-              </Dialog>
+            {userCurrentStatus !== 'active' && (
+              <div className="shadow-md p-5 rounded-md text-red-500">
+                <p className="">Only active Buyer can place an order</p>
+              </div>
             )}
+            {user &&
+              userCurrentStatus === 'active' &&
+              product.paymentOption && (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button className="bg-amber-800 hover:opacity-90 mt-4 w-full">
+                      Book Now
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-xl">
+                    <DialogHeader>
+                      <DialogTitle>Place Your Order</DialogTitle>
+                      <DialogDescription>
+                        Fill out the form below to book this product.
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <form
+                      onSubmit={handleSubmit(onSubmit)}
+                      className="flex flex-col gap-4 mt-4"
+                    >
+                      <div>
+                        <p>Email: {user.email}</p>
+                        <p>Product: {product.name}</p>
+                        <p>Price: {`$ ${product.price}`}</p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <Label>First Name</Label>
+                          <Input
+                            {...register('firstName', { required: true })}
+                          />
+                        </div>
+                        <div>
+                          <Label>Last Name</Label>
+                          <Input
+                            {...register('lastName', { required: true })}
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <Label>Order Quantity</Label>
+                        <Input
+                          type="number"
+                          {...register('quantity', {
+                            required: true,
+                            min: product.moq,
+                            max: product.availableQuantity,
+                            valueAsNumber: true,
+                          })}
+                        />
+                        <p className="text-gray-500 text-sm">
+                          Min: {product.moq}, Max: {product.availableQuantity}
+                        </p>
+                      </div>
+
+                      <div>
+                        <Label>Order Price</Label>
+                        <Input value={`$${orderPrice}`} readOnly />
+                      </div>
+
+                      <div>
+                        <Label>Contact Number</Label>
+                        <Input {...register('contact', { required: true })} />
+                      </div>
+
+                      <div>
+                        <Label>Delivery Address</Label>
+                        <Textarea
+                          {...register('address', { required: true })}
+                          rows={3}
+                        />
+                      </div>
+
+                      <div>
+                        <Label>Additional Notes</Label>
+                        <Textarea {...register('notes')} rows={3} />
+                      </div>
+
+                      <div className="flex justify-end gap-2 mt-2">
+                        <DialogClose asChild>
+                          <Button variant="outline">Cancel</Button>
+                        </DialogClose>
+                        <Button
+                          type="submit"
+                          className="bg-amber-800 hover:opacity-90"
+                        >
+                          Place Order
+                        </Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              )}
           </div>
         </div>
       </div>

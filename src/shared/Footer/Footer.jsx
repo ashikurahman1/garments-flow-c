@@ -68,9 +68,9 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <ul className="flex flex-col gap-2 text-amber-50">
-              {quickLinks.map(link => (
+              {quickLinks.map((link, i) => (
                 <NavLink
-                  key={link.to}
+                  key={i}
                   to={link.to}
                   className="text-sm hover:text-amber-300 transition-colors"
                   aria-label={link.label}
@@ -85,9 +85,9 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-lg mb-4">Support</h3>
             <ul className="flex flex-col gap-2 text-amber-50">
-              {supportLinks.map(link => (
+              {supportLinks.map((link, i) => (
                 <NavLink
-                  key={link.to}
+                  key={i}
                   to={link.to}
                   className="text-sm hover:text-amber-300 transition-colors"
                   aria-label={link.label}

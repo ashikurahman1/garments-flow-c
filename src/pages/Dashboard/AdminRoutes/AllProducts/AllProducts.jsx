@@ -18,11 +18,13 @@ const AllProducts = () => {
     queryKey: ['admin-all-products'],
     queryFn: async () => {
       const res = await axiosSecure.get('/products');
-      return res.data;
+      return res.data.products;
     },
   });
 
   // Toggle Show On Home
+  console.log(products);
+  console.log(products.length);
 
   const handleToggleHome = async (id, currentValue) => {
     try {
@@ -96,55 +98,61 @@ const AllProducts = () => {
           </thead>
 
           <tbody>
-            {products.map(product => (
-              <tr
-                key={product._id}
-                className="border-b hover:bg-gray-50 transition"
-              >
-                <td className="p-3">
-                  <img
-                    src={product.images?.[0]}
-                    className="w-14 h-14 rounded object-cover"
-                  />
-                </td>
+            {products.length > 0 ? (
+              products.map(product => (
+                <tr
+                  key={product._id}
+                  className="border-b hover:bg-gray-50 transition"
+                >
+                  <td className="p-3">
+                    <img
+                      src={product.images?.[0]}
+                      className="w-14 h-14 rounded object-cover"
+                    />
+                  </td>
 
-                <td className="p-3">{product.name}</td>
-                <td className="p-3">${product.price}</td>
-                <td className="p-3">{product.category}</td>
+                  <td className="p-3">{product.name}</td>
+                  <td className="p-3">${product.price}</td>
+                  <td className="p-3">{product.category}</td>
 
-                <td className="p-3">{product.managerEmail}</td>
+                  <td className="p-3">{product.managerEmail}</td>
 
-                <td className="p-3">
-                  <input
-                    type="checkbox"
-                    checked={product.showOnHome}
-                    onChange={() =>
-                      handleToggleHome(product._id, product.showOnHome)
-                    }
-                  />
-                </td>
-
-                <td className=" text-right">
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() =>
-                        (window.location.href = `/dashboard/edit-product/${product._id}`)
+                  <td className="p-3">
+                    <input
+                      type="checkbox"
+                      checked={product.showOnHome}
+                      onChange={() =>
+                        handleToggleHome(product._id, product.showOnHome)
                       }
-                      className="px-3 py-1 bg-blue-700 text-white dark:text-black rounded flex items-center gap-1"
-                    >
-                      <IconEdit size={16} /> Edit
-                    </button>
+                    />
+                  </td>
 
-                    <button
-                      onClick={() => handleDelete(product._id)}
-                      className="px-3 py-1 bg-amber-800 text-white dark:text-black rounded flex items-center gap-1"
-                    >
-                      <IconTrash size={16} /> Delete
-                    </button>
-                  </div>
-                </td>
+                  <td className=" text-right">
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() =>
+                          (window.location.href = `/dashboard/edit-product/${product._id}`)
+                        }
+                        className="px-3 py-1 bg-blue-700 text-white dark:text-black rounded flex items-center gap-1"
+                      >
+                        <IconEdit size={16} /> Edit
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(product._id)}
+                        className="px-3 py-1 bg-amber-800 text-white dark:text-black rounded flex items-center gap-1"
+                      >
+                        <IconTrash size={16} /> Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td>No Products found</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
