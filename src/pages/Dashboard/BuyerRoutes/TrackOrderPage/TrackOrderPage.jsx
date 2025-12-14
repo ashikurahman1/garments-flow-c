@@ -24,6 +24,7 @@ const TrackOrderPage = () => {
       return res.data.order;
     },
   });
+  console.log(order);
 
   const handleTrack = e => {
     e.preventDefault();
@@ -31,21 +32,23 @@ const TrackOrderPage = () => {
     refetch();
   };
 
-  // Combine statusHistory + tracking into one chronological array
   const getTimeline = () => {
     if (!order) return [];
+
+    const statusHistory = order.statusHistory || [];
+    const tracking = order.tracking || [];
+
     const combined = [
-      ...order.statusHistory.map(s => ({
+      ...statusHistory.map(s => ({
         ...s,
         type: 'status',
       })),
-      ...order.tracking.map(t => ({
+      ...tracking.map(t => ({
         ...t,
         type: 'tracking',
       })),
     ];
 
-    // Sort by date ascending
     return combined.sort((a, b) => new Date(a.date) - new Date(b.date));
   };
 
