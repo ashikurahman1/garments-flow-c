@@ -6,6 +6,7 @@ import useAxiosSecure from '../../../../hooks/useAxiosSecure';
 import { Dialog, DialogTitle, DialogPanel } from '@headlessui/react';
 import Swal from 'sweetalert2';
 import LoadingSpinner from '../../../../components/LoadingSpinner/LoadingSpinner';
+import { Link } from 'react-router';
 
 const MyOrdersPage = () => {
   const axiosSecure = useAxiosSecure();
@@ -19,6 +20,7 @@ const MyOrdersPage = () => {
       return res.data.orders;
     },
   });
+  console.log(data);
 
   const handleCancel = async orderId => {
     const result = await Swal.fire({
@@ -118,8 +120,27 @@ const MyOrdersPage = () => {
                     </span>
                   </td>
                   <td className="px-4 py-2">
-                    <span className="px-2 py-1 bg-blue-200 text-blue-800 rounded text-sm">
-                      {String(order.paymentOption || '').toUpperCase()}
+                    <span
+                      className={`p-1 px-2 rounded-md ${
+                        order.paymentStatus === 'paid'
+                          ? 'bg-green-200 text-green-800'
+                          : order.paymentOption === 'payfirst'
+                          ? 'bg-yellow-200 text-yellow-800'
+                          : order.paymentOption === 'cod'
+                          ? 'bg-blue-200 text-blue-700'
+                          : ''
+                      }`}
+                    >
+                      {/* {String(order.paymentOption || '').toUpperCase()} */}
+                      {order.paymentStatus === 'paid' ? (
+                        'Paid'
+                      ) : order.paymentOption === 'payfirst' ? (
+                        <Link to={`/payment?trackingId=${order.trackingId}`}>
+                          Pay Now
+                        </Link>
+                      ) : (
+                        order.paymentOption === 'cod' && 'COD'
+                      )}
                     </span>
                   </td>
                   <td className="px-4 py-2 flex gap-2">
