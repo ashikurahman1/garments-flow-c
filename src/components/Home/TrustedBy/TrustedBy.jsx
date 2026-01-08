@@ -10,44 +10,37 @@ import SectionTitle from '../../SectionTitle/SectionTitle';
 
 const reasons = [
   {
-    icon: <IconAward size={36} stroke={1.5} />,
+    icon: <IconAward size={40} stroke={1.5} />,
     title: 'Top Quality Fabric',
     desc: 'We use export-grade materials for long-lasting durability.',
-    color: 'bg-amber-100 border-amber-800',
   },
   {
-    icon: <IconBuildingFactory size={36} stroke={1.5} />,
+    icon: <IconBuildingFactory size={40} stroke={1.5} />,
     title: 'Own Manufacturing',
     desc: 'Cutting, sewing & QC handled by our expert in-house team.',
-    color: 'bg-emerald-100 border-emerald-600',
   },
   {
-    icon: <IconUsersGroup size={36} stroke={1.5} />,
+    icon: <IconUsersGroup size={40} stroke={1.5} />,
     title: 'Bulk Order Friendly',
     desc: 'We support corporate uniforms, bulk orders & custom branding.',
-    color: 'bg-sky-100 border-sky-600',
   },
   {
-    icon: <IconHeartHandshake size={36} stroke={1.5} />,
+    icon: <IconHeartHandshake size={40} stroke={1.5} />,
     title: 'Trusted by 200+ Clients',
     desc: 'Businesses across Bangladesh rely on us regularly.',
-    color: 'bg-violet-100 border-violet-600',
   },
 ];
 
 const TrustedBy = () => {
   return (
-    <section className="container mx-auto px-4 py-20 lg:py-30">
-      <div className="mb-8 lg:mb-15">
-        <SectionTitle
-          title="Why People Trust Us"
-          subtitle={
-            ' Our dedication to quality and service makes us stand out.'
-          }
-        />
-      </div>
+    <section className="container mx-auto px-4 py-20">
+      <SectionTitle
+        title="Why People Trust Us"
+        subtitle="Our Dedication"
+        center={true}
+      />
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {reasons.map((item, i) => (
           <motion.div
             key={i}
@@ -55,16 +48,17 @@ const TrustedBy = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
             viewport={{ once: true }}
-            className={`
-              p-6 rounded-xl shadow-md hover:shadow-xl transition 
-              border-2 ${item.color}
-            `}
+            className="group p-8 rounded-2xl glass-card hover:bg-white/60 dark:hover:bg-white/10 transition-all duration-300 border-transparent hover:border-primary/20"
           >
-            <div className="text-amber-800 mb-3">{item.icon}</div>
-            <h3 className="text-lg font-semibold mb-1 text-amber-800">
+            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform duration-300">
+              {item.icon}
+            </div>
+            <h3 className="text-xl font-bold mb-3 font-display text-foreground group-hover:text-primary transition-colors">
               {item.title}
             </h3>
-            <p className="text-gray-600 text-sm">{item.desc}</p>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              {item.desc}
+            </p>
           </motion.div>
         ))}
       </div>

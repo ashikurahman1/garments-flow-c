@@ -28,7 +28,7 @@ const MyOrdersPage = () => {
       text: 'Do you really want to cancel this order?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
+      confirmButtonColor: '#ef4444',
       cancelButtonColor: '#3085d6',
       confirmButtonText: 'Yes, cancel it!',
       cancelButtonText: 'No, keep it',
@@ -76,170 +76,190 @@ const MyOrdersPage = () => {
   ];
 
   return (
-    <div className="bg-white dark:bg-white/10 p-6 shadow rounded-xl lg:m-6">
-      <h1 className="text-2xl font-bold mb-4">My Orders</h1>
+    <div className="p-6 lg:m-6">
+      <div className="glass-card rounded-xl p-6 border border-white/20">
+        <h1 className="text-2xl font-display font-bold mb-6 text-foreground">My Orders</h1>
 
-      <div className="overflow-x-auto shadow  rounded-md">
-        <table className="table-auto w-full text-left">
-          <thead className="bg-amber-800 text-white ">
-            <tr>
-              <th className="px-4 py-2">Order ID</th>
-              <th className="px-4 py-2">Tracking ID</th>
-              <th className="px-4 py-2">Product</th>
-              <th className="px-4 py-2">Quantity</th>
-              <th className="px-4 py-2">Status</th>
-              <th className="px-4 py-2">Payment</th>
-              <th className="px-4 py-2">Actions</th>
-            </tr>
-          </thead>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="min-w-full text-left">
+            <thead className="bg-muted/50 border-b border-border">
+              <tr>
+                <th className="p-4 font-semibold text-foreground">Order ID</th>
+                <th className="p-4 font-semibold text-foreground">Tracking ID</th>
+                <th className="p-4 font-semibold text-foreground">Product</th>
+                <th className="p-4 font-semibold text-foreground">Quantity</th>
+                <th className="p-4 font-semibold text-foreground">Status</th>
+                <th className="p-4 font-semibold text-foreground">Payment</th>
+                <th className="p-4 font-semibold text-foreground">Actions</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            {data.map(order => {
-              const currentStatus = order.statusHistory?.length
-                ? order.statusHistory[order.statusHistory.length - 1].status
-                : 'pending';
+            <tbody className="divide-y divide-border bg-card/30">
+              {data.map(order => {
+                const currentStatus = order.statusHistory?.length
+                  ? order.statusHistory[order.statusHistory.length - 1].status
+                  : 'pending';
 
-              return (
-                <tr key={order._id} className="border-b">
-                  <td className="px-4 py-2">{order._id.slice(-6)}</td>
-                  <td className="px-4 py-2">{order.trackingId}</td>
-                  <td className="px-4 py-2">{order.productName}</td>
-                  <td className="px-4 py-2">{order.quantity}</td>
-                  <td className="px-4 py-2">
-                    <span
-                      className={`px-2 py-1 rounded text-sm ${
-                        currentStatus === 'pending'
-                          ? 'bg-yellow-200 text-yellow-800'
-                          : currentStatus === 'cancelled'
-                          ? 'bg-red-200 text-red-800'
-                          : 'bg-green-200 text-green-800'
-                      }`}
-                    >
-                      {currentStatus.charAt(0).toUpperCase() +
-                        currentStatus.slice(1)}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2">
-                    <span
-                      className={`p-1 px-2 rounded-md ${
-                        order.paymentStatus === 'paid'
-                          ? 'bg-green-200 text-green-800'
-                          : order.paymentOption === 'payfirst'
-                          ? 'bg-yellow-200 text-yellow-800'
-                          : order.paymentOption === 'cod'
-                          ? 'bg-blue-200 text-blue-700'
-                          : ''
-                      }`}
-                    >
-                      {/* {String(order.paymentOption || '').toUpperCase()} */}
-                      {order.paymentStatus === 'paid' ? (
-                        'Paid'
-                      ) : order.paymentOption === 'payfirst' ? (
-                        <Link to={`/payment?trackingId=${order.trackingId}`}>
-                          Pay Now
-                        </Link>
-                      ) : (
-                        order.paymentOption === 'cod' && 'COD'
-                      )}
-                    </span>
-                  </td>
-                  <td className="px-4 py-2 flex gap-2">
-                    <Button size="sm" onClick={() => setSelectedOrder(order)}>
-                      View
-                    </Button>
-                    {currentStatus === 'pending' && (
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => handleCancel(order._id)}
+                return (
+                  <tr key={order._id} className="hover:bg-muted/30 transition-colors">
+                    <td className="p-4 text-xs font-mono text-muted-foreground">{order._id.slice(-6)}</td>
+                    <td className="p-4 text-xs font-mono text-primary">{order.trackingId}</td>
+                    <td className="p-4 font-medium text-foreground">{order.productName}</td>
+                    <td className="p-4 font-mono text-muted-foreground">{order.quantity}</td>
+                    <td className="p-4">
+                      <span
+                        className={`px-2.5 py-1 rounded-full text-xs font-semibold border ${
+                          currentStatus === 'pending'
+                            ? 'bg-yellow-500/10 text-yellow-600 border-yellow-200 dark:border-yellow-900/50'
+                            : currentStatus === 'cancelled'
+                            ? 'bg-red-500/10 text-red-600 border-red-200 dark:border-red-900/50'
+                            : 'bg-green-500/10 text-green-600 border-green-200 dark:border-green-900/50'
+                        }`}
                       >
-                        Cancel
+                        {currentStatus.charAt(0).toUpperCase() +
+                          currentStatus.slice(1)}
+                      </span>
+                    </td>
+                    <td className="p-4">
+                      <span
+                        className={`px-2.5 py-1 rounded-lg text-xs font-medium ${
+                          order.paymentStatus === 'paid'
+                            ? 'bg-green-500/10 text-green-600'
+                            : order.paymentOption === 'payfirst'
+                            ? 'bg-primary/10 text-primary'
+                            : order.paymentOption === 'cod'
+                            ? 'bg-blue-500/10 text-blue-600'
+                            : 'bg-muted text-muted-foreground'
+                        }`}
+                      >
+                        {order.paymentStatus === 'paid' ? (
+                          'Paid'
+                        ) : order.paymentOption === 'payfirst' ? (
+                          <Link to={`/payment?trackingId=${order.trackingId}`} className="hover:underline">
+                            Pay Now
+                          </Link>
+                        ) : (
+                          order.paymentOption === 'cod' && 'COD'
+                        )}
+                      </span>
+                    </td>
+                    <td className="p-4 flex gap-2">
+                      <Button 
+                        size="sm" 
+                        variant="ghost" 
+                        className="hover:bg-muted text-muted-foreground"
+                        onClick={() => setSelectedOrder(order)}
+                      >
+                        View
                       </Button>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                      {currentStatus === 'pending' && (
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => handleCancel(order._id)}
+                          className="shadow-sm"
+                        >
+                          Cancel
+                        </Button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
 
-      {/* Modal */}
-      {selectedOrder && (
+        {/* Modal */}
         <Dialog
           open={!!selectedOrder}
           onClose={() => setSelectedOrder(null)}
           className="relative z-50"
         >
-          <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-            <DialogPanel className="fixed inset-0 bg-black opacity-30" />
+            <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" aria-hidden="true" />
+          
+            <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+              <DialogPanel className="glass-card w-full max-w-lg rounded-2xl p-6 shadow-xl border border-white/20">
+                <DialogTitle className="text-xl font-bold mb-4 font-display text-foreground border-b border-border pb-2">
+                  {selectedOrder?.productName}
+                </DialogTitle>
 
-            <div className="bg-white dark:bg-black/70 rounded-xl p-6 w-full max-w-lg z-10 shadow-lg space-y-4">
-              <DialogTitle className="text-2xl font-bold mb-2">
-                {selectedOrder.productName}
-              </DialogTitle>
+                {selectedOrder && (
+                    <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                             <div>
+                                <span className="text-xs text-muted-foreground uppercase">Quantity</span>
+                                <p className="font-mono text-sm text-foreground">{selectedOrder.quantity}</p>
+                             </div>
+                             <div>
+                                <span className="text-xs text-muted-foreground uppercase">Payment</span>
+                                <p className="font-medium text-sm text-foreground">{String(selectedOrder.paymentOption || '').toUpperCase()}</p>
+                             </div>
+                        </div>
 
-              <p>
-                <strong>Quantity:</strong> {selectedOrder.quantity}
-              </p>
-              <p>
-                <strong>Payment:</strong>{' '}
-                {String(selectedOrder.paymentOption || '').toUpperCase()}
-              </p>
-              <p>
-                <strong>Status:</strong>{' '}
-                {selectedOrder.statusHistory?.length
-                  ? selectedOrder.statusHistory[
-                      selectedOrder.statusHistory.length - 1
-                    ].status
-                  : 'pending'}
-              </p>
-              <p>
-                <strong>Delivery Address:</strong>{' '}
-                {selectedOrder.deliveryAddress}
-              </p>
-              {selectedOrder.additionalNotes && (
-                <p>
-                  <strong>Notes:</strong> {selectedOrder.additionalNotes}
-                </p>
-              )}
+                        <div className="bg-muted/30 p-3 rounded-lg border border-border">
+                            <span className="text-xs text-muted-foreground uppercase">Status</span>
+                             <p className="font-medium text-foreground">
+                                {selectedOrder.statusHistory?.length
+                                ? selectedOrder.statusHistory[
+                                    selectedOrder.statusHistory.length - 1
+                                    ].status
+                                : 'pending'}
+                             </p>
+                        </div>
 
-              {/* Tracking Timeline */}
-              <div>
-                <h3 className="font-semibold mb-2">Tracking</h3>
-                <ul className="space-y-2">
-                  {selectedOrder.statusHistory?.map((step, idx) => (
-                    <li key={idx} className="flex items-center gap-2">
-                      <div
-                        className={`w-4 h-4 rounded-full ${
-                          step.date ? 'bg-green-600' : 'bg-gray-300'
-                        }`}
-                      />
-                      <span
-                        className={
-                          step.date ? 'font-semibold' : 'text-gray-400'
-                        }
-                      >
-                        {step.status.charAt(0).toUpperCase() +
-                          step.status.slice(1)}
-                      </span>
-                      {step.date && (
-                        <span className="ml-2 text-xs text-gray-500">
-                          ({new Date(step.date).toLocaleDateString()})
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                        <div className="bg-muted/30 p-3 rounded-lg border border-border">
+                             <span className="text-xs text-muted-foreground uppercase">Delivery Address</span>
+                             <p className="text-sm text-foreground">{selectedOrder.deliveryAddress}</p>
+                        </div>
 
-              <div className="flex justify-end gap-2 mt-4">
-                <Button onClick={() => setSelectedOrder(null)}>Close</Button>
-              </div>
+                        {selectedOrder.additionalNotes && (
+                             <div className="text-sm text-muted-foreground italic">
+                                "{selectedOrder.additionalNotes}"
+                             </div>
+                        )}
+
+                        {/* Tracking Timeline */}
+                        <div className="pt-2">
+                            <h3 className="font-bold text-sm text-foreground mb-3 uppercase">Tracking</h3>
+                            
+                             <div className="relative border-l-2 border-border ml-2 pl-4 space-y-4">
+                                {selectedOrder.statusHistory?.map((step, idx) => (
+                                    <div key={idx} className="relative">
+                                        <div
+                                            className={`absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full ring-4 ring-background ${
+                                            step.date ? 'bg-primary' : 'bg-muted'
+                                            }`}
+                                        />
+                                        <div className="flex flex-col">
+                                            <span
+                                                className={`text-sm font-medium ${
+                                                step.date ? 'text-foreground' : 'text-muted-foreground'
+                                                }`}
+                                            >
+                                                {step.status.charAt(0).toUpperCase() +
+                                                step.status.slice(1)}
+                                            </span>
+                                            {step.date && (
+                                                <span className="text-xs text-muted-foreground">
+                                                {new Date(step.date).toLocaleDateString()}
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="flex justify-end pt-4">
+                            <Button onClick={() => setSelectedOrder(null)} variant="outline">Close</Button>
+                        </div>
+                    </div>
+                )}
+              </DialogPanel>
             </div>
-          </div>
         </Dialog>
-      )}
+      </div>
     </div>
   );
 };

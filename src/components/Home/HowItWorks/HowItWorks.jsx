@@ -1,4 +1,3 @@
-// components/HowItWorks.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -18,31 +17,27 @@ import SectionTitle from '../../SectionTitle/SectionTitle';
 const defaultSteps = [
   {
     id: 1,
-    title: 'Choose Product',
-    desc: 'Browse catalog and pick the product you like.',
-    icon: <IconShoppingCart size={28} stroke={1.5} />,
-    color: 'border-amber-700/80 bg-amber-50',
+    title: 'Select Product',
+    desc: 'Browse our comprehensive catalog and choose items that match your brand.',
+    icon: <IconShoppingCart size={32} stroke={1.5} />,
   },
   {
     id: 2,
-    title: 'Place Order',
-    desc: 'Fill order details and select payment method.',
-    icon: <IconCheckupList size={28} stroke={1.5} />,
-    color: 'border-emerald-500/80 bg-emerald-50',
+    title: 'Custom Details',
+    desc: 'Specify your requirements, quantities, and any customization needs.',
+    icon: <IconCheckupList size={32} stroke={1.5} />,
   },
   {
     id: 3,
-    title: 'Quality Check',
-    desc: 'We inspect and prepare your item for shipment.',
-    icon: <IconPackage size={28} stroke={1.5} />,
-    color: 'border-sky-500/80 bg-sky-50',
+    title: 'Production & QC',
+    desc: 'Our expert team manufactures and rigorously checks every single item.',
+    icon: <IconPackage size={32} stroke={1.5} />,
   },
   {
     id: 4,
-    title: 'Fast Delivery',
-    desc: 'Delivered quickly and safely to your doorstep.',
-    icon: <IconTruckDelivery size={28} stroke={1.5} />,
-    color: 'border-violet-500/80 bg-violet-50',
+    title: 'Global Delivery',
+    desc: 'Your order is securely packed and shipped to your location worldwide.',
+    icon: <IconTruckDelivery size={32} stroke={1.5} />,
   },
 ];
 
@@ -50,89 +45,60 @@ const containerVariant = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.12,
+      staggerChildren: 0.15,
     },
   },
 };
 
 const cardVariant = {
-  hidden: { opacity: 0, y: 18, scale: 0.995 },
+  hidden: { opacity: 0, y: 30 },
   show: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { duration: 0.45, ease: 'easeOut' },
+    transition: { duration: 0.6, ease: 'easeOut' },
   },
 };
 
 const HowItWorks = ({ steps = defaultSteps }) => {
   return (
-    <section className="container mx-auto px-4 py-20 lg:py-30">
-      <div className="mb-8 lg:mb-15">
-        <SectionTitle
-          title="How It Works"
-          subtitle={
-            'Simple steps to get your product — transparent process, trusted quality.'
-          }
-        />
-      </div>
+    <section className="container mx-auto px-4 py-20">
+      <SectionTitle
+        title="How It Works"
+        subtitle="Simple Process"
+        center={true}
+      />
 
       <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
         variants={containerVariant}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.15 }}
+        viewport={{ once: true, amount: 0.1 }}
       >
-        {steps.map(step => (
-          <motion.div key={step.id} variants={cardVariant}>
-            <Card
-              className={`
-                group relative overflow-hidden
-                border-2 ${step.color} 
-                hover:-translate-y-2 hover:shadow-2xl
-                transition-transform duration-300
-              `}
-            >
-              <CardContent className="p-6 flex flex-col items-start gap-4 bg-white/80">
-                <div
-                  aria-hidden
-                  className={`
-                    w-12 h-12 rounded-lg flex items-center justify-center
-                    text-amber-900 dark:text-amber-500  shadow-sm ring-1 ring-inset ring-amber-100
-                    transition-all duration-300 group-hover:scale-105
-                  `}
-                >
-                  {step.icon}
+        {steps.map((step, index) => (
+          <motion.div key={step.id} variants={cardVariant} className="relative">
+            {/* Connecting Line (hidden on mobile and last item) */}
+            {index !== steps.length - 1 && (
+              <div className="hidden lg:block absolute top-12 left-1/2 w-full h-0.5 bg-border -z-10" />
+            )}
+            
+            <div className="flex flex-col items-center text-center group">
+              <div
+                className="w-24 h-24 rounded-full bg-background border-4 border-muted flex items-center justify-center text-muted-foreground shadow-lg mb-6 group-hover:border-primary group-hover:text-primary transition-all duration-300 relative z-10"
+              >
+                {step.icon}
+                <div className="absolute top-0 right-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-bold border-2 border-background">
+                  {step.id}
                 </div>
+              </div>
 
-                <CardTitle className="text-lg font-semibold text-amber-900">
-                  {step.title}
-                </CardTitle>
-                <CardDescription className="text-sm text-gray-600">
-                  {step.desc}
-                </CardDescription>
-
-                <span
-                  className="mt-4 inline-flex items-center text-sm font-medium text-amber-800
-                  group-hover:underline"
-                >
-                  Learn more →
-                </span>
-
-                {/* decorative accent line that animates on hover */}
-                <span
-                  className={`
-                    absolute left-0 bottom-0 h-1 w-0 group-hover:w-full transition-all duration-400
-                    ${step.color.includes('amber') ? 'bg-amber-700' : ''}
-                    ${step.color.includes('emerald') ? 'bg-emerald-500' : ''}
-                    ${step.color.includes('sky') ? 'bg-sky-500' : ''}
-                    ${step.color.includes('violet') ? 'bg-violet-500' : ''}
-                  `}
-                  aria-hidden
-                />
-              </CardContent>
-            </Card>
+              <h3 className="text-xl font-bold text-foreground mb-3 font-display">
+                {step.title}
+              </h3>
+              <p className="text-muted-foreground leading-relaxed max-w-xs">
+                {step.desc}
+              </p>
+            </div>
           </motion.div>
         ))}
       </motion.div>

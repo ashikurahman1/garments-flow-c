@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import useAuth from '../../../hooks/useAuth';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
+import { motion } from 'framer-motion';
 
 const ProfilePage = () => {
   const { user, updateUserProfile } = useAuth();
@@ -46,6 +47,7 @@ const ProfilePage = () => {
         icon: 'error',
         title: 'Invalid file type',
         text: 'Please select an image.',
+        confirmButtonColor: '#0ea5e9',
       });
       return;
     }
@@ -56,6 +58,7 @@ const ProfilePage = () => {
         icon: 'error',
         title: 'Image too large',
         text: 'Max 2MB allowed.',
+        confirmButtonColor: '#0ea5e9',
       });
       return;
     }
@@ -131,6 +134,7 @@ const ProfilePage = () => {
         toast: true,
         position: 'top-end',
         timer: 3000,
+        confirmButtonColor: '#0ea5e9',
         showConfirmButton: false,
       });
     } finally {
@@ -141,74 +145,100 @@ const ProfilePage = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-white dark:bg-white/10 p-6 rounded-xl shadow max-w-lg m-6">
-      <h2 className="text-2xl font-bold mb-6">My Profile</h2>
-
-      <div className="flex flex-col items-center gap-4 mb-6">
-        {preview && (
-          <img
-            src={preview}
-            alt="Profile"
-            className="w-24 h-24 rounded-full object-cover border"
-          />
-        )}
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <div>
-          <p className="text-gray-600">Full Name</p>
-          <input
-            type="text"
-            value={displayName}
-            onChange={e => setDisplayName(e.target.value)}
-            className="border p-2 rounded w-full"
-          />
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex justify-center p-6">
+      <div className="glass-card p-8 rounded-2xl w-full max-w-lg border border-white/20 relative overflow-hidden">
+        {/* Decorative Background Blur */}
+        <div className="absolute -top-20 -right-20 w-40 h-40 bg-primary/20 rounded-full blur-3xl -z-10"></div>
+        <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-secondary/20 rounded-full blur-3xl -z-10"></div>
+        
+        <h2 className="text-3xl font-display font-bold mb-6 text-center text-gradient">My Profile</h2>
+  
+        <div className="flex flex-col items-center gap-6 mb-8">
+          {preview ? (
+            <div className="relative group">
+               <img
+                src={preview}
+                alt="Profile"
+                className="w-28 h-28 rounded-full object-cover border-4 border-background shadow-lg group-hover:scale-105 transition-transform duration-300"
+              />
+              <div className="absolute inset-0 rounded-full bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+                  <span className="text-white text-xs font-semibold">Change</span>
+              </div>
+               <input
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+               />
+            </div>
+            
+          ) : (
+            <div className="w-28 h-28 rounded-full bg-muted flex items-center justify-center border-4 border-background shadow-lg">
+                <span className="text-4xl">👤</span>
+            </div>
+          )}
         </div>
-
-        <div>
-          <p className="text-gray-600">Email</p>
-          <p className="font-semibold">{userData?.email || user.email}</p>
-        </div>
-
-        <div>
-          <p className="text-gray-600">Role</p>
-          <p className="font-semibold">{userData?.role || 'Buyer'}</p>
-        </div>
-
-        <div>
-          <p className="text-gray-600">Account Status</p>
-          <p
-            className={`font-semibold ${
-              userData?.status === 'active' ? 'text-green-600' : 'text-red-600'
+  
+        <div className="flex flex-col gap-6">
+          <div>
+            <label className="text-sm font-semibold text-muted-foreground uppercase mb-2 block">Full Name</label>
+            <input
+              type="text"
+              value={displayName}
+              onChange={e => setDisplayName(e.target.value)}
+              className="w-full bg-background/50 border border-input rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary outline-none transition-all"
+              placeholder="Enter your name"
+            />
+          </div>
+  
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+                <label className="text-sm font-semibold text-muted-foreground uppercase mb-1 block">Email</label>
+                <div className="bg-muted/50 px-4 py-3 rounded-xl border border-border text-foreground font-medium truncate" title={userData?.email || user.email}>
+                    {userData?.email || user.email}
+                </div>
+            </div>
+            <div>
+                <label className="text-sm font-semibold text-muted-foreground uppercase mb-1 block">Role</label>
+                 <div className="bg-muted/50 px-4 py-3 rounded-xl border border-border text-foreground font-medium capitalize">
+                    {userData?.role || 'Buyer'}
+                </div>
+            </div>
+          </div>
+  
+          <div>
+            <label className="text-sm font-semibold text-muted-foreground uppercase mb-1 block">Account Status</label>
+            <div className={`px-4 py-3 rounded-xl border border-border font-semibold flex items-center gap-2 ${
+                userData?.status === 'active' 
+                ? 'bg-green-500/10 text-green-600 border-green-200' 
+                : 'bg-red-500/10 text-red-600 border-red-200'
+              }`}>
+              <div className={`w-2 h-2 rounded-full ${userData?.status === 'active' ? 'bg-green-500' : 'bg-red-500'}`}></div>
+              {userData?.status || 'Active'}
+            </div>
+          </div>
+  
+          <button
+            onClick={handleUpdate}
+            disabled={loading}
+            className={`btn-premium mt-4 w-full py-3.5 rounded-xl font-semibold text-primary-foreground shadow-lg flex items-center justify-center gap-2 ${
+              loading
+                ? 'bg-muted text-muted-foreground cursor-not-allowed'
+                : 'bg-primary hover:bg-primary/90 shadow-primary/20'
             }`}
           >
-            {userData?.status || 'Active'}
-          </p>
+            {loading ? (
+                <>
+                 <div className="animate-spin h-4 w-4 border-2 border-current border-t-transparent rounded-full"></div>
+                 Updating...
+                </>
+            ) : (
+                'Update Profile'
+            )}
+          </button>
         </div>
-
-        <div>
-          <p className="text-gray-600">Profile Photo</p>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="border p-2 rounded w-full"
-          />
-        </div>
-
-        <button
-          onClick={handleUpdate}
-          disabled={loading}
-          className={`mt-4 w-full p-2 rounded text-white  ${
-            loading
-              ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-amber-800 hover:bg-amber-700'
-          }`}
-        >
-          {loading ? 'Updating...' : 'Update Profile'}
-        </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

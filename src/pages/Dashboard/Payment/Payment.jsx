@@ -3,6 +3,7 @@ import React from 'react';
 import { useSearchParams } from 'react-router';
 import useAxiosSecure from '../../../hooks/useAxiosSecure';
 import LoadingSpinner from '../../../components/LoadingSpinner/LoadingSpinner';
+import { motion } from 'framer-motion';
 
 const Payment = () => {
   const [searchParams] = useSearchParams();
@@ -48,28 +49,56 @@ const Payment = () => {
   if (isLoading) return <LoadingSpinner />;
   if (!order)
     return (
-      <div className="text-center py-20 text-red-600 font-semibold">
-        Order not found
+      <div className="flex justify-center items-center py-20">
+        <div className="text-center p-8 glass-card rounded-xl border-destructive/50 text-destructive font-semibold">
+           Order not found
+        </div>
       </div>
     );
 
   return (
-    <div className="max-w-xl mt-30 mx-auto p-6 bg-white dark:bg-white/10 shadow rounded-xl">
-      <h2 className="text-2xl font-bold mb-4">
-        Payment for {order.productName}
-      </h2>
-      <p className="mb-4">Order ID: {order._id}</p>
-      <p className="mb-4">Tracking ID: {order.trackingId || 'N/A'}</p>
-      <p className="mb-4">Quantity: {order.quantity || 1}</p>
-      <p className="mb-4 font-semibold">
-        Total Amount: ${order.orderPrice || 0}
-      </p>
-      <button
-        onClick={handlePayment}
-        className="w-full bg-amber-800 hover:bg-amber-900 text-white dark:text-black py-2 px-4 rounded"
+    <div className="flex justify-center p-6">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="max-w-xl w-full glass-card p-8 rounded-2xl border border-white/20 relative overflow-hidden"
       >
-        Pay Now
-      </button>
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary to-secondary"></div>
+        
+        <h2 className="text-3xl font-display font-bold mb-6 text-gradient">
+          Order Summary
+        </h2>
+        
+        <div className="space-y-4 mb-8">
+            <div className="flex justify-between py-3 border-b border-border">
+                <span className="text-muted-foreground">Product Name</span>
+                <span className="font-semibold text-right">{order.productName}</span>
+            </div>
+            <div className="flex justify-between py-3 border-b border-border">
+                <span className="text-muted-foreground">Tracking ID</span>
+                <span className="font-mono text-sm bg-muted px-2 py-1 rounded">{order.trackingId || 'N/A'}</span>
+            </div>
+            <div className="flex justify-between py-3 border-b border-border">
+                <span className="text-muted-foreground">Order ID</span>
+                <span className="font-mono text-xs text-muted-foreground truncate max-w-[150px]">{order._id}</span>
+            </div>
+            <div className="flex justify-between py-3 border-b border-border">
+                <span className="text-muted-foreground">Quantity</span>
+                <span className="font-semibold">{order.quantity || 1}</span>
+            </div>
+            <div className="flex justify-between py-4 items-center">
+                <span className="text-lg font-bold text-foreground">Total Amount</span>
+                <span className="text-3xl font-bold text-primary">${order.orderPrice || 0}</span>
+            </div>
+        </div>
+
+        <button
+          onClick={handlePayment}
+          className="btn-premium w-full bg-primary hover:bg-primary/90 text-primary-foreground py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary/25"
+        >
+          Pay Now
+        </button>
+      </motion.div>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Logo from '../../components/Logo/Logo';
+import {motion} from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import {
   IconLayoutDashboard,
@@ -45,8 +46,8 @@ const Navbar = () => {
       text: 'You will be logged out from your account.',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#92400E',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#ef4444',
+      cancelButtonColor: '#6b7280',
       confirmButtonText: 'Yes, Logout',
     }).then(result => {
       if (result.isConfirmed) {
@@ -69,7 +70,7 @@ const Navbar = () => {
               title: 'Logout Failed',
               text: 'Something went wrong. Please try again.',
               icon: 'error',
-              confirmButtonColor: '#92400E',
+              confirmButtonColor: '#4f46e5',
             });
           });
       }
@@ -78,147 +79,167 @@ const Navbar = () => {
 
   if (loading) return <LoadingSpinner />;
   return (
-    <header className="shadow p-3 fixed z-10 w-full top-0 bg-amber-50">
-      <nav className="container mx-auto ">
-        <div className="flex justify-between items-center">
+    <header className="fixed z-50 w-full top-0 glass border-b border-primary/5 transition-all duration-300">
+      <nav className="container mx-auto px-4 lg:px-6">
+        <div className="flex justify-between items-center h-20">
           <Logo />
-          <div className="flex items-center gap-3 lg:gap-15">
-            <ul className="hidden lg:flex items-center gap-8 dark:text-amber-900 font-semibold">
+          
+          <div className="flex items-center gap-6">
+            <ul className="hidden lg:flex items-center gap-8 font-medium">
               {menuLinks.map((link, i) => (
-                <NavLink to={link.path} key={i}>
-                  {link.name}{' '}
+                <NavLink 
+                  to={link.path} 
+                  key={i}
+                  className={({ isActive }) => 
+                    `relative px-1 py-2 text-sm uppercase tracking-wide transition-colors duration-300 
+                    ${isActive ? 'text-primary font-bold' : 'text-neutral-600 dark:text-neutral-300 hover:text-primary'}`
+                  }
+                >
+                  {({ isActive }) => (
+                    <>
+                      {link.name}
+                      {isActive && (
+                        <motion.span
+                          layoutId="activeNav"
+                          className="absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full"
+                        />
+                      )}
+                    </>
+                  )}
                 </NavLink>
               ))}
             </ul>
-            {user ? (
-              <div className="space-x-2 flex">
-                <Button
-                  onClick={() => navigate(`/dashboard`)}
-                  size="sm"
-                  variant="primary"
-                  className="bg-amber-900 text-white  hover:opacity-90 hidden lg:flex"
-                >
-                  <IconLayoutDashboard stroke={2} />
-                  Dashboard
-                </Button>
-                <Button
-                  onClick={handleLogout}
-                  size="sm"
-                  variant="primary"
-                  className="bg-amber-950 text-white  hover:opacity-90 hidden lg:flex"
-                >
-                  <IconLogin2 stroke={2} /> Logout
-                </Button>
-              </div>
-            ) : (
-              <div className="flex items-center gap-3">
-                <Link to="/login" className="hidden lg:flex">
-                  <Button
-                    size="sm"
-                    variant="primary"
-                    className="bg-amber-900 text-white   hover:opacity-90 cursor-pointer"
-                  >
-                    <IconLogin2 stroke={2} /> Login
-                  </Button>
-                </Link>
 
-                <Link to="/register">
-                  <Button
-                    size="sm"
-                    className="hidden lg:flex hover:opacity-90 cursor-pointer"
-                  >
-                    <IconUserEdit stroke={2} />
-                    Register
-                  </Button>
-                </Link>
-              </div>
-            )}
-            <div className="">
+            <div className="hidden lg:flex items-center gap-4">
               <ThemeToggle />
+              
+              {user ? (
+                <>
+                  <Button
+                    onClick={() => navigate(`/dashboard`)}
+                    size="sm"
+                    className="btn-premium bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    <IconLayoutDashboard className="w-4 h-4 mr-2" />
+                    Dashboard
+                  </Button>
+                  <Button
+                    onClick={handleLogout}
+                    size="sm"
+                    variant="outline"
+                    className="btn-premium border-destructive/20 text-destructive hover:bg-destructive/10"
+                  >
+                    <IconLogin2 className="w-4 h-4 mr-2" /> Logout
+                  </Button>
+                </>
+              ) : (
+                <div className="flex items-center gap-3">
+                  <Link to="/login">
+                    <Button variant="ghost" className="btn btn-outline hover:text-primary">
+                      Login
+                    </Button>
+                  </Link>
+
+                  <Link to="/register">
+                    <Button className="btn-premium bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20">
+                      Register
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </div>
+
             <div
               onClick={() => setIsMobileMenu(!isMobileMenu)}
-              className="lg:hidden"
+              className="lg:hidden p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors cursor-pointer text-foreground"
             >
               {isMobileMenu ? (
-                <IconX stroke={2} size={32} />
+                <IconX stroke={2} size={28} />
               ) : (
-                <IconMenu2 stroke={2} size={32} />
+                <IconMenu2 stroke={2} size={28} />
               )}
             </div>
           </div>
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenu && (
-          <div
-            className={`bg-amber-900 py-15 absolute  w-full h-screen flex flex-col items-center ${
-              isMobileMenu ? 'top-15 left-0' : '-top-100 -left-100 '
-            } transition-all delay-3000 duration-3000 z-1000 text-white dark:text-black`}
-          >
-            <ul className="lg:hidden flex flex-col items-center gap-8 font-semibold mb-10">
-              {user && (
-                <div className="w-10 h-10 bg-amber-900 flex items-center justify-center rounded-full overflow-hidden">
-                  <IconUser />
+        <div
+          className={`lg:hidden fixed min-h-screen inset-0 z-40 bg-background/95 backdrop-blur-xl transition-all duration-500 ease-in-out ${
+            isMobileMenu ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+          }`}
+          style={{ top: '80px' }}
+        >
+          <div className="flex flex-col items-center justify-center h-full gap-8 p-8  ">
+            {user && (
+              <div className="flex flex-col items-center gap-4 mb-4">
+                 <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center text-primary border-2 border-primary/20">
+                  <IconUser size={32} />
                 </div>
-              )}
+                <span className="font-semibold text-lg">{user.displayName || 'User'}</span>
+              </div>
+            )}
 
+            <ul className="flex flex-col items-center gap-6 text-lg font-medium">
               {menuLinks.map((link, i) => (
                 <NavLink
                   to={link.path}
                   key={i}
                   onClick={() => setIsMobileMenu(false)}
+                  className={({ isActive }) =>
+                    `px-4 py-2 rounded-lg transition-all ${
+                      isActive 
+                        ? 'bg-primary/10 text-primary font-bold' 
+                        : 'text-neutral-600 dark:text-neutral-300'
+                    }`
+                  }
                 >
-                  {link.name}{' '}
+                  {link.name}
                 </NavLink>
               ))}
             </ul>
-            {user ? (
-              <>
-                <Button
-                  onClick={() => navigate(`/dashboard`)}
-                  size="sm"
-                  variant="primary"
-                  className="bg-amber-700 text-white hover:opacity-90 mb-5"
-                >
-                  <IconLayoutDashboard stroke={2} />
-                  Dashboard
-                </Button>
-                <Button
-                  onClick={handleLogout}
-                  size="lg"
-                  variant="primary"
-                  className="bg-amber-950 text-white  hover:opacity-90"
-                >
-                  <IconLogin2 stroke={2} /> Logout
-                </Button>
-              </>
-            ) : (
-              <>
-                <Link to="/login" className=" lg:hidden mb-5 ">
+
+            <div className="flex flex-col gap-4 w-full max-w-xs mt-8">
+              <div className="flex justify-center mb-4">
+                <ThemeToggle />
+              </div>
+
+              {user ? (
+                <>
                   <Button
-                    onClick={() => setIsMobileMenu(false)}
-                    size="sm"
-                    variant="primary"
-                    className="bg-amber-700 text-white  hover:opacity-90 cursor-pointer"
+                    onClick={() => {
+                      navigate(`/dashboard`);
+                      setIsMobileMenu(false);
+                    }}
+                    className="w-full bg-primary"
                   >
-                    <IconLogin2 stroke={2} /> Login
+                    <IconLayoutDashboard className="w-4 h-4 mr-2" />
+                    Dashboard
                   </Button>
-                </Link>
-                <Link to="/register">
                   <Button
-                    onClick={() => setIsMobileMenu(false)}
-                    size="sm"
-                    className="lg:hidden hover:opacity-90 cursor-pointer"
+                    onClick={handleLogout}
+                    variant="outline"
+                    className="w-full border-destructive/30 text-destructive hover:bg-destructive/10"
                   >
-                    <IconUserEdit stroke={2} />
-                    Register
+                    <IconLogin2 className="w-4 h-4 mr-2" /> Logout
                   </Button>
-                </Link>
-              </>
-            )}
+                </>
+              ) : (
+                <>
+                  <Link to="/login" className="w-full" onClick={() => setIsMobileMenu(false)}>
+                    <Button variant="outline" className="w-full">
+                      Login
+                    </Button>
+                  </Link>
+                  <Link to="/register" className="w-full" onClick={() => setIsMobileMenu(false)}>
+                    <Button className="w-full bg-primary text-primary-foreground">
+                      Register
+                    </Button>
+                  </Link>
+                </>
+              )}
+            </div>
           </div>
-        )}
+        </div>
       </nav>
     </header>
   );

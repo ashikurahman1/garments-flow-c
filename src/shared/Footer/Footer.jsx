@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router';
-import GarmentsFlow from '../../assets/Garments-Flow.png';
+ 
 import {
   IconBrandFacebook,
   IconBrandInstagram,
@@ -27,38 +27,34 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-amber-900 text-white  pt-14 pb-6">
+    <footer className="bg-background border-t border-border pt-20 pb-10 text-foreground transition-all duration-300">
       <div className="container mx-auto px-4">
         {/* Grid: 1 column on small, 4 on md+ */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-16">
           {/* 1. Logo & About */}
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <img
-                src={GarmentsFlow}
-                alt="Garments Flow Logo"
-                className="w-10 h-10 object-contain"
-              />
-              <h2 className="text-xl lg:text-2xl font-semibold">
+               
+              <h2 className="text-2xl font-bold font-display text-primary">
                 Garments Flow
               </h2>
             </div>
-            <p className="text-sm leading-relaxed text-amber-50">
+            <p className="text-muted-foreground leading-relaxed">
               High-quality garments and a smooth shopping experience — fast
               delivery, helpful support, and secure payments.
             </p>
 
-            <div className="flex flex-col gap-2 text-amber-50 text-sm">
-              <span className="flex items-center gap-2">
-                <IconPhoneCall stroke={1.5} size={18} />
+            <div className="flex flex-col gap-3 text-muted-foreground text-sm">
+              <span className="flex items-center gap-3 hover:text-primary transition-colors cursor-pointer">
+                <IconPhoneCall stroke={1.5} size={20} className="text-primary" />
                 +880 1845-684090
               </span>
-              <span className="flex items-center gap-2">
-                <IconMail stroke={1.5} size={18} />
+              <span className="flex items-center gap-3 hover:text-primary transition-colors cursor-pointer">
+                <IconMail stroke={1.5} size={20} className="text-primary" />
                 support@garmentsflow.com
               </span>
-              <span className="flex items-center gap-2">
-                <IconMapPin stroke={1.5} size={18} />
+              <span className="flex items-center gap-3 hover:text-primary transition-colors cursor-pointer">
+                <IconMapPin stroke={1.5} size={20} className="text-primary" />
                 Dhaka, Bangladesh
               </span>
             </div>
@@ -66,13 +62,13 @@ const Footer = () => {
 
           {/* 2. Quick Links */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
-            <ul className="flex flex-col gap-2 text-amber-50">
+            <h3 className="font-semibold text-lg mb-6 font-display border-b border-primary/20 pb-2 inline-block">Quick Links</h3>
+            <ul className="flex flex-col gap-3 text-muted-foreground">
               {quickLinks.map((link, i) => (
                 <NavLink
                   key={i}
                   to={link.to}
-                  className="text-sm hover:text-amber-300 transition-colors"
+                  className="text-sm hover:text-primary hover:translate-x-1 transition-all duration-300"
                   aria-label={link.label}
                 >
                   {link.label}
@@ -83,13 +79,13 @@ const Footer = () => {
 
           {/* 3. Support */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Support</h3>
-            <ul className="flex flex-col gap-2 text-amber-50">
+            <h3 className="font-semibold text-lg mb-6 font-display border-b border-primary/20 pb-2 inline-block">Support</h3>
+            <ul className="flex flex-col gap-3 text-muted-foreground">
               {supportLinks.map((link, i) => (
                 <NavLink
                   key={i}
                   to={link.to}
-                  className="text-sm hover:text-amber-300 transition-colors"
+                  className="text-sm hover:text-primary hover:translate-x-1 transition-all duration-300"
                   aria-label={link.label}
                 >
                   {link.label}
@@ -100,53 +96,45 @@ const Footer = () => {
 
           {/* 4. Social & Newsletter */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Follow & Newsletter</h3>
+            <h3 className="font-semibold text-lg mb-6 font-display border-b border-primary/20 pb-2 inline-block">Follow & Newsletter</h3>
 
-            <div className="flex gap-4 mb-4">
-              <a
-                href="https://facebook.com/ashikurrdev"
-                aria-label="Facebook"
-                className="hover:text-amber-300"
-              >
-                <IconBrandFacebook stroke={1.5} size={24} />
-              </a>
-              <a
-                href="#"
-                aria-label="Instagram"
-                className="hover:text-amber-300"
-              >
-                <IconBrandInstagram stroke={1.5} size={24} />
-              </a>
-              <a
-                href="https://linkedin.com/in/ashikur-dev"
-                aria-label="LinkedIn"
-                className="hover:text-amber-300"
-              >
-                <IconBrandLinkedin stroke={1.5} size={24} />
-              </a>
-              <a href="#" aria-label="YouTube" className="hover:text-amber-300">
-                <IconBrandYoutube stroke={1.5} size={24} />
-              </a>
+            <div className="flex gap-4 mb-6">
+              {[
+                { href: 'https://facebook.com/ashikurrdev', Icon: IconBrandFacebook },
+                { href: '#', Icon: IconBrandInstagram },
+                { href: 'https://linkedin.com/in/ashikur-dev', Icon: IconBrandLinkedin },
+                { href: '#', Icon: IconBrandYoutube }
+              ].map(({ href, Icon }, i) => (
+                <a
+                  key={i}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all duration-300"
+                >
+                  <Icon stroke={1.5} size={20} />
+                </a>
+              ))}
             </div>
 
-            <p className="text-sm text-amber-50 mb-3">
-              Subscribe for updates & offers
+            <p className="text-sm text-muted-foreground mb-4">
+              Subscribe for updates & offers.
             </p>
             <form
               onSubmit={e => e.preventDefault()}
-              className="flex items-center gap-2"
+              className="flex flex-col gap-3"
               aria-label="Subscribe to newsletter"
             >
               <input
                 type="email"
                 placeholder="Your email"
-                className="flex-1 rounded-md px-3 py-2 text-amber-900 dark:text-amber-500 placeholder-amber-800 focus:outline-none focus:ring-2 focus:ring-amber-300 bg-amber-100"
+                className="w-full rounded-md px-4 py-3 bg-muted/50 border border-input focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all placeholder:text-muted-foreground/70"
                 required
                 aria-label="Email address"
               />
               <button
                 type="submit"
-                className="px-3 py-2 rounded-md bg-amber-700 hover:bg-amber-600 text-white dark:text-black font-semibold"
+                className="w-full btn-premium bg-primary text-primary-foreground px-4 py-3 rounded-md font-medium hover:bg-primary/90"
               >
                 Subscribe
               </button>
@@ -155,8 +143,12 @@ const Footer = () => {
         </div>
 
         {/* bottom line */}
-        <div className="border-t border-amber-700 mt-10 pt-4 text-center text-sm text-amber-200">
-          © {new Date().getFullYear()} Garments Flow. All rights reserved.
+        <div className="border-t border-border mt-16 pt-8 text-center text-sm text-muted-foreground flex flex-col md:flex-row justify-between items-center gap-4">
+          <p>© {new Date().getFullYear()} Garments Flow. All rights reserved.</p>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
+          </div>
         </div>
       </div>
     </footer>

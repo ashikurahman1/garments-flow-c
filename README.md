@@ -1,125 +1,141 @@
-# Garments Flow – Client
+# GarmentFlow - Premium Apparel Management Platform (Client)
 
-This is the frontend client application for **Garments Flow**, a role-based
-garment ordering and management platform. The client is built with modern React
-tooling and communicates with a secure REST API to provide a responsive and
-role-aware user experience for buyers, managers, and administrators.
+**GarmentFlow** is a state-of-the-art, full-stack apparel management web application designed to streamline the workflow between Buyers, Managers, and Administrators. Built with a focus on premium aesthetics and user experience, the client-side application utilizes a modern "Glassmorphism" design system, seamless animations, and robust role-based functionality.
 
-### Home Page
+| Home Page | Admin Dashboard |
+| :---: | :---: |
+| ![Home Page](./screenshots/home-page.png) | ![Admin Dashboard](./screenshots/admin-dash.png) |
 
-![Garments Flow Home Page](./screenshots/home.png)
-
-### Dashboard View
-
-![Garments Flow Dashboard](./screenshots/dashboard.png)
-
----
-
-## Live Application
-
-https://garments-flow.vercel.app/
-
----
-
-## Backend Repository
-
-https://github.com/ashikurahman1/garments-flow
-
----
-
-## Tech Stack
-
-### Core
-
-- React (Vite)
-- React Router
-- Tailwind CSS
-- Shadcn UI
-
-### State and Data Management
-
-- TanStack React Query
-- Axios
-
-### Authentication
-
-- Firebase Authentication
-
-### UI and UX
-
-- Framer Motion
-- Swiper
-- Recharts
-- SweetAlert2
-- Tabler Icons
-
-### Forms and Utilities
-
-- React Hook Form
+**Live Site:**
+[https://garments-flow.vercel.app/](https://garments-flow.vercel.app/)  
+**Client Repo:**
+[https://github.com/ashikurahman1/garments-flow-c](https://github.com/ashikurahman1/garments-flow-c)  
+**Server Repo:**
+[https://github.com/ashikurahman1/garments-flow](https://github.com/ashikurahman1/garments-flow)
+## Key Features
 
 ---
 
 ## Key Features
 
-### Authentication and Authorization
+### User Interface & Experience
+-   **Premium Glassmorphism Design**: A custom design system featuring translucent glass cards, vibrant gradients, and sophisticated typography (Inter & Outfit).
+-   **Modern Animations**: Powered by **Framer Motion** for smooth transitions, entry effects, and interactive elements.
+-   **Responsive & Adaptive**: Fully optimized for Desktop, Tablet, and Mobile devices using **Tailwind CSS**.
+-   **Dark/Light Mode**: (Architecture ready) Semantic color system using OKLCH tailored for dynamic theming.
 
-- Firebase-based authentication
-- Secure token-based API requests
-- Role-based access handling (buyer, manager, admin)
+### Authentication & Security
+-   **Secure Login/Registration**: Email/Password and Google Sign-In support via **Firebase Authentication**.
+-   **JWT Integration**: Secure API communication with interceptors for automatic token attachment.
+-   **Role-Based Access Control (RBAC)**: secure routing that restricts access to specific Dashboard views (Admin/Manager/Buyer).
 
-### Role-Based UI Rendering
-
-- Conditional navigation links based on user role
-- Protected routes to prevent unauthorized access
-- Dynamic dashboards per user role
-
-### Product Browsing
-
-- Product listing with search and pagination
-- Featured products on home page
-- Product details view
-
-### Order Management
-
-- Place orders with quantity validation
-- View order history
-- Track order status using tracking ID
-
-### Dashboards
-
-Admin Dashboard:
-
-- User management
-- Product and order analytics
-- Monthly order charts
-
-Manager Dashboard:
-
-- Manager-specific product listings
-- Pending and approved orders
-
-Buyer Dashboard:
-
-- Order count
-- Order history
+### Comprehensive Dashboards
+-   **Admin Dashboard**:
+    -   Manage all Users (Promote/Suspend)
+    -   Oversee Platform-wide Products & Orders
+    -   System Statistics
+-   **Manager Dashboard**:
+    -   Add/Edit/Delete Products
+    -   Manage Incoming Orders (Approve/Reject)
+    -   Update Shipping Status & Tracking
+-   **Buyer Dashboard**:
+    -   Browse & Filter Products
+    -   Place Orders
+    -   Track Order Status (Timeline view)
+    -   Manage Profile & Reviews
 
 ---
 
-## Important Learning
+## Technology Stack
 
-### Conditional Navigation Rendering
-
-One of the major learnings in this project was rendering navigation links
-conditionally based on authenticated user roles. This ensured:
-
-- Clean user experience
-- Improved security
-- Clear separation of responsibilities across roles
-
-### API Route Consistency
-
-During development, a mismatch between frontend API calls and backend route
-prefixes caused data fetching issues. This highlighted the importance of
-maintaining consistent API endpoint structures across client and server.
+-   **Framework**: [React](https://reactjs.org/) (Vite)
+-   **language**: JavaScript (ES6+)
+-   **Styling**: [Tailwind CSS](https://tailwindcss.com/) v4 (alpha variables), [PostCSS](https://postcss.org/)
+-   **State Management**: [TanStack Query](https://tanstack.com/query/latest) (React Query)
+-   **Routing**: [React Router v6](https://reactrouter.com/)
+-   **Forms**: [React Hook Form](https://react-hook-form.com/)
+-   **UI Components**: [Headless UI](https://headlessui.com/), [Radix UI](https://www.radix-ui.com/), [Tabler Icons](https://tabler-icons.io/)
+-   **Utilities**: [Axios](https://axios-http.com/), [SweetAlert2](https://sweetalert2.github.io/), [Day.js](https://day.js.org/)
 
 ---
+
+## Getting Started
+
+Follow these steps to set up the project locally.
+
+### Prerequisites
+-   **Node.js** (v16 or higher)
+-   **npm** or **yarn**
+
+### Installation
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/your-username/garmentflow.git
+    cd garmentflow/client
+    ```
+
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Configure Environment Variables**
+    Create a `.env.local` file in the root of the `client` directory and add the following keys:
+    ```env
+    VITE_API_URL=http://localhost:5000
+    VITE_apiKey=your_firebase_api_key
+    VITE_authDomain=your_firebase_auth_domain
+    VITE_projectId=your_firebase_project_id
+    VITE_storageBucket=your_firebase_storage_bucket
+    VITE_messagingSenderId=your_sender_id
+    VITE_appId=your_app_id
+    VITE_IMGBB_API=your_imgbb_api_key
+    VITE_PAYMENT_GATEWAY_PK=your_stripe_publishable_key
+    ```
+
+4.  **Run Development Server**
+    ```bash
+    npm run dev
+    ```
+    The app will run at `http://localhost:5173`.
+
+---
+
+## Project Structure
+
+```
+client/
+├── public/              # Static assets
+├── src/
+│   ├── components/      # Reusable UI components (Buttons, Modals, etc.)
+│   ├── hooks/           # Custom React hooks (useAuth, useAxiosSecure, etc.)
+│   ├── layouts/         # Main & Dashboard layouts
+│   ├── pages/           # Application views (Home, Login, Dashboard Routes)
+│   ├── providers/       # Context Providers (Auth, QueryClient)
+│   ├── routes/          # Navigation & Route definitions
+│   ├── shared/          # Shared layout components (Navbar, Footer)
+│   ├── index.css        # Global styles & Tailwind configuration
+│   └── main.jsx         # Application entry point
+├── package.json
+└── vite.config.js
+```
+
+---
+
+## Scripts
+
+-   `npm run dev`: Start the development server.
+-   `npm run build`: Build the app for production.
+-   `npm run lint`: Run ESLint to check for code quality issues.
+-   `npm run preview`: Preview the production build locally.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and create a pull request for any feature enhancements or bug fixes.
+
+---
+
+

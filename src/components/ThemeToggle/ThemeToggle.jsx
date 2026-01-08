@@ -28,12 +28,13 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="shadow-inner border-2 border-amber-700 text-amber-900 p-1 rounded-full"
+      className="p-2 rounded-full transition-colors hover:bg-muted text-foreground"
+      aria-label="Toggle Theme"
     >
       {isDark ? (
-        <IconSun className="w-6 h-6 animate-spin-slow" stroke={2} />
+        <IconSun className="w-6 h-6 animate-spin-slow text-yellow-500" stroke={2} />
       ) : (
-        <IconMoon className="w-6 h-6 animate-spin-slow" stroke={2} />
+        <IconMoon className="w-6 h-6 animate-spin-slow text-slate-700 dark:text-slate-200" stroke={2} />
       )}
     </button>
   );

@@ -58,7 +58,7 @@ const AllProducts = () => {
       showCancelButton: true,
       confirmButtonText: 'Delete',
       cancelButtonText: 'Cancel',
-      confirmButtonColor: '#92400e',
+      confirmButtonColor: '#ef4444',
     });
 
     if (!confirm.isConfirmed) return;
@@ -80,81 +80,90 @@ const AllProducts = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="p-6 bg-white dark:bg-white/10 lg:m-5 rounded-xl">
-      <h2 className="text-2xl font-semibold mb-5">All Products</h2>
+    <div className="p-6 lg:m-5">
+      <div className="glass-card rounded-xl p-6 border border-white/20">
+        <h2 className="text-2xl font-display font-bold mb-6 text-foreground">All Products</h2>
 
-      <div className="overflow-x-auto ">
-        <table className="min-w-full border text-sm">
-          <thead className="bg-amber-200 dark:bg-amber-900 border-b text-left">
-            <tr>
-              <th className="p-3">Image</th>
-              <th className="p-3">Name</th>
-              <th className="p-3">Price</th>
-              <th className="p-3">Category</th>
-              <th className="p-3">Created By</th>
-              <th className="p-3">Show on Home</th>
-              <th className="p-3">Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {products.length > 0 ? (
-              products.map(product => (
-                <tr
-                  key={product._id}
-                  className="border-b hover:bg-gray-50 transition"
-                >
-                  <td className="p-3">
-                    <img
-                      src={product.images?.[0]}
-                      className="w-14 h-14 rounded object-cover"
-                    />
-                  </td>
-
-                  <td className="p-3">{product.name}</td>
-                  <td className="p-3">${product.price}</td>
-                  <td className="p-3">{product.category}</td>
-
-                  <td className="p-3">{product.managerEmail}</td>
-
-                  <td className="p-3">
-                    <input
-                      type="checkbox"
-                      checked={product.showOnHome}
-                      onChange={() =>
-                        handleToggleHome(product._id, product.showOnHome)
-                      }
-                    />
-                  </td>
-
-                  <td className=" text-right">
-                    <div className="flex gap-3">
-                      <button
-                        onClick={() =>
-                          (window.location.href = `/dashboard/edit-product/${product._id}`)
-                        }
-                        className="px-3 py-1 bg-blue-700 text-white dark:text-black rounded flex items-center gap-1"
-                      >
-                        <IconEdit size={16} /> Edit
-                      </button>
-
-                      <button
-                        onClick={() => handleDelete(product._id)}
-                        className="px-3 py-1 bg-amber-800 text-white dark:text-black rounded flex items-center gap-1"
-                      >
-                        <IconTrash size={16} /> Delete
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            ) : (
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="min-w-full text-sm">
+            <thead className="bg-muted/50 border-b border-border text-left">
               <tr>
-                <td>No Products found</td>
+                <th className="p-4 font-semibold text-foreground">Image</th>
+                <th className="p-4 font-semibold text-foreground">Name</th>
+                <th className="p-4 font-semibold text-foreground">Price</th>
+                <th className="p-4 font-semibold text-foreground">Category</th>
+                <th className="p-4 font-semibold text-foreground">Created By</th>
+                <th className="p-4 font-semibold text-foreground">Show on Home</th>
+                <th className="p-4 font-semibold text-right text-foreground">Actions</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody className="divide-y divide-border bg-card/30">
+              {products.length > 0 ? (
+                products.map(product => (
+                  <tr
+                    key={product._id}
+                    className="hover:bg-muted/30 transition-colors"
+                  >
+                    <td className="p-4">
+                      <div className="w-14 h-14 rounded-lg overflow-hidden border border-border shadow-sm">
+                        <img
+                          src={product.images?.[0]}
+                          className="w-full h-full object-cover"
+                          alt={product.name}
+                        />
+                      </div>
+                    </td>
+
+                    <td className="p-4 font-medium text-foreground">{product.name}</td>
+                    <td className="p-4 font-mono text-primary font-semibold">${product.price}</td>
+                    <td className="p-4 text-muted-foreground">{product.category}</td>
+
+                    <td className="p-4 text-muted-foreground">{product.managerEmail}</td>
+
+                    <td className="p-4">
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="sr-only peer"
+                          checked={product.showOnHome}
+                          onChange={() =>
+                            handleToggleHome(product._id, product.showOnHome)
+                          }
+                        />
+                         <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/20 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                      </label>
+                    </td>
+
+                    <td className="p-4 text-right">
+                      <div className="flex justify-end gap-2">
+                        <button
+                          onClick={() =>
+                            (window.location.href = `/dashboard/edit-product/${product._id}`)
+                          }
+                          className="px-3 py-1.5 bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-500/20 rounded-lg flex items-center gap-1.5 transition-colors border border-blue-500/20"
+                        >
+                          <IconEdit size={16} /> Edit
+                        </button>
+
+                        <button
+                          onClick={() => handleDelete(product._id)}
+                          className="px-3 py-1.5 bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-500/20 rounded-lg flex items-center gap-1.5 transition-colors border border-red-500/20"
+                        >
+                          <IconTrash size={16} /> Delete
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7" className="p-8 text-center text-muted-foreground">No Products found</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

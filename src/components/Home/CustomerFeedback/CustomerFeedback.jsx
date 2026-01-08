@@ -13,54 +13,52 @@ const testimonials = [
     role: 'Clothing Store Owner',
     feedback:
       'Their product quality is top-notch! The stitching, fabric, and finishing were far better than I expected.',
-    img: 'https://i.pravatar.cc/100?img=1',
+    img: 'https://i.pravatar.cc/100?img=11',
   },
   {
     name: 'Farhana Akter',
     role: 'Boutique Business',
     feedback:
       'Delivery was super fast, and the garments quality was amazing. I’ll definitely order again!',
-    img: 'https://i.pravatar.cc/100?img=2',
+    img: 'https://i.pravatar.cc/100?img=5',
   },
   {
     name: 'Mahmud Hasan',
     role: 'Online Seller',
     feedback:
       'Very smooth ordering process. Clear communication and excellent customer support. Highly recommended!',
-    img: 'https://i.pravatar.cc/100?img=3',
+    img: 'https://i.pravatar.cc/100?img=15',
   },
   {
-    name: 'Abdul Karim',
-    role: 'Clothing Store Owner',
+    name: 'Sarah Johnson',
+    role: 'Fashion Designer',
     feedback:
-      'Their product quality is top-notch! The stitching, fabric, and finishing were far better than I expected.',
-    img: 'https://i.pravatar.cc/100?img=1',
+      'The attention to detail in the manufacturing process is impressive. My collection came out exactly as envisioned.',
+    img: 'https://i.pravatar.cc/100?img=9',
   },
   {
-    name: 'Mahmud Hasan',
-    role: 'Online Seller',
+    name: 'Michael Chen',
+    role: 'Retail Manager',
     feedback:
-      'Very smooth ordering process. Clear communication and excellent customer support. Highly recommended!',
-    img: 'https://i.pravatar.cc/100?img=3',
+      'We have been sourcing from them for 2 years now. Consistent quality and reliable delivery timelines.',
+    img: 'https://i.pravatar.cc/100?img=8',
   },
 ];
 
 const CustomerFeedback = () => {
   return (
-    <div className="bg-amber-gradient shadow">
-      <section className="container mx-auto px-4 py-20 lg:py-30">
-        <div className="mb-8 lg:mb-15">
-          <SectionTitle
-            title="Customer Feedback"
-            subtitle={
-              'Here’s what our customers say about our garments and service.'
-            }
-          />
-        </div>
+    <section className="py-20 bg-muted/20 relative">
+      <div className="container mx-auto px-4">
+        <SectionTitle
+          title="Clients Love Us"
+          subtitle="Testimonials"
+          center={true}
+        />
+        
         <Swiper
           modules={[Pagination, Autoplay]}
-          pagination={{ clickable: true }}
-          autoplay={{ delay: 2800 }}
+          pagination={{ clickable: true, dynamicBullets: true }}
+          autoplay={{ delay: 3500, disableOnInteraction: false }}
           spaceBetween={30}
           slidesPerView={1}
           breakpoints={{
@@ -68,50 +66,47 @@ const CustomerFeedback = () => {
             768: { slidesPerView: 2 },
             1024: { slidesPerView: 3 },
           }}
-          className="pb-12"
+          className="pb-16 px-4"
         >
           {testimonials.map((item, i) => (
-            <SwiperSlide key={i}>
+            <SwiperSlide key={i} className="py-4">
               <motion.div
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
                 viewport={{ once: true }}
               >
-                <Card
-                  className="
-                  shadow-md hover:shadow-xl transition-all 
-                  border border-amber-200 bg-white
-                  rounded-2xl
-                "
-                >
-                  <CardContent className="p-6 flex flex-col items-center text-center">
-                    <img
-                      src={item.img}
-                      alt={item.name}
-                      className="w-20 h-20 rounded-full border-4 border-amber-200 shadow mb-4"
-                    />
+                <Card className="h-full border border-border/50 shadow-lg hover:shadow-2xl transition-all duration-300 bg-card rounded-2xl overflow-hidden group">
+                  <CardContent className="p-8 flex flex-col items-center text-center">
+                    <div className="w-20 h-20 rounded-full border-4 border-background shadow-md mb-6 relative z-10 overflow-hidden transform group-hover:scale-105 transition-transform duration-300">
+                      <img
+                        src={item.img}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
 
-                    <h3 className="text-lg font-semibold text-gray-900">
-                      {item.name}
-                    </h3>
-                    <p className="text-sm text-amber-800 font-medium">
-                      {item.role}
+                    <p className="text-muted-foreground italic leading-relaxed mb-6 flex-grow">
+                      "{item.feedback}"
                     </p>
 
-                    <p className="text-gray-600 mt-4 leading-relaxed">
-                      “{item.feedback}”
-                    </p>
-
-                    <div className="w-16 h-1 bg-amber-800/80 rounded-full mt-5"></div>
+                    <div className="mt-auto">
+                      <h3 className="text-lg font-bold text-foreground font-display">
+                        {item.name}
+                      </h3>
+                      <p className="text-sm text-primary font-medium uppercase tracking-wide">
+                        {item.role}
+                      </p>
+                    </div>
                   </CardContent>
+                  <div className="h-1 w-full bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-50 group-hover:opacity-100 transition-opacity" />
                 </Card>
               </motion.div>
             </SwiperSlide>
           ))}
         </Swiper>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };
 

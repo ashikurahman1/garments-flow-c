@@ -62,7 +62,7 @@ const ManageProducts = () => {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete',
-      confirmButtonColor: '#92400E',
+      confirmButtonColor: '#ef4444',
     });
 
     if (confirm.isConfirmed) {
@@ -73,69 +73,78 @@ const ManageProducts = () => {
   if (isLoading) return <LoadingSpinner />;
 
   return (
-    <div className="bg-white dark:bg-white/10 p-6 shadow rounded-xl lg:m-6">
-      <h2 className="text-2xl font-bold mb-6">Manage Products</h2>
+    <div className="p-6 lg:m-6">
+      <div className="glass-card rounded-xl p-6 border border-white/20">
+        <h2 className="text-2xl font-display font-bold mb-6 text-foreground">Manage Products</h2>
 
-      {/* Search */}
-      <input
-        type="text"
-        placeholder="Search products..."
-        className="border p-2 rounded w-full mb-4"
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-      />
+        {/* Search */}
+        <div className="mb-6">
+           <input
+            type="text"
+            placeholder="Search products..."
+            className="w-full md:w-1/3 bg-background/50 border border-input rounded-xl px-4 py-2.5 focus:ring-2 focus:ring-primary outline-none transition-all"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+        </div>
 
-      <div className="overflow-x-auto w-full">
-        <table className=" border min-w-max w-full  ">
-          <thead className="bg-amber-800 text-white dark:text-black text-left">
-            <tr className="">
-              <th className="p-2">Image</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Payment</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {filteredProducts.map(product => (
-              <tr key={product._id} className="border">
-                <td className="p-2">
-                  <img
-                    src={
-                      product.images?.[0]?.startsWith('http')
-                        ? product.images[0]
-                        : `http://localhost:5000/${product.images[0]}`
-                    }
-                    className="w-16 h-16 object-cover rounded"
-                  />
-                </td>
-                <td>{product.name}</td>
-                <td>${product.price}</td>
-                <td>{product.paymentOption}</td>
-
-                <td className="flex gap-2 pt-4">
-                  <Button
-                    onClick={() =>
-                      navigate(`/dashboard/edit-product/${product._id}`)
-                    }
-                    className="px-3 py-1 bg-amber-800 text-white dark:text-black rounded flex items-center gap-1"
-                  >
-                    <IconEdit size={16} /> Edit
-                  </Button>
-
-                  {/* Delete */}
-                  <Button
-                    onClick={() => handleDelete(product._id)}
-                    className="px-3 py-1 bg-red-600 text-white dark:text-black rounded flex items-center gap-1"
-                  >
-                    <IconTrash size={16} /> Delete
-                  </Button>
-                </td>
+        <div className="overflow-x-auto rounded-lg border border-border">
+          <table className="min-w-full text-left">
+            <thead className="bg-muted/50 border-b border-border">
+              <tr>
+                <th className="p-4 font-semibold text-foreground">Image</th>
+                <th className="p-4 font-semibold text-foreground">Name</th>
+                <th className="p-4 font-semibold text-foreground">Price</th>
+                <th className="p-4 font-semibold text-foreground">Payment</th>
+                <th className="p-4 font-semibold text-foreground">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody className="divide-y divide-border bg-card/30">
+              {filteredProducts.map(product => (
+                <tr key={product._id} className="hover:bg-muted/30 transition-colors">
+                  <td className="p-4">
+                    <img
+                      src={
+                        product.images?.[0]?.startsWith('http')
+                          ? product.images[0]
+                          : `http://localhost:5000/${product.images[0]}`
+                      }
+                      className="w-16 h-16 object-cover rounded-lg border border-border"
+                      alt={product.name}
+                    />
+                  </td>
+                  <td className="p-4 font-medium text-foreground">{product.name}</td>
+                  <td className="p-4 font-mono text-primary">${product.price}</td>
+                  <td className="p-4 text-sm text-muted-foreground uppercase">{product.paymentOption}</td>
+
+                  <td className="p-4 flex gap-2 items-center">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() =>
+                        navigate(`/dashboard/edit-product/${product._id}`)
+                      }
+                      className="border-primary/20 text-primary hover:bg-primary/10 hover:text-primary"
+                    >
+                      <IconEdit size={16} className="mr-1" /> Edit
+                    </Button>
+
+                    {/* Delete */}
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleDelete(product._id)}
+                      className="shadow-sm"
+                    >
+                      <IconTrash size={16} className="mr-1" /> Delete
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

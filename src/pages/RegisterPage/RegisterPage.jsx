@@ -11,6 +11,8 @@ import useAxiosSecure from '../../hooks/useAxiosSecure';
 import Swal from 'sweetalert2';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
+import { motion } from 'framer-motion';
+
 const RegisterPage = () => {
   usePageTitle('Register');
   const { registerUser, updateUserProfile, googleLogin } = useAuth();
@@ -31,7 +33,7 @@ const RegisterPage = () => {
           title: 'Weak Password!',
           text: 'Password must contain: Uppercase, Lowercase, and at least 6 characters.',
           icon: 'warning',
-          confirmButtonColor: '#92400E',
+          confirmButtonColor: '#4f46e5',
         });
         return;
       }
@@ -40,7 +42,7 @@ const RegisterPage = () => {
       const result = await registerUser(data.email, data.password);
       console.log('Firebase User:', result);
 
-      // Upload Image to IMGBB
+      // Upload Image to IMGBB (Keep existing logic)
       const profileImage = data.image[0];
       const formData = new FormData();
       formData.append('image', profileImage);
@@ -83,7 +85,7 @@ const RegisterPage = () => {
         text:
           err.response?.data?.message || err.message || 'Something went wrong!',
         icon: 'error',
-        confirmButtonColor: '#92400E',
+        confirmButtonColor: '#4f46e5',
       });
     } finally {
       // stop loading
@@ -95,15 +97,12 @@ const RegisterPage = () => {
     googleLogin()
       .then(async result => {
         const user = result.user;
-        console.log(user);
-
         const userInfo = {
           email: user.email,
           displayName: user.displayName,
           photoURL: user.photoURL,
           role: 'buyer',
         };
-        console.log(userInfo);
         try {
           const res = await axiosSecure.post('/users', userInfo);
           Swal.fire({
@@ -143,49 +142,59 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="py-20 px-2 lg:py-30 flex items-center justify-center">
-      <div className="bg-white dark:bg-black/90 shadow-lg rounded-xl p-5 lg:p-10 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Register</h2>
+    <div className="py-20 px-4 lg:py-30 min-h-screen flex items-center justify-center bg-background relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-primary/20 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 -z-10"></div>
+      
+      <motion.div 
+         initial={{ opacity: 0, scale: 0.95 }}
+         animate={{ opacity: 1, scale: 1 }}
+         className="glass-card shadow-2xl rounded-2xl p-8 w-full max-w-md border border-white/20"
+      >
+        <h2 className="text-3xl font-display font-bold text-center mb-8 text-gradient">Register</h2>
 
         <form
           onSubmit={handleSubmit(handleRegister)}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-6"
         >
-          <div>
-            <Label className="mb-2">Name</Label>
+          <div className="space-y-2">
+            <Label className="font-medium text-foreground">Name</Label>
             <Input
               type="text"
               placeholder="Enter your name"
               required
               {...register('name')}
+              className="bg-background/50 border-input font-medium"
             />
           </div>
 
-          <div>
-            <Label className="mb-2">Email</Label>
+          <div className="space-y-2">
+            <Label className="font-medium text-foreground">Email</Label>
             <Input
               type="email"
               placeholder="Enter your email"
               required
               {...register('email')}
+              className="bg-background/50 border-input font-medium"
             />
           </div>
 
-          <div>
-            <Label className="mb-2">Photo</Label>
+          <div className="space-y-2">
+            <Label className="font-medium text-foreground">Photo</Label>
             <Input
               type="file"
               accept="image/*"
               required
               {...register('image')}
+              className="bg-background/50 border-input cursor-pointer file:cursor-pointer file:text-primary file:font-semibold"
             />
           </div>
 
-          <div>
-            <Label className="mb-2">Role</Label>
+          <div className="space-y-2">
+            <Label className="font-medium text-foreground">Role</Label>
             <select
               name="role"
-              className="w-full border rounded-md p-2"
+              className="w-full border border-input rounded-md p-2 bg-background/50 focus:ring-primary focus:border-primary transition-all text-sm font-medium"
               {...register('role')}
             >
               <option value="buyer">Buyer</option>
@@ -193,24 +202,25 @@ const RegisterPage = () => {
             </select>
           </div>
 
-          <div>
-            <Label className="mb-2">Password</Label>
+          <div className="space-y-2">
+            <Label className="font-medium text-foreground">Password</Label>
             <Input
               type="password"
               placeholder="Enter your password"
               required
               {...register('password')}
+               className="bg-background/50 border-input"
             />
           </div>
 
           <Button
             disabled={loading}
             type="submit"
-            className="bg-amber-800 hover:opacity-90"
+            className="btn-premium bg-primary text-primary-foreground w-full h-12 text-lg shadow-lg shadow-primary/20 mt-2"
           >
             {loading ? (
               <>
-                <Loader2 className="animate-spin" size={18} /> Processing
+                <Loader2 className="animate-spin mr-2" size={18} /> Processing
               </>
             ) : (
               'Register'
@@ -218,25 +228,29 @@ const RegisterPage = () => {
           </Button>
         </form>
 
-        <div className="my-4 text-center text-gray-500">or</div>
+        <div className="my-6 relative flex items-center justify-center">
+            <div className="absolute w-full h-px bg-border"></div>
+            <span className="relative bg-card px-4 text-xs uppercase text-muted-foreground font-medium z-10">Or continue with</span>
+        </div>
 
         <Button
           onClick={handleGoogleRegister}
-          className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-100 hover:text-amber-900 dark:text-amber-500"
+          variant="outline"
+          className="w-full h-12 flex items-center justify-center gap-3 border-border hover:bg-muted/50 transition-colors"
         >
-          <IconBrandGoogle size={20} /> Continue with Google
+          <IconBrandGoogle size={20} /> <span className="font-medium">Google</span>
         </Button>
 
-        <p className="mt-4 text-center text-gray-600">
+        <p className="mt-8 text-center text-muted-foreground text-sm">
           Already have an account?{' '}
-          <span
-            className="text-amber-800 font-semibold cursor-pointer"
+          <button
+            className="text-primary font-bold hover:underline"
             onClick={() => navigate('/login')}
           >
             Login
-          </span>
+          </button>
         </p>
-      </div>
+      </motion.div>
     </div>
   );
 };

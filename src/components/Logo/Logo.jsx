@@ -1,16 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router';
-import GarmentsFlow from '../../assets/Garments-Flow.png';
+import { IconHanger } from '@tabler/icons-react';
+
 const Logo = () => {
   return (
-    <Link to="/" className="flex items-center gap-2">
-      <img
-        src={GarmentsFlow}
-        alt="Garments Flow Logo "
-        className="w-8 lg:w-10"
-      />
-      <h2 className=" text-xl lg:text-2xl font-semibold text-amber-900 ">
-        Garments Flow
+    <Link to="/" className="flex items-center gap-2 group">
+      <div className="bg-primary/10 p-2 rounded-xl group-hover:bg-primary/20 transition-colors">
+        <IconHanger className="w-8 h-8 text-primary transition-transform duration-300 group-hover:rotate-12" stroke={2} />
+      </div>
+      <h2 className="text-2xl font-display font-bold text-gradient">
+        GarmentFlow
       </h2>
     </Link>
   );
