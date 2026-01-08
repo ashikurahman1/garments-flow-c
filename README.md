@@ -4,7 +4,7 @@
 
 | Home Page | Admin Dashboard |
 | :---: | :---: |
-| ![Home Page](./screenshots/home-page.png) | ![Admin Dashboard](./screenshots/admin-dash.png) |
+| ![Home Page](/screenshots/home-page.png) | ![Admin Dashboard](/screenshots/admin-dash.png) |
 
 **Live Site:**
 [https://garments-flow.vercel.app/](https://garments-flow.vercel.app/)  
